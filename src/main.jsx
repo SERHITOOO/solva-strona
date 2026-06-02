@@ -143,6 +143,18 @@ const realizations = [
   }
 ];
 
+const clientGallery = [
+  realizations[0],
+  realizations[3],
+  realizations[2]
+];
+
+const partnerGallery = [
+  realizations[1],
+  realizations[4],
+  realizations[5]
+];
+
 const recruitment = [
   { icon: CircleDollarSign, title: "Czytelny model prowizyjny", text: "Warunki rozliczeń są oparte o zaakceptowany proces, komplet dokumentów i status klienta. Szczegóły potwierdzamy przed startem współpracy." },
   { icon: ClipboardCheck, title: "Praca na zatwierdzonej ofercie", text: "Handlowiec prowadzi rozmowy w oparciu o aktualne procedury, cenniki i standardy obsługi, bez obietnic poza zaakceptowaną ofertą." },
@@ -490,6 +502,13 @@ function ClientsPage({ onNavigate }) {
       />
       <ProofStrip />
       <ClientOfferSection />
+      <GalleryPreviewSection
+        eyebrow="Zdjęcia realizacji"
+        icon={Camera}
+        title="Klient powinien od razu zobaczyć prawdziwe wykonawstwo."
+        text="Te kadry są bazą pod finalne podpisy, lokalizacje i parametry realizacji po potwierdzeniu materiałów marketingowych."
+        items={clientGallery}
+      />
 
       <section className="section process-section reveal-zone">
         <div className="section-heading">
@@ -576,6 +595,13 @@ function PartnersPage({ onNavigate }) {
         onNavigate={onNavigate}
       />
       <PartnerTracksSection />
+      <GalleryPreviewSection
+        eyebrow="Materiały sprzedażowe"
+        icon={Camera}
+        title="Handlowiec musi widzieć, na czym będzie pracować."
+        text="Na stronie rekrutacyjnej pokazujemy większe instalacje, skalę wykonawstwa i zaplecze techniczne jako materiał do rozmów z kandydatami."
+        items={partnerGallery}
+      />
 
       <section className="section recruitment-section reveal-zone">
         <div className="section-grid reverse">
@@ -804,6 +830,30 @@ function MediaSection() {
             </article>
           );
         })}
+      </div>
+    </section>
+  );
+}
+
+function GalleryPreviewSection({ eyebrow, icon: Icon, title, text, items }) {
+  return (
+    <section className="section gallery-preview-section reveal-zone">
+      <div className="section-heading">
+        <p className="eyebrow dark"><Icon size={18} /> {eyebrow}</p>
+        <h2>{title}</h2>
+        <p>{text}</p>
+      </div>
+      <div className="media-grid compact-gallery">
+        {items.map((item, index) => (
+          <article className="media-card" key={item.title}>
+            <div className="media-photo">
+              <img src={item.image} alt={item.title} loading={index === 0 ? "eager" : "lazy"} />
+              <span>{item.tag}</span>
+            </div>
+            <h3>{item.title}</h3>
+            <p>{item.meta}</p>
+          </article>
+        ))}
       </div>
     </section>
   );

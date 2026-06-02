@@ -744,6 +744,14 @@ textarea:focus {
   background: #e9f1f5;
 }
 
+.gallery-preview-section {
+  background: #ffffff;
+}
+
+.compact-gallery {
+  max-width: 1080px;
+}
+
 .materials-section {
   background: #f7fbfd;
 }
