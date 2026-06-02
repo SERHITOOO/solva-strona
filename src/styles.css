@@ -780,6 +780,42 @@ textarea:focus {
   transform: translateY(-4px);
 }
 
+.media-photo {
+  position: relative;
+  aspect-ratio: 1.55 / 1;
+  margin-bottom: 18px;
+  border-radius: 8px;
+  background: #dbe8ef;
+  overflow: hidden;
+}
+
+.media-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scale(1.02);
+  transition: transform 420ms ease;
+}
+
+.media-card:hover .media-photo img {
+  transform: scale(1.07);
+}
+
+.media-photo span {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  max-width: calc(100% - 24px);
+  padding: 7px 9px;
+  border-radius: 7px;
+  color: #fff;
+  background: rgba(0, 49, 79, 0.82);
+  font-size: 0.78rem;
+  font-weight: 900;
+  backdrop-filter: blur(10px);
+}
+
 .media-placeholder {
   display: grid;
   place-items: center;
@@ -981,6 +1017,58 @@ textarea:focus {
   border-radius: 0 18px 0 0;
   transform: rotate(18deg);
   animation: energyDraw 2.8s ease-in-out infinite;
+}
+
+.featured-installation {
+  position: relative;
+  min-height: 360px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #dbe8ef;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.featured-installation img {
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  display: block;
+  object-fit: cover;
+  transform: scale(1.02);
+  animation: heroDrift 16s ease-in-out infinite alternate;
+}
+
+.feature-badge {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 8px;
+  color: #fff;
+  background: rgba(0, 49, 79, 0.84);
+  backdrop-filter: blur(16px);
+}
+
+.feature-badge svg {
+  color: var(--solar);
+}
+
+.feature-badge strong,
+.feature-badge span {
+  display: block;
+}
+
+.feature-badge span {
+  margin-top: 3px;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.35;
 }
 
 .media-card p {
@@ -1493,7 +1581,7 @@ textarea:focus {
     display: none;
   }
 
-  .media-card:nth-of-type(n+2),
+  .media-card:nth-of-type(n+3),
   .insight-card:nth-of-type(n+3),
   .offer-card:nth-of-type(n+4),
   .track-card:nth-of-type(n+3),
@@ -1618,6 +1706,7 @@ textarea:focus {
   }
 
   .hero-media,
+  .featured-installation img,
   .media-placeholder::before,
   .roof-plane,
   .energy-line,

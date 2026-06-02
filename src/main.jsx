@@ -16,7 +16,6 @@ import {
   FileText,
   Handshake,
   HelpCircle,
-  ImagePlus,
   Layers3,
   Mail,
   MapPin,
@@ -36,7 +35,12 @@ import "./styles.css";
 
 const routes = ["/", "/klienci", "/handlowcy", "/prywatnosc"];
 const appBasePath = import.meta.env.BASE_URL === "/" ? "" : import.meta.env.BASE_URL.replace(/\/$/, "");
-const heroImageStyle = { "--hero-image": `url("${assetUrl("assets/solar-hero.png")}")` };
+const heroImages = {
+  home: { "--hero-image": `url("${assetUrl("assets/realizations/hero-home.webp")}")` },
+  clients: { "--hero-image": `url("${assetUrl("assets/realizations/home-aerial.webp")}")` },
+  partners: { "--hero-image": `url("${assetUrl("assets/realizations/commercial-roof.webp")}")` },
+  privacy: { "--hero-image": `url("${assetUrl("assets/realizations/home-roof.webp")}")` }
+};
 const logoUrl = `${assetUrl("assets/solva-logo.svg")}?v=1`;
 const contactEmail = "m.pokora@hydro-energy.pl";
 const contactPhone = "+48796054985";
@@ -101,9 +105,42 @@ const partnerDefaults = {
 };
 
 const realizations = [
-  { title: "Realizacje PV", meta: "Zdjęcia gotowych instalacji i opis zakresu prac.", icon: Camera },
-  { title: "Pompy i magazyny", meta: "Krótki film lub seria zdjęć z montażu.", icon: Play },
-  { title: "Case studies", meta: "Układ pod opinie, parametry inwestycji i efekty po wdrożeniu.", icon: ImagePlus }
+  {
+    title: "Dom jednorodzinny z PV",
+    meta: "Gotowa instalacja na dachu skośnym. Dobry materiał na stronę główną i komunikację dla klientów indywidualnych.",
+    image: assetUrl("assets/realizations/residential-front.webp"),
+    tag: "Klienci indywidualni"
+  },
+  {
+    title: "Instalacja na dużym dachu",
+    meta: "Realizacja na obiekcie firmowym pokazuje skalę wykonawstwa i potencjał dla przedsiębiorców.",
+    image: assetUrl("assets/realizations/commercial-roof.webp"),
+    tag: "Firmy i obiekty"
+  },
+  {
+    title: "Pompa ciepła przy budynku",
+    meta: "Materiał pod ofertę pomp ciepła i modernizacji źródeł ogrzewania.",
+    image: assetUrl("assets/realizations/heat-pump.webp"),
+    tag: "Pompy ciepła"
+  },
+  {
+    title: "Fotowoltaika z lotu ptaka",
+    meta: "Kadr techniczny pokazujący ułożenie paneli i miejsce montażu na dachu.",
+    image: assetUrl("assets/realizations/home-aerial.webp"),
+    tag: "Dachy skośne"
+  },
+  {
+    title: "Instalacja gruntowa",
+    meta: "Dobry przykład dla klientów z większą działką, firm i obiektów o większym zużyciu energii.",
+    image: assetUrl("assets/realizations/ground-mount.webp"),
+    tag: "Grunt i skala"
+  },
+  {
+    title: "Zaplecze techniczne",
+    meta: "Zdjęcie pod sekcję pomp, źródeł ciepła i kompleksowej modernizacji energetycznej.",
+    image: assetUrl("assets/realizations/technical-room.webp"),
+    tag: "Technika"
+  }
 ];
 
 const recruitment = [
@@ -119,16 +156,16 @@ const proof = [
 ];
 
 const clientSegments = [
-  { icon: SunMedium, title: "Domy jednorodzinne", text: "Analiza rachunku, dachu i terminu inwestycji, zanim klient trafi do rozmowy ofertowej." },
-  { icon: Building2, title: "Firmy i obiekty usługowe", text: "Kwalifikacja lokalizacji, profilu zużycia oraz potencjału pod PV, magazyn energii lub pompę ciepła." },
-  { icon: BatteryCharging, title: "Klienci z większym zużyciem", text: "Wstępna rozmowa o magazynach energii, źródłach ciepła i szerszej modernizacji energetycznej." }
+  { icon: SunMedium, title: "Domy jednorodzinne", text: "Analiza rachunku, dachu, miejsca montażu i terminu inwestycji, zanim klient trafi do rozmowy ofertowej." },
+  { icon: Building2, title: "Firmy i obiekty usługowe", text: "Kwalifikacja dachu płaskiego lub skośnego, profilu zużycia oraz potencjału pod PV, magazyn energii lub pompę ciepła." },
+  { icon: BatteryCharging, title: "Większe inwestycje OZE", text: "Wstępna rozmowa o instalacjach gruntowych, źródłach ciepła i szerszej modernizacji energetycznej." }
 ];
 
 const solutionAreas = [
-  { icon: SunMedium, title: "Fotowoltaika", text: "Dobór kierunku rozmowy na podstawie rachunku, typu dachu, miejsca montażu i planowanego terminu decyzji." },
+  { icon: SunMedium, title: "Fotowoltaika", text: "Dobór kierunku rozmowy na podstawie rachunku, typu dachu, miejsca montażu, działki i planowanego terminu decyzji." },
   { icon: BatteryCharging, title: "Magazyny energii", text: "Wstępna kwalifikacja klientów z większym zużyciem, autokonsumpcją lub potrzebą zabezpieczenia pracy instalacji." },
   { icon: Zap, title: "Pompy ciepła i źródła ciepła", text: "Zebranie danych o budynku, obecnym źródle ciepła i oczekiwanym zakresie modernizacji." },
-  { icon: Building2, title: "Termomodernizacja", text: "Miejsce na szerszy zakres usług po potwierdzeniu materiałów i opisów produktowych Hydro NRG." },
+  { icon: Building2, title: "Termomodernizacja", text: "Miejsce na szerszy zakres usług po potwierdzeniu finalnych opisów produktowych i materiałów Hydro NRG." },
   { icon: WalletCards, title: "Finansowanie i programy wsparcia", text: "Możemy porozmawiać o dostępnych kierunkach finansowania, a szczegóły wymagają potwierdzenia przed ofertą." },
   { icon: FileCheck2, title: "Analiza pod ofertę", text: "Porządkujemy zgłoszenie tak, aby doradca szybciej wiedział, z jakim klientem i zakresem prac rozmawia." }
 ];
@@ -173,9 +210,9 @@ const partnerNextSteps = [
 ];
 
 const materialSlots = [
-  { icon: FileText, title: "Materiały Hydro NRG", text: "Logotypy, opisy usług, prezentacje produktowe i certyfikaty do legalnego użycia na stronie." },
-  { icon: Camera, title: "Realne zdjęcia", text: "Galerie instalacji, detale montażu, ekipy, magazyny energii i domy z panelami." },
-  { icon: Play, title: "Wideo i 3D", text: "Krótki film o współpracy, animacja procesu lub wycięty dom z panelami jako mocny element hero." }
+  { icon: Camera, title: "Zdjęcia realizacji", text: "Mamy bazę pod domy, obiekty firmowe, instalacje gruntowe i pompy ciepła. Finalnie warto dodać krótkie podpisy z lokalizacją i zakresem." },
+  { icon: FileText, title: "Materiały produktowe", text: "Do podmiany po stronie marketingu: opisy usług, certyfikaty, logotypy, karty katalogowe i potwierdzone nazwy rozwiązań." },
+  { icon: Play, title: "Wideo i ruch", text: "Najlepszy kolejny krok to krótki film z realizacji lub animacja procesu: zgłoszenie, analiza, oferta, montaż." }
 ];
 
 const faqItems = [
@@ -193,7 +230,7 @@ const faqItems = [
   },
   {
     question: "Czy na stronie są już finalne materiały Hydro NRG?",
-    answer: "Jeszcze nie. Po otrzymaniu materiałów dodamy zdjęcia realizacji, filmy, certyfikaty i potwierdzone opisy produktowe."
+    answer: "Mamy pierwszą bazę zdjęć realizacji. Certyfikaty, filmy, logotypy i opisy produktowe warto jeszcze potwierdzić z osobą odpowiedzialną za marketing."
   },
   {
     question: "Co warto przygotować przed rozmową?",
@@ -402,7 +439,7 @@ function App() {
 function HomePage({ onNavigate }) {
   return (
     <>
-      <section className="hero" id="start" style={heroImageStyle}>
+      <section className="hero" id="start" style={heroImages.home}>
         <div className="hero-media" aria-hidden="true" />
         <div className="hero-overlay" />
         <div className="hero-content">
@@ -448,6 +485,7 @@ function ClientsPage({ onNavigate }) {
         text="Zostaw podstawowe dane, a my uporządkujemy pierwszą kwalifikację pod fotowoltaikę, magazyn energii, pompę ciepła lub szerszą modernizację."
         primary={{ href: "#formularz", label: "Przejdź do formularza", icon: Mail }}
         secondary={{ href: "/#realizacje", label: "Zobacz miejsce na realizacje", icon: Camera }}
+        imageStyle={heroImages.clients}
         onNavigate={onNavigate}
       />
       <ProofStrip />
@@ -534,6 +572,7 @@ function PartnersPage({ onNavigate }) {
         text="SOLVA szuka handlowców, liderów regionalnych i osób z bazą kontaktów, które chcą pracować na zatwierdzonych ofertach, procesie i materiałach Hydro NRG."
         primary={{ href: "#formularz", label: "Wyślij zgłoszenie", icon: BadgeCheck }}
         secondary={{ href: "/klienci", label: "Zobacz ofertę dla klientów", icon: Calculator }}
+        imageStyle={heroImages.partners}
         onNavigate={onNavigate}
       />
       <PartnerTracksSection />
@@ -749,16 +788,16 @@ function MediaSection() {
     <section className="section media-section reveal-zone" id="realizacje">
       <div className="section-heading">
         <p className="eyebrow dark"><Camera size={18} /> Realizacje i wykonawstwo</p>
-        <h2>Tu pokażemy wykonawstwo, instalacje i case studies po otrzymaniu materiałów.</h2>
+        <h2>Realne zdjęcia realizacji od razu podnoszą wiarygodność strony.</h2>
+        <p>Wybrane kadry pokazują domy jednorodzinne, większe obiekty, instalacje gruntowe oraz zaplecze pomp ciepła.</p>
       </div>
       <div className="media-grid">
         {realizations.map((item, index) => {
-          const Icon = item.icon;
           return (
             <article className="media-card" key={item.title}>
-              <div className={`media-placeholder ${item.icon === Play ? "video-motion" : ""}`}>
-                <Icon size={34} />
-                <span>{String(index + 1).padStart(2, "0")}</span>
+              <div className="media-photo">
+                <img src={item.image} alt={item.title} loading={index === 0 ? "eager" : "lazy"} />
+                <span>{item.tag}</span>
               </div>
               <h3>{item.title}</h3>
               <p>{item.meta}</p>
@@ -775,7 +814,7 @@ function MaterialsSection() {
     <section className="section materials-section reveal-zone">
       <div className="section-heading">
         <p className="eyebrow dark"><FileText size={18} /> Materiały do uzupełnienia</p>
-        <h2>Nie udajemy dowodów. Prawdziwe materiały dodamy dopiero po ich otrzymaniu.</h2>
+        <h2>Mamy bazę zdjęć. Teraz warto dołożyć opisy, certyfikaty i krótkie filmy.</h2>
       </div>
       <div className="materials-grid">
         {materialSlots.map((item) => {
@@ -799,20 +838,20 @@ function AssetStageSection() {
       <div className="asset-stage">
         <div className="asset-stage-copy">
           <p className="eyebrow dark"><Layers3 size={18} /> Interaktywny motyw instalacji</p>
-          <h2>Zdjęcia realizacji można później zamienić w mocny element sprzedażowy.</h2>
+          <h2>Najmocniejsze zdjęcie może pracować jak wizytówka marki.</h2>
           <p>
-            Po otrzymaniu zdjęć można pokazać wycięty dom z panelami, miniaturową scenę 3D albo krótką animację instalacji.
+            W kolejnym kroku z tego typu zdjęć można przygotować wycięty dom z panelami, subtelny efekt 3D albo krótką animację pod kampanie leadowe.
           </p>
         </div>
-        <div className="floating-installation" aria-hidden="true">
-          <div className="roof-plane">
-            <span />
-            <span />
-            <span />
-            <span />
+        <div className="featured-installation" aria-label="Przykładowa realizacja fotowoltaiczna">
+          <img src={assetUrl("assets/realizations/hero-home.webp")} alt="Dom jednorodzinny z instalacją fotowoltaiczną" loading="lazy" />
+          <div className="feature-badge">
+            <SunMedium size={20} />
+            <div>
+              <strong>PV na domu</strong>
+              <span>kadr do hero, kampanii i sekcji realizacji</span>
+            </div>
           </div>
-          <div className="house-body" />
-          <div className="energy-line" />
         </div>
       </div>
     </section>
@@ -881,6 +920,7 @@ function PrivacyPage({ onNavigate }) {
         text="To robocza wersja informacji dla strony SOLVA. Przed finalną publikacją warto ją potwierdzić z osobą odpowiedzialną za dokumenty i RODO."
         primary={{ href: "/klienci#formularz", label: "Formularz klienta", icon: Calculator }}
         secondary={{ href: "/handlowcy#formularz", label: "Formularz handlowca", icon: BriefcaseBusiness }}
+        imageStyle={heroImages.privacy}
         onNavigate={onNavigate}
       />
       <section className="section privacy-section reveal-zone">
@@ -956,12 +996,12 @@ function FaqSection() {
   );
 }
 
-function PageHero({ eyebrow, icon: Icon, title, text, primary, secondary, onNavigate }) {
+function PageHero({ eyebrow, icon: Icon, title, text, primary, secondary, imageStyle, onNavigate }) {
   const PrimaryIcon = primary.icon;
   const SecondaryIcon = secondary.icon;
 
   return (
-    <section className="page-hero" style={heroImageStyle}>
+    <section className="page-hero" style={imageStyle || heroImages.home}>
       <div className="page-hero-content">
         <p className="eyebrow"><Icon size={18} /> {eyebrow}</p>
         <h1>{title}</h1>
