@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.codex-screenshots/
+.env
+.DS_Store
+npm-debug.log*
+PROMPT.md
+REBRANDING_PROMPT.md
+data/*.json
+!data/.gitkeep

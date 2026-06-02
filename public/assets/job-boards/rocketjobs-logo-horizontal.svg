@@ -1,0 +1,10 @@
+<svg width="1200" height="420" viewBox="0 0 1200 420" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">SOLVA - logo poziome</title>
+  <desc id="desc">Poziomy wariant logo SOLVA do profilu pracodawcy i materiałów rekrutacyjnych.</desc>
+  <rect width="1200" height="420" fill="#00314F"/>
+  <text x="88" y="208" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="152" font-weight="900" letter-spacing="0">S</text>
+  <text x="198" y="208" fill="#F29400" font-family="Inter, Arial, sans-serif" font-size="152" font-weight="900" letter-spacing="0">O</text>
+  <text x="326" y="208" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="152" font-weight="900" letter-spacing="0">LVA</text>
+  <path d="M92 252H760" stroke="#F29400" stroke-width="12" stroke-linecap="round"/>
+  <text x="90" y="334" fill="#DCE7EE" font-family="Inter, Arial, sans-serif" font-size="38" font-weight="800" letter-spacing="0">PARTNER HYDRO NRG</text>
+</svg>

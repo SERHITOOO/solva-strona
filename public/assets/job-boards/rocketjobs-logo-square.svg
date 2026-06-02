@@ -1,0 +1,10 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">SOLVA - logo RocketJobs.pl</title>
+  <desc id="desc">Kwadratowe logo SOLVA na granatowym tle do profilu pracodawcy RocketJobs.pl.</desc>
+  <rect width="512" height="512" fill="#00314F"/>
+  <text x="50" y="245" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="112" font-weight="900" letter-spacing="0">S</text>
+  <text x="130" y="245" fill="#F29400" font-family="Inter, Arial, sans-serif" font-size="112" font-weight="900" letter-spacing="0">O</text>
+  <text x="224" y="245" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="112" font-weight="900" letter-spacing="0">LVA</text>
+  <path d="M58 298H454" stroke="#F29400" stroke-width="10" stroke-linecap="round"/>
+  <text x="83" y="350" fill="#DCE7EE" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" letter-spacing="0">PARTNER HYDRO NRG</text>
+</svg>
