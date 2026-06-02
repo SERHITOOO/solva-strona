@@ -19,6 +19,7 @@ import {
   Layers3,
   Mail,
   MapPin,
+  Menu,
   Play,
   SearchCheck,
   ShieldCheck,
@@ -28,6 +29,7 @@ import {
   TrendingUp,
   Users,
   WalletCards,
+  X,
   Zap
 } from "lucide-react";
 import "./styles.css";
@@ -221,13 +223,6 @@ const smartEnergyCards = [
   { icon: ShieldCheck, title: "Wygoda bez ręcznego pilnowania", text: "Największa wartość jest w automatyce: mniej zerkania na ceny, mniej ręcznego przełączania i większy porządek w pracy falownika oraz magazynu." }
 ];
 
-const smartEnergyQuestions = [
-  "Czy Twój magazyn energii ładuje się wtedy, kiedy ma to największy sens?",
-  "Czy nadwyżka znika z domu za szybko, bo instalacja nie wie, co wydarzy się wieczorem?",
-  "Czy opłaca Ci się zwykła PV, czy dopiero PV z magazynem i inteligentnym sterowaniem?",
-  "Czy da się ograniczyć kupowanie energii wtedy, gdy własna produkcja może pracować lepiej?"
-];
-
 const cooperativeCards = [
   { icon: Users, title: "Wspólny bilans zamiast samotnej nadwyżki", text: "Spółdzielnia energetyczna pozwala rozliczać energię w ramach grupy członków, a nie patrzeć na każdą instalację wyłącznie osobno." },
   { icon: SunMedium, title: "Model spółdzielczy zamiast standardowego net-billingu", text: "Z materiałów wynika, że energia może być rozliczana korzystniej niż w klasycznym modelu. Szczegóły zależą od lokalizacji, operatora i warunków członkostwa." },
@@ -236,11 +231,11 @@ const cooperativeCards = [
 ];
 
 const cooperativeChecks = [
-  "czy miejscowość mieści się w dopuszczalnym obszarze działania",
-  "czy instalacja jest przyłączona do właściwego operatora sieci",
-  "czy profil zużycia pasuje do bilansowania w grupie",
-  "jakie opłaty członkowskie i stałe trzeba uwzględnić",
-  "czy klient chce tylko korzystać, czy też mieć wpływ na decyzje spółdzielni"
+  "miejscowość i operator sieci",
+  "obecne zużycie oraz rachunek za prąd",
+  "czy energia powstaje w domu, firmie lub gospodarstwie",
+  "czy instalacja już działa, czy dopiero jest planowana",
+  "czy weryfikacja ma dotyczyć domu, firmy czy grupy kilku obiektów"
 ];
 
 const clientProcess = [
@@ -284,32 +279,44 @@ const materialSlots = [
 
 const faqItems = [
   {
+    audience: ["all", "clients", "partners"],
     question: "Czy SOLVA jest osobną marką?",
     answer: `Tak. SOLVA to marka handlowa używana przez ${legalEntityName}, która komunikuje partnerski zespół sprzedażowy współpracujący z Hydro NRG.`
   },
   {
+    audience: ["all", "clients"],
     question: "Jakie rozwiązania można zgłosić przez formularz?",
     answer: "Fotowoltaikę, magazyny energii, SSO, spółdzielnię energetyczną, pompy ciepła, źródła ciepła oraz szerszą analizę OZE dla domu lub firmy."
   },
   {
+    audience: ["all", "clients"],
     question: "Czy SSO oznacza gwarantowany zarobek na prądzie?",
     answer: "Nie obiecujemy wyniku bez danych. SSO ma pomóc lepiej zarządzać energią, magazynem i momentem oddawania nadwyżek, ale sens rozwiązania trzeba sprawdzić na rachunku, instalacji i profilu zużycia."
   },
   {
+    audience: ["all", "clients"],
     question: "Czy każdy może wejść do spółdzielni energetycznej?",
     answer: "Nie. Najpierw trzeba sprawdzić lokalizację, operatora sieci, warunki członkostwa i profil zużycia. Dlatego na stronie prowadzimy do rozmowy, a nie do obietnicy bez weryfikacji."
   },
   {
+    audience: ["all", "partners"],
     question: "Czy handlowiec może mieć własny zespół?",
     answer: "Tak, formularz jest przygotowany także dla liderów i osób z własną bazą kontaktów. Szczegóły współpracy wymagają potwierdzenia przed startem."
   },
   {
+    audience: ["all", "clients", "partners"],
     question: "Czy na stronie są już finalne materiały Hydro NRG?",
     answer: "Mamy pierwszą bazę zdjęć realizacji. Certyfikaty, filmy, logotypy i opisy produktowe warto jeszcze potwierdzić z osobą odpowiedzialną za marketing."
   },
   {
-    question: "Co warto przygotować przed rozmową?",
-    answer: "Klient powinien mieć pod ręką rachunek za prąd i podstawowe informacje o budynku. Handlowiec powinien określić region, doświadczenie i źródła pozyskiwania klientów."
+    audience: ["all", "clients"],
+    question: "Co warto przygotować przed analizą?",
+    answer: "Najbardziej pomaga aktualny rachunek za prąd, miejscowość, informacja o budynku oraz to, czy instalacja już istnieje, czy dopiero jest planowana."
+  },
+  {
+    audience: ["all", "partners"],
+    question: "Co warto przygotować przed zgłoszeniem handlowca?",
+    answer: "Najlepiej określić region działania, doświadczenie sprzedażowe, dostępność, źródła klientów i informację, czy współpraca ma dotyczyć jednej osoby czy zespołu."
   }
 ];
 
@@ -564,7 +571,6 @@ function HomePage({ onNavigate }) {
       <MaterialsSection />
       <AssetStageSection />
       <HomeCtaSection onNavigate={onNavigate} />
-      <FaqSection />
     </>
   );
 }
@@ -573,10 +579,10 @@ function EnergyRoutesSection({ onNavigate }) {
   return (
     <section className="section energy-routes-section reveal-zone">
       <div className="section-heading">
-        <p className="eyebrow dark"><Zap size={18} /> Nowe kierunki rozmowy</p>
-        <h2>Nie każdy klient chce „kolejną fotowoltaikę”. Czasem chce wiedzieć, co dzieje się z jego prądem.</h2>
+        <p className="eyebrow dark"><Zap size={18} /> Dwa tematy do sprawdzenia</p>
+        <h2>Masz albo planujesz fotowoltaikę? Sprawdź, czy prąd może pracować rozsądniej.</h2>
         <p>
-          Dwie ścieżki są celowo nazwane prościej niż w dokumentach: najpierw budzą ciekawość, a dopiero potem prowadzą do rozmowy technicznej.
+          Nie pokazujemy tu kalkulatora bez danych. Najpierw wystarczy rachunek, lokalizacja i informacja, czy instalacja już działa.
         </p>
       </div>
       <div className="energy-route-grid">
@@ -618,12 +624,12 @@ function SmartEnergyPage({ onNavigate }) {
             <p className="eyebrow dark"><BatteryCharging size={18} /> SSO w praktyce</p>
             <h2>PV produkuje prąd. Pytanie brzmi: czy robi z nim najlepszą możliwą rzecz?</h2>
             <p>
-              SSO nie jest ładną aplikacją do podglądu wykresów. To warstwa decyzyjna dla domu z fotowoltaiką, falownikiem hybrydowym i magazynem energii.
-              Jej zadaniem jest ograniczyć przypadkowość: kiedy ładować, kiedy zużywać, kiedy zostawić energię na później, a kiedy oddać nadwyżkę.
+              Jeśli masz fotowoltaikę albo myślisz o magazynie energii, warto sprawdzić, czy dom nie oddaje prądu w złym momencie.
+              SSO pomaga uporządkować pracę instalacji: kiedy korzystać z własnej energii, kiedy ją zostawić na później i kiedy nadwyżka może mieć większy sens.
             </p>
             <OfferCallPanel
-              title="Najlepsza rozmowa zaczyna się od rachunku i pytania: kiedy dom zużywa najwięcej?"
-              text="W kilka minut sprawdzimy, czy warto w ogóle rozmawiać o SSO, magazynie energii albo zmianie sposobu pracy instalacji."
+              title="Wystarczy rachunek i kilka informacji o domu."
+              text="Nie obiecujemy zysku bez danych. Najpierw sprawdzamy, czy SSO albo magazyn energii w ogóle pasują do Twojej sytuacji."
               onNavigate={onNavigate}
             />
           </div>
@@ -642,8 +648,8 @@ function SmartEnergyPage({ onNavigate }) {
 
       <section className="section value-section reveal-zone">
         <div className="section-heading">
-          <p className="eyebrow dark"><Sparkles size={18} /> Co klient ma zrozumieć</p>
-          <h2>Nie chodzi o obietnicę zysku. Chodzi o kontrolę nad energią, która już jest na dachu.</h2>
+          <p className="eyebrow dark"><Sparkles size={18} /> Co można sprawdzić</p>
+          <h2>Mniej zgadywania, więcej kontroli nad energią z własnej instalacji.</h2>
         </div>
         <div className="offer-grid four">
           {smartEnergyCards.map((item) => {
@@ -659,33 +665,26 @@ function SmartEnergyPage({ onNavigate }) {
         </div>
       </section>
 
-      <QuestionStrip
-        eyebrow="Pytania, które sprzedają rozmowę"
-        title="Jeśli klient odpowie „nie wiem” na dwa z nich, warto zadzwonić."
-        items={smartEnergyQuestions}
-      />
-
       <section className="section split-cta-section reveal-zone">
         <div className="split-cta-grid">
           <article className="split-cta-card dark">
             <Zap size={28} />
-            <h3>Nie zaczynaj od telefonu. Zacznij od danych.</h3>
-            <p>Rachunek, profil zużycia i informacja o magazynie pokażą, czy temat SSO ma sens przed pierwszą rozmową.</p>
+            <h3>Nie musisz znać technicznych szczegółów.</h3>
+            <p>Rachunek, obecne zużycie i informacja o instalacji wystarczą, żeby wstępnie ocenić kierunek.</p>
             <SiteLink className="button secondary" href="/klienci#formularz" onNavigate={onNavigate}>
               <FileText size={18} /> Zostaw dane do analizy
             </SiteLink>
           </article>
           <article className="split-cta-card">
             <FileCheck2 size={28} />
-            <h3>Do analizy przydadzą się trzy rzeczy.</h3>
-            <p>Rachunek za prąd, informacja o profilu zużycia i decyzja, czy klient myśli o magazynie energii teraz, czy później.</p>
+            <h3>Najpierw krótka weryfikacja.</h3>
+            <p>Po zgłoszeniu sprawdzamy, czy rozmawiamy o samej PV, magazynie, SSO czy szerszym uporządkowaniu energii w domu.</p>
             <SiteLink className="button primary" href="/klienci#formularz" onNavigate={onNavigate}>
               Zostaw dane do sprawdzenia <ArrowRight size={18} />
             </SiteLink>
           </article>
         </div>
       </section>
-      <FaqSection />
     </>
   );
 }
@@ -718,14 +717,14 @@ function EnergyCooperativePage({ onNavigate }) {
           </div>
           <div className="section-copy">
             <p className="eyebrow dark"><Handshake size={18} /> Lokalny obieg energii</p>
-            <h2>Klient nie musi od razu znać ustawy o OZE. Ma poczuć, że warto sprawdzić, czy jego prąd może krążyć mądrzej.</h2>
+            <h2>Nie musisz znać ustawy o OZE. Wystarczy sprawdzić, czy Twój adres pasuje do takiego modelu.</h2>
             <p>
               Spółdzielnia energetyczna to dobrowolne zrzeszenie osób lub firm, które wspólnie produkują, zużywają i rozliczają energię.
-              To nie jest produkt dla każdego adresu, dlatego najlepszym CTA jest krótka weryfikacja lokalizacji i operatora.
+              To nie jest rozwiązanie dla każdego adresu, dlatego pierwszym krokiem jest krótka weryfikacja lokalizacji i operatora.
             </p>
             <OfferCallPanel
-              title="Najpierw sprawdzamy gminę, operatora i profil zużycia. Dopiero potem rozmawiamy o opłacalności."
-              text="Taka rozmowa jest uczciwsza i lepiej działa sprzedażowo niż obietnica oszczędności bez danych."
+              title="Najpierw sprawdzamy gminę, operatora i profil zużycia."
+              text="Dopiero po tej weryfikacji ma sens rozmowa o opłacalności, formalnościach i kolejnych krokach."
               onNavigate={onNavigate}
             />
           </div>
@@ -734,8 +733,8 @@ function EnergyCooperativePage({ onNavigate }) {
 
       <section className="section value-section reveal-zone">
         <div className="section-heading">
-          <p className="eyebrow dark"><ShieldCheck size={18} /> Co warto powiedzieć klientowi</p>
-          <h2>Spółdzielnia brzmi formalnie. Na stronie ma brzmieć jak prosty test: czy mój prąd może wracać do mnie korzystniej?</h2>
+          <p className="eyebrow dark"><ShieldCheck size={18} /> Prościej niż brzmi</p>
+          <h2>To nie jest deklaracja przystąpienia. To pierwszy test, czy warto w ogóle o tym rozmawiać.</h2>
         </div>
         <div className="offer-grid four">
           {cooperativeCards.map((item) => {
@@ -755,9 +754,9 @@ function EnergyCooperativePage({ onNavigate }) {
         <div className="section-grid">
           <div className="section-copy">
             <p className="eyebrow dark"><SearchCheck size={18} /> Weryfikacja przed rozmową ofertową</p>
-            <h2>Tu nie sprzedaje się „spółdzielni”. Tu sprzedaje się sprawdzenie, czy klient nie zostawia pieniędzy w złym modelu rozliczeń.</h2>
+            <h2>Zostawiasz podstawowe dane, a my sprawdzamy, czy temat ma sens.</h2>
             <p>
-              Z materiału wynika, że członkostwo nie musi oznaczać aktywnego zarządzania spółdzielnią. Klient może chcieć korzyści rozliczeniowych bez angażowania się organizacyjnie.
+              Nie musisz od razu analizować przepisów, statutów i całej organizacji. Na początku wystarczy ustalić, czy lokalizacja, operator i profil zużycia pasują do dalszej rozmowy.
             </p>
           </div>
           <div className="checklist-panel">
@@ -776,7 +775,7 @@ function EnergyCooperativePage({ onNavigate }) {
           <article className="split-cta-card">
             <MapPin size={28} />
             <h3>Nie każda lokalizacja przejdzie.</h3>
-            <p>Dlatego formularz powinien zebrać miejscowość i rachunek, a rozmowa ma sprawdzić sens dalszych kroków.</p>
+            <p>Dlatego formularz zbiera miejscowość i podstawowe dane, zamiast obiecywać wynik bez sprawdzenia adresu.</p>
             <SiteLink className="button primary" href="/klienci#formularz" onNavigate={onNavigate}>
               Sprawdź mój adres <ArrowRight size={18} />
             </SiteLink>
@@ -784,14 +783,13 @@ function EnergyCooperativePage({ onNavigate }) {
           <article className="split-cta-card dark">
             <MapPin size={28} />
             <h3>Najprościej: zostaw miejscowość i podstawowe dane.</h3>
-            <p>Po lokalizacji zwykle szybciej wiadomo, czy rozmawiamy o realnym kierunku, czy szkoda czasu klienta.</p>
+            <p>Po lokalizacji zwykle szybciej wiadomo, czy rozmawiamy o realnym kierunku, czy lepiej wybrać inne rozwiązanie OZE.</p>
             <SiteLink className="button secondary" href="/klienci#formularz" onNavigate={onNavigate}>
               <FileText size={18} /> Zgłoś lokalizację
             </SiteLink>
           </article>
         </div>
       </section>
-      <FaqSection />
     </>
   );
 }
@@ -806,25 +804,6 @@ function OfferCallPanel({ title, text, onNavigate }) {
         <SiteLink href="/klienci#formularz" onNavigate={onNavigate}>Przejdź do krótkiego formularza</SiteLink>
       </div>
     </div>
-  );
-}
-
-function QuestionStrip({ eyebrow, title, items }) {
-  return (
-    <section className="section question-section reveal-zone">
-      <div className="section-heading">
-        <p className="eyebrow dark"><HelpCircle size={18} /> {eyebrow}</p>
-        <h2>{title}</h2>
-      </div>
-      <div className="question-grid">
-        {items.map((item) => (
-          <article className="question-card" key={item}>
-            <HelpCircle size={22} />
-            <p>{item}</p>
-          </article>
-        ))}
-      </div>
-    </section>
   );
 }
 
@@ -913,7 +892,7 @@ function ClientsPage({ onNavigate }) {
         items={clientNextSteps}
       />
       <ClientAudienceSection />
-      <FaqSection />
+      <FaqSection audience="clients" />
     </>
   );
 }
@@ -1025,7 +1004,7 @@ function PartnersPage({ onNavigate }) {
         title="Proces dla handlowca jest prosty i nie miesza obietnic z formalnościami."
         items={partnerNextSteps}
       />
-      <FaqSection />
+      <FaqSection audience="partners" />
     </>
   );
 }
@@ -1404,15 +1383,24 @@ function MobileActionBar({ currentPath, onNavigate }) {
   );
 }
 
-function FaqSection() {
+function FaqSection({ audience = "all" } = {}) {
+  const visibleItems = audience === "all"
+    ? faqItems
+    : faqItems.filter((item) => item.audience.includes(audience));
+  const titleByAudience = {
+    all: "Najważniejsze pytania zanim zostawisz kontakt.",
+    clients: "Najważniejsze pytania przed zostawieniem zgłoszenia.",
+    partners: "Najważniejsze pytania przed zgłoszeniem współpracy."
+  };
+
   return (
     <section className="section faq-section reveal-zone" id="faq">
       <div className="section-heading">
         <p className="eyebrow dark"><HelpCircle size={18} /> FAQ</p>
-        <h2>Najważniejsze pytania zanim klient lub handlowiec zostawi kontakt.</h2>
+        <h2>{titleByAudience[audience]}</h2>
       </div>
       <div className="faq-list">
-        {faqItems.map((item) => (
+        {visibleItems.map((item) => (
           <details className="faq-item" key={item.question}>
             <summary>{item.question}</summary>
             <p>{item.answer}</p>
@@ -1491,35 +1479,68 @@ function useRevealMotion(dependency) {
 }
 
 function Header({ currentPath, onNavigate }) {
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navItems = [
     { href: "/", label: "Start", path: "/" },
     { href: "/klienci", label: "Klienci", path: "/klienci" },
     { href: "/prad-ktory-pracuje", label: "Prąd pracuje", path: "/prad-ktory-pracuje" },
     { href: "/energia-w-obiegu", label: "Energia w obiegu", path: "/energia-w-obiegu" },
-    { href: "/handlowcy", label: "Handlowcy", path: "/handlowcy" }
+    { href: "/handlowcy", label: "Handlowcy", path: "/handlowcy" },
+    { href: "/prywatnosc", label: "Prywatność", path: "/prywatnosc", mobileOnly: true }
   ];
   const contactHref = currentPath === "/handlowcy" ? "/handlowcy#formularz" : "/klienci#formularz";
 
+  function handleNavigate(href) {
+    setMobileMenuOpen(false);
+    onNavigate(href);
+  }
+
   return (
     <header className="site-header">
-      <SiteLink className="brand" href="/" onNavigate={onNavigate} aria-label="SOLVA">
+      <SiteLink className="brand" href="/" onNavigate={handleNavigate} aria-label="SOLVA">
         <img src={logoUrl} alt="SOLVA" />
       </SiteLink>
       <nav aria-label="Nawigacja główna">
-        {navItems.map((item) => (
+        {navItems.filter((item) => !item.mobileOnly).map((item) => (
           <SiteLink
             className={currentPath === item.path && !item.href.includes("#") ? "active" : undefined}
             href={item.href}
             key={item.label}
-            onNavigate={onNavigate}
+            onNavigate={handleNavigate}
           >
             {item.label}
           </SiteLink>
         ))}
       </nav>
-      <SiteLink className="header-cta" href={contactHref} onNavigate={onNavigate}>
+      <SiteLink className="header-cta" href={contactHref} onNavigate={handleNavigate}>
         <Mail size={17} /> Formularz
       </SiteLink>
+      <button
+        className="mobile-menu-toggle"
+        type="button"
+        aria-label={isMobileMenuOpen ? "Zamknij menu" : "Otwórz menu"}
+        aria-controls="mobile-nav"
+        aria-expanded={isMobileMenuOpen}
+        onClick={() => setMobileMenuOpen((isOpen) => !isOpen)}
+      >
+        {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+      </button>
+      <div className={`mobile-menu-panel${isMobileMenuOpen ? " open" : ""}`} id="mobile-nav">
+        <span>Wybierz temat</span>
+        {navItems.map((item) => (
+          <SiteLink
+            className={currentPath === item.path && !item.href.includes("#") ? "active" : undefined}
+            href={item.href}
+            key={item.label}
+            onNavigate={handleNavigate}
+          >
+            {item.label}
+          </SiteLink>
+        ))}
+        <SiteLink className="mobile-menu-cta" href={contactHref} onNavigate={handleNavigate}>
+          <Mail size={17} /> Przejdź do formularza
+        </SiteLink>
+      </div>
     </header>
   );
 }
