@@ -16,12 +16,23 @@ npm run dev
 
 Frontend działa przez Vite, a API Express zapisuje zgłoszenia lokalnie w katalogu `data/`.
 
+## Publiczny podgląd
+
+GitHub Pages publikuje statyczny frontend. W takim trybie formularz użyje `VITE_FORM_ENDPOINT`, jeśli zmienna zostanie ustawiona podczas buildu. Bez tej zmiennej formularz otworzy gotową wiadomość e-mail do wysłania na adres kontaktowy.
+
+Docelowo warto podpiąć jeden z wariantów:
+
+- osobny deploy backendu Express,
+- webhook / formularz zewnętrzny,
+- Google Sheets lub CRM przez endpoint pośredni.
+
 ## Endpointy
 
 - `POST /api/leads` - zapis formularza wyceny fotowoltaiki.
 - `POST /api/partners` - zapis formularza rekrutacyjnego handlowca.
 - `GET /api/submissions?token=...` - podgląd zgłoszeń po ustawieniu `ADMIN_TOKEN`.
 - Formularze zapisują też podstawowe dane trackingowe: `page`, `referrer` i parametry `utm_*`.
+- Dla publicznego hostingu statycznego można ustawić `VITE_FORM_ENDPOINT` jako adres przyjmujący zgłoszenia.
 
 ## Materiały do podmiany
 
