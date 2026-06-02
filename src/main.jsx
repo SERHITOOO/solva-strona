@@ -394,7 +394,7 @@ function App() {
         {path === "/" ? <HomePage onNavigate={navigate} /> : null}
       </main>
       <Footer onNavigate={navigate} />
-      <MobileActionBar onNavigate={navigate} />
+      <MobileActionBar currentPath={path} onNavigate={navigate} />
     </>
   );
 }
@@ -906,21 +906,33 @@ function PrivacyPage({ onNavigate }) {
   );
 }
 
-function MobileActionBar({ onNavigate }) {
+function MobileActionBar({ currentPath, onNavigate }) {
+  const primary = currentPath === "/handlowcy"
+    ? { href: "/handlowcy#formularz", label: "Dołącz", icon: BriefcaseBusiness }
+    : { href: "/klienci#formularz", label: "Wycena", icon: Calculator };
+  const secondary = currentPath === "/"
+    ? { href: "/handlowcy#formularz", label: "Dołącz", icon: BriefcaseBusiness }
+    : { href: `tel:${contactPhone}`, label: "Zadzwoń", icon: Phone, external: true };
+  const PrimaryIcon = primary.icon;
+  const SecondaryIcon = secondary.icon;
+
   return (
     <div className="mobile-action-bar" aria-label="Szybkie akcje mobilne">
-      <SiteLink href="/klienci#formularz" onNavigate={onNavigate}>
-        <Calculator size={18} />
-        <span>Wycena</span>
+      <SiteLink href={primary.href} onNavigate={onNavigate}>
+        <PrimaryIcon size={18} />
+        <span>{primary.label}</span>
       </SiteLink>
-      <SiteLink href="/handlowcy#formularz" onNavigate={onNavigate}>
-        <BriefcaseBusiness size={18} />
-        <span>Dołącz</span>
-      </SiteLink>
-      <a href={`tel:${contactPhone}`}>
-        <Phone size={18} />
-        <span>Zadzwoń</span>
-      </a>
+      {secondary.external ? (
+        <a href={secondary.href}>
+          <SecondaryIcon size={18} />
+          <span>{secondary.label}</span>
+        </a>
+      ) : (
+        <SiteLink href={secondary.href} onNavigate={onNavigate}>
+          <SecondaryIcon size={18} />
+          <span>{secondary.label}</span>
+        </SiteLink>
+      )}
     </div>
   );
 }

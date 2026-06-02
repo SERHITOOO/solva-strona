@@ -1378,7 +1378,7 @@ textarea:focus {
 
 @media (max-width: 680px) {
   body {
-    padding-bottom: 78px;
+    padding-bottom: 72px;
   }
 
   .site-header {
@@ -1398,12 +1398,12 @@ textarea:focus {
 
   h1,
   .page-hero h1 {
-    font-size: 2.85rem;
+    font-size: 2.55rem;
     line-height: 1;
   }
 
   h2 {
-    font-size: 2rem;
+    font-size: 1.72rem;
     line-height: 1.08;
   }
 
@@ -1412,15 +1412,15 @@ textarea:focus {
   }
 
   .section {
-    padding: 54px 14px;
+    padding: 44px 14px;
   }
 
   .hero {
-    min-height: 72svh;
+    min-height: 66svh;
   }
 
   .page-hero {
-    min-height: 64svh;
+    min-height: 58svh;
   }
 
   .hero-overlay {
@@ -1433,14 +1433,14 @@ textarea:focus {
     width: calc(100% - 28px);
     margin: 0 auto;
     padding-top: 104px;
-    padding-bottom: 76px;
+    padding-bottom: 58px;
   }
 
   .page-hero-content {
     width: calc(100% - 28px);
     margin: 0 auto;
     padding-top: 104px;
-    padding-bottom: 58px;
+    padding-bottom: 46px;
   }
 
   .hero-copy,
@@ -1466,6 +1466,10 @@ textarea:focus {
     width: 100%;
   }
 
+  .hero-actions .button.secondary {
+    display: none;
+  }
+
   .lead-strip {
     margin-top: -18px;
     width: calc(100% - 28px);
@@ -1479,6 +1483,23 @@ textarea:focus {
   .proof-item strong {
     min-width: 78px;
     font-size: 1.8rem;
+  }
+
+  .materials-section,
+  .asset-stage-section,
+  .split-cta-section,
+  .quote-panel,
+  .partner-timeline {
+    display: none;
+  }
+
+  .media-card:nth-of-type(n+2),
+  .insight-card:nth-of-type(n+3),
+  .offer-card:nth-of-type(n+4),
+  .track-card:nth-of-type(n+3),
+  .next-card:nth-of-type(n+3),
+  .signal-grid:not(.compact) .signal-item:nth-of-type(n+3) {
+    display: none;
   }
 
   .field-row,
@@ -1568,7 +1589,7 @@ textarea:focus {
     bottom: 10px;
     z-index: 35;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 8px;
     padding: 8px;
     border: 1px solid rgba(215, 228, 235, 0.96);
@@ -1579,9 +1600,10 @@ textarea:focus {
   }
 
   .mobile-action-bar a {
-    display: grid;
-    place-items: center;
-    gap: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
     min-height: 48px;
     border-radius: 7px;
     color: var(--leaf-dark);
@@ -1593,6 +1615,19 @@ textarea:focus {
   .mobile-action-bar a:first-child {
     color: #111;
     background: var(--solar);
+  }
+
+  .hero-media,
+  .media-placeholder::before,
+  .roof-plane,
+  .energy-line,
+  .play-orb {
+    animation: none;
+  }
+
+  .reveal-zone {
+    transform: translateY(12px);
+    transition-duration: 360ms;
   }
 }
 
