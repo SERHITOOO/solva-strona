@@ -20,6 +20,14 @@ Frontend działa przez Vite, a API Express zapisuje zgłoszenia lokalnie w katal
 
 GitHub Pages publikuje statyczny frontend. W takim trybie formularz użyje `VITE_FORM_ENDPOINT`, jeśli zmienna zostanie ustawiona podczas buildu. Bez tej zmiennej formularz otworzy gotową wiadomość e-mail do wysłania na adres kontaktowy.
 
+Na domenie publicznej bez hostowanego backendu formularze działają w trybie przejściowym:
+
+- lokalnie używają `/api/leads` i `/api/partners`,
+- produkcyjnie użyją `VITE_FORM_ENDPOINT`, jeśli zostanie ustawiony,
+- bez endpointu otworzą gotowego maila z danymi zgłoszenia.
+
+To pozwala wystartować bez stałego kosztu backendu, a później podpiąć Supabase, Make, CRM albo własne API bez przebudowy strony.
+
 Docelowo warto podpiąć jeden z wariantów:
 
 - osobny deploy backendu Express,
@@ -33,6 +41,23 @@ Docelowo warto podpiąć jeden z wariantów:
 - `GET /api/submissions?token=...` - podgląd zgłoszeń po ustawieniu `ADMIN_TOKEN`.
 - Formularze zapisują też podstawowe dane trackingowe: `page`, `referrer` i parametry `utm_*`.
 - Dla publicznego hostingu statycznego można ustawić `VITE_FORM_ENDPOINT` jako adres przyjmujący zgłoszenia.
+- Po wdrożeniu osobnego backendu można ustawić `VITE_API_BASE`, np. `https://api.solvaoze.pl`.
+
+## Tani start bez CRM
+
+Rekomendowany wariant na pierwszy miesiąc:
+
+- GitHub Pages + domena `solvaoze.pl` - frontend bez kosztu miesięcznego.
+- Formularze w trybie mailowym albo przez darmowy endpoint formularzowy - bez serwera.
+- Statusy i pola są już przygotowane pod CRM: `status`, `zrodlo`, `marka`, `podmiot`, tracking UTM.
+- Gdy CRM będzie gotowy, najprostsza migracja to przekierowanie formularzy na `VITE_API_BASE` albo `VITE_FORM_ENDPOINT`.
+
+Kolejny etap po walidacji leadów:
+
+- Supabase Free jako baza zgłoszeń klientów i handlowców.
+- Cloudflare Turnstile do antyspamu.
+- Resend do powiadomień mailowych.
+- Docelowo własny CRM i API pod `api.solvaoze.pl`.
 
 ## Materiały do podmiany
 

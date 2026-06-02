@@ -77,7 +77,9 @@ function normalizeSubmission(raw, type) {
   const base = {
     id: crypto.randomUUID(),
     type,
+    status: "new",
     createdAt: new Date().toISOString(),
+    consentAt: new Date().toISOString(),
     source: "website",
     tracking: normalizeTracking(raw.tracking)
   };

@@ -46,6 +46,8 @@ const contactEmail = "m.pokora@hydro-energy.pl";
 const contactPhone = "+48796054985";
 const contactPhoneDisplay = "+48 796 054 985";
 const staticFormEndpoint = import.meta.env.VITE_FORM_ENDPOINT || "";
+const apiBaseUrl = (import.meta.env.VITE_API_BASE || "").replace(/\/$/, "");
+const legalEntityName = "JTJ FUND sp. z o.o.";
 
 function assetUrl(path) {
   return `${import.meta.env.BASE_URL}${path}`;
@@ -230,7 +232,7 @@ const materialSlots = [
 const faqItems = [
   {
     question: "Czy SOLVA jest osobną marką?",
-    answer: "Tak. SOLVA to samodzielna marka partnerskiego zespołu sprzedażowego, która komunikuje współpracę z Hydro NRG jako zaplecze partnerskie."
+    answer: `Tak. SOLVA to marka handlowa używana przez ${legalEntityName}, która komunikuje partnerski zespół sprzedażowy współpracujący z Hydro NRG.`
   },
   {
     question: "Jakie rozwiązania można zgłosić przez formularz?",
@@ -321,8 +323,20 @@ function updateSeo(path) {
   canonical.setAttribute("href", new URL(toPublicPath(path), window.location.origin).href);
 }
 
-function isPublicPreview() {
-  return typeof window !== "undefined" && window.location.hostname.endsWith("github.io");
+function isLocalHost() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  return ["localhost", "127.0.0.1", "0.0.0.0"].includes(window.location.hostname);
+}
+
+function shouldUseApiEndpoint() {
+  return Boolean(apiBaseUrl) || isLocalHost();
+}
+
+function getApiUrl(endpoint) {
+  return apiBaseUrl ? `${apiBaseUrl}${endpoint}` : endpoint;
 }
 
 function formatFieldValue(value) {
@@ -341,6 +355,10 @@ function buildSubmissionPayload(kind, form) {
 
   const payload = {
     typ: labels[kind],
+    status: "nowe",
+    zrodlo: "strona SOLVA",
+    marka: "SOLVA",
+    podmiot: legalEntityName,
     ...form,
     consent: form.consent ? "tak" : "nie",
     tracking: getTrackingData()
@@ -987,8 +1005,8 @@ function PrivacyPage({ onNavigate }) {
           </article>
           <article className="privacy-panel">
             <FileText size={28} />
-            <h3>Do potwierdzenia</h3>
-            <p>Finalna polityka prywatności powinna zostać uzupełniona o administratora danych, okres przechowywania, podstawę prawną i ewentualnych dostawców narzędzi formularzowych.</p>
+            <h3>Marka i podmiot</h3>
+            <p>SOLVA jest marką handlową używaną przez {legalEntityName}. Finalna polityka prywatności powinna zostać uzupełniona o pełne dane rejestrowe, podstawę prawną i ewentualnych dostawców narzędzi formularzowych.</p>
           </article>
         </div>
       </section>
@@ -1159,21 +1177,21 @@ function useSubmit(endpoint, defaults) {
     setStatus({ type: "loading", message: "Przygotowuję zgłoszenie..." });
 
     try {
-      if (isPublicPreview()) {
-        if (staticFormEndpoint) {
-          await submitToStaticEndpoint(kind, form);
-          setForm(defaults);
-          setStatus({ type: "success", message: kind === "lead" ? "Zgłoszenie wysłane. Przygotuj rachunek za prąd, żeby rozmowa była konkretna." : "Zgłoszenie wysłane. Przygotuj region, doświadczenie i źródła klientów do rozmowy." });
-          return;
-        }
+      if (staticFormEndpoint) {
+        await submitToStaticEndpoint(kind, form);
+        setForm(defaults);
+        setStatus({ type: "success", message: kind === "lead" ? "Zgłoszenie wysłane. Przygotuj rachunek za prąd, żeby rozmowa była konkretna." : "Zgłoszenie wysłane. Przygotuj region, doświadczenie i źródła klientów do rozmowy." });
+        return;
+      }
 
+      if (!shouldUseApiEndpoint()) {
         window.location.href = buildMailtoHref(kind, form);
         setForm(defaults);
         setStatus({ type: "success", message: "Otworzyliśmy gotową wiadomość e-mail. Wyślij ją, aby zgłoszenie trafiło do SOLVA." });
         return;
       }
 
-      const response = await fetch(endpoint, {
+      const response = await fetch(getApiUrl(endpoint), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...form, tracking: getTrackingData() })
@@ -1181,7 +1199,7 @@ function useSubmit(endpoint, defaults) {
       const payload = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        throw new Error(window.location.hostname.endsWith("github.io") ? previewMessage : payload.error || "Nie udało się wysłać formularza.");
+        throw new Error(payload.error || "Nie udało się wysłać formularza.");
       }
 
       setForm(defaults);
@@ -1384,7 +1402,7 @@ function Footer({ onNavigate }) {
     <footer className="site-footer">
       <div>
         <img src={logoUrl} alt="SOLVA" />
-        <p>SOLVA - partnerski zespół sprzedażowy współpracujący z Hydro NRG.</p>
+        <p>SOLVA - marka handlowa {legalEntityName}, partnerski zespół sprzedażowy współpracujący z Hydro NRG.</p>
       </div>
       <div className="footer-links">
         <a href={`tel:${contactPhone}`}><Phone size={17} /> {contactPhoneDisplay}</a>
