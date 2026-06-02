@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   ArrowRight,
@@ -19,7 +19,6 @@ import {
   Layers3,
   Mail,
   MapPin,
-  Phone,
   Play,
   SearchCheck,
   ShieldCheck,
@@ -33,21 +32,29 @@ import {
 } from "lucide-react";
 import "./styles.css";
 
-const routes = ["/", "/klienci", "/handlowcy", "/prywatnosc"];
+const routes = ["/", "/klienci", "/handlowcy", "/prad-ktory-pracuje", "/energia-w-obiegu", "/prywatnosc"];
 const appBasePath = import.meta.env.BASE_URL === "/" ? "" : import.meta.env.BASE_URL.replace(/\/$/, "");
 const heroImages = {
   home: { "--hero-image": `url("${assetUrl("assets/realizations/hero-home.webp")}")` },
   clients: { "--hero-image": `url("${assetUrl("assets/realizations/home-aerial.webp")}")` },
   partners: { "--hero-image": `url("${assetUrl("assets/realizations/commercial-roof.webp")}")` },
+  smartEnergy: { "--hero-image": `url("${assetUrl("assets/realizations/technical-room.webp")}")` },
+  cooperative: { "--hero-image": `url("${assetUrl("assets/realizations/ground-mount.webp")}")` },
   privacy: { "--hero-image": `url("${assetUrl("assets/realizations/home-roof.webp")}")` }
 };
 const logoUrl = `${assetUrl("assets/solva-logo.svg")}?v=1`;
-const contactEmail = "m.pokora@hydro-energy.pl";
-const contactPhone = "+48796054985";
-const contactPhoneDisplay = "+48 796 054 985";
+const contactEmail = "kontakt@solvaoze.pl";
+const privacyEmail = contactEmail;
 const staticFormEndpoint = import.meta.env.VITE_FORM_ENDPOINT || "";
 const apiBaseUrl = (import.meta.env.VITE_API_BASE || "").replace(/\/$/, "");
 const legalEntityName = "JTJ FUND sp. z o.o.";
+const legalEntity = {
+  fullName: "JTJ FUND SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
+  address: "ul. Komorska 55, 04-149 Warszawa",
+  krs: "0000602719",
+  nip: "5272760087",
+  regon: "363751630"
+};
 
 function assetUrl(path) {
   return `${import.meta.env.BASE_URL}${path}`;
@@ -178,8 +185,8 @@ const clientSegments = [
 const solutionAreas = [
   { icon: SunMedium, title: "Fotowoltaika", text: "Dobór kierunku rozmowy na podstawie rachunku, typu dachu, miejsca montażu, działki i planowanego terminu decyzji." },
   { icon: BatteryCharging, title: "Magazyny energii", text: "Wstępna kwalifikacja klientów z większym zużyciem, autokonsumpcją lub potrzebą zabezpieczenia pracy instalacji." },
-  { icon: Zap, title: "Pompy ciepła i źródła ciepła", text: "Zebranie danych o budynku, obecnym źródle ciepła i oczekiwanym zakresie modernizacji." },
-  { icon: Building2, title: "Termomodernizacja", text: "Miejsce na szerszy zakres usług po potwierdzeniu finalnych opisów produktowych i materiałów Hydro NRG." },
+  { icon: Sparkles, title: "SSO", text: "Inteligentne zarządzanie energią: pogoda, taryfy, magazyn i moment, w którym energia może pracować korzystniej." },
+  { icon: Users, title: "Spółdzielnia energetyczna", text: "Wstępne sprawdzenie, czy lokalizacja i operator pozwalają rozmawiać o wspólnym bilansowaniu energii." },
   { icon: WalletCards, title: "Finansowanie i programy wsparcia", text: "Możemy porozmawiać o dostępnych kierunkach finansowania, a szczegóły wymagają potwierdzenia przed ofertą." },
   { icon: FileCheck2, title: "Analiza pod ofertę", text: "Porządkujemy zgłoszenie tak, aby doradca szybciej wiedział, z jakim klientem i zakresem prac rozmawia." }
 ];
@@ -188,6 +195,52 @@ const trustSignals = [
   { icon: SearchCheck, title: "Najpierw potrzeby", text: "Nie zaczynamy od oferty. Zbieramy rachunek, miejsce inwestycji, termin i oczekiwany zakres." },
   { icon: ShieldCheck, title: "Bez pustych obietnic", text: "Komunikacja opiera się na zatwierdzonych materiałach, procedurach i informacjach technicznych." },
   { icon: FileCheck2, title: "Dowody do uzupełnienia", text: "Po otrzymaniu materiałów dodamy realizacje, certyfikaty, logotypy i opisy potwierdzone przez Hydro NRG." }
+];
+
+const energyRoutes = [
+  {
+    icon: Sparkles,
+    title: "Prąd, który pracuje",
+    label: "zarabiaj na prądzie / SSO",
+    text: "Dla osób, które mają lub planują PV z magazynem i chcą sprawdzić, czy energia może być używana, ładowana albo sprzedawana w lepszym momencie.",
+    href: "/prad-ktory-pracuje"
+  },
+  {
+    icon: Users,
+    title: "Energia w obiegu",
+    label: "dziel się prądem / spółdzielnia energetyczna",
+    text: "Dla klientów, którzy nie chcą oddawać nadwyżek w ciemno i wolą sprawdzić, czy lokalne bilansowanie energii może obniżyć rachunki.",
+    href: "/energia-w-obiegu"
+  }
+];
+
+const smartEnergyCards = [
+  { icon: Sparkles, title: "AI pilnuje energii 24/7", text: "SSO analizuje pogodę, taryfy, ceny prądu i zwyczaje domowników, żeby podpowiedzieć lepszy moment ładowania, zużycia lub oddania energii." },
+  { icon: BatteryCharging, title: "Magazyn nie stoi bez pomysłu", text: "System może sterować ładowaniem i rozładowaniem magazynu w czasie rzeczywistym, zamiast zostawiać decyzję przypadkowi." },
+  { icon: TrendingUp, title: "Nadwyżka ma mieć moment", text: "Materiał Hydro wskazuje sprzedaż nadwyżek wtedy, gdy ceny są korzystniejsze. Każdy wynik wymaga jednak analizy instalacji i profilu zużycia." },
+  { icon: ShieldCheck, title: "Wygoda bez ręcznego pilnowania", text: "Największa wartość jest w automatyce: mniej zerkania na ceny, mniej ręcznego przełączania i większy porządek w pracy falownika oraz magazynu." }
+];
+
+const smartEnergyQuestions = [
+  "Czy Twój magazyn energii ładuje się wtedy, kiedy ma to największy sens?",
+  "Czy nadwyżka znika z domu za szybko, bo instalacja nie wie, co wydarzy się wieczorem?",
+  "Czy opłaca Ci się zwykła PV, czy dopiero PV z magazynem i inteligentnym sterowaniem?",
+  "Czy da się ograniczyć kupowanie energii wtedy, gdy własna produkcja może pracować lepiej?"
+];
+
+const cooperativeCards = [
+  { icon: Users, title: "Wspólny bilans zamiast samotnej nadwyżki", text: "Spółdzielnia energetyczna pozwala rozliczać energię w ramach grupy członków, a nie patrzeć na każdą instalację wyłącznie osobno." },
+  { icon: SunMedium, title: "Model spółdzielczy zamiast standardowego net-billingu", text: "Z materiałów wynika, że energia może być rozliczana korzystniej niż w klasycznym modelu. Szczegóły zależą od lokalizacji, operatora i warunków członkostwa." },
+  { icon: MapPin, title: "Nie wszędzie i nie dla każdego", text: "Spółdzielnię można zakładać na terenie gmin wiejskich lub miejsko-wiejskich. Przed rozmową warto sprawdzić gminę i operatora sieci." },
+  { icon: FileCheck2, title: "Legalny model, konkretne formalności", text: "Spółdzielnie energetyczne działają na podstawie ustawy o OZE i są wpisywane do rejestru KOWR. Umowę i koszty trzeba potwierdzić przed decyzją." }
+];
+
+const cooperativeChecks = [
+  "czy miejscowość mieści się w dopuszczalnym obszarze działania",
+  "czy instalacja jest przyłączona do właściwego operatora sieci",
+  "czy profil zużycia pasuje do bilansowania w grupie",
+  "jakie opłaty członkowskie i stałe trzeba uwzględnić",
+  "czy klient chce tylko korzystać, czy też mieć wpływ na decyzje spółdzielni"
 ];
 
 const clientProcess = [
@@ -213,13 +266,13 @@ const partnerTracks = [
 
 const clientNextSteps = [
   { icon: Mail, title: "1. Zostawiasz kontakt", text: "W formularzu podajesz lokalizację, rachunek, zakres i termin decyzji." },
-  { icon: Phone, title: "2. Krótka rozmowa", text: "Oddzwaniamy, doprecyzowujemy potrzeby i prosimy o dane potrzebne do analizy." },
+  { icon: SearchCheck, title: "2. Weryfikacja zgłoszenia", text: "Doprecyzowujemy potrzeby i prosimy o dane potrzebne do analizy, jeśli zgłoszenie wymaga uzupełnienia." },
   { icon: FileCheck2, title: "3. Porządek przed ofertą", text: "Zgłoszenie trafia dalej z jasnym zakresem: PV, magazyn, pompa ciepła lub modernizacja." }
 ];
 
 const partnerNextSteps = [
   { icon: Mail, title: "1. Wysyłasz zgłoszenie", text: "Podajesz region, doświadczenie, dostępność i źródła klientów." },
-  { icon: Phone, title: "2. Rozmowa o modelu", text: "Ustalamy, czy rozmawiamy o współpracy indywidualnej, liderze czy zespole." },
+  { icon: SearchCheck, title: "2. Wstępna kwalifikacja", text: "Ustalamy, czy rozmawiamy o współpracy indywidualnej, liderze czy zespole." },
   { icon: ClipboardCheck, title: "3. Autoryzacja i start", text: "Szczegóły dokumentów, rozliczeń i materiałów potwierdzamy przed rozpoczęciem współpracy." }
 ];
 
@@ -236,7 +289,15 @@ const faqItems = [
   },
   {
     question: "Jakie rozwiązania można zgłosić przez formularz?",
-    answer: "Fotowoltaikę, magazyny energii, pompy ciepła, źródła ciepła, termomodernizację oraz szerszą analizę OZE dla domu lub firmy."
+    answer: "Fotowoltaikę, magazyny energii, SSO, spółdzielnię energetyczną, pompy ciepła, źródła ciepła oraz szerszą analizę OZE dla domu lub firmy."
+  },
+  {
+    question: "Czy SSO oznacza gwarantowany zarobek na prądzie?",
+    answer: "Nie obiecujemy wyniku bez danych. SSO ma pomóc lepiej zarządzać energią, magazynem i momentem oddawania nadwyżek, ale sens rozwiązania trzeba sprawdzić na rachunku, instalacji i profilu zużycia."
+  },
+  {
+    question: "Czy każdy może wejść do spółdzielni energetycznej?",
+    answer: "Nie. Najpierw trzeba sprawdzić lokalizację, operatora sieci, warunki członkostwa i profil zużycia. Dlatego na stronie prowadzimy do rozmowy, a nie do obietnicy bez weryfikacji."
   },
   {
     question: "Czy handlowiec może mieć własny zespół?",
@@ -265,15 +326,19 @@ const seoByPath = {
     title: "SOLVA | Współpraca dla handlowców OZE",
     description: "Dołącz do zespołu sprzedażowego SOLVA jako handlowiec OZE, lider regionu albo partner z własną bazą kontaktów."
   },
+  "/prad-ktory-pracuje": {
+    title: "SOLVA | Prąd, który pracuje",
+    description: "SSO, inteligentne zarządzanie energią, magazyn energii i automatyka, która pomaga lepiej wykorzystać produkcję z fotowoltaiki."
+  },
+  "/energia-w-obiegu": {
+    title: "SOLVA | Energia w obiegu",
+    description: "Spółdzielnia energetyczna, wspólne bilansowanie energii i sprawdzenie, czy lokalny obieg prądu może obniżyć rachunki."
+  },
   "/prywatnosc": {
     title: "SOLVA | Prywatność i zgody",
     description: "Informacje o kontakcie, danych z formularzy i zasadach publikacji materiałów na stronie SOLVA."
   }
 };
-
-function formatCurrency(value) {
-  return new Intl.NumberFormat("pl-PL", { style: "currency", currency: "PLN", maximumFractionDigits: 0 }).format(value);
-}
 
 function getTrackingData() {
   if (typeof window === "undefined") {
@@ -457,6 +522,8 @@ function App() {
       <main>
         {path === "/klienci" ? <ClientsPage onNavigate={navigate} /> : null}
         {path === "/handlowcy" ? <PartnersPage onNavigate={navigate} /> : null}
+        {path === "/prad-ktory-pracuje" ? <SmartEnergyPage onNavigate={navigate} /> : null}
+        {path === "/energia-w-obiegu" ? <EnergyCooperativePage onNavigate={navigate} /> : null}
         {path === "/prywatnosc" ? <PrivacyPage onNavigate={navigate} /> : null}
         {path === "/" ? <HomePage onNavigate={navigate} /> : null}
       </main>
@@ -492,6 +559,7 @@ function HomePage({ onNavigate }) {
 
       <ProofStrip />
       <CompanySection />
+      <EnergyRoutesSection onNavigate={onNavigate} />
       <MediaSection />
       <MaterialsSection />
       <AssetStageSection />
@@ -501,11 +569,266 @@ function HomePage({ onNavigate }) {
   );
 }
 
-function ClientsPage({ onNavigate }) {
-  const [monthlyBill, setMonthlyBill] = useState(360);
-  const yearlyCost = monthlyBill * 12;
-  const estimate = useMemo(() => Math.round(yearlyCost * 0.58), [yearlyCost]);
+function EnergyRoutesSection({ onNavigate }) {
+  return (
+    <section className="section energy-routes-section reveal-zone">
+      <div className="section-heading">
+        <p className="eyebrow dark"><Zap size={18} /> Nowe kierunki rozmowy</p>
+        <h2>Nie każdy klient chce „kolejną fotowoltaikę”. Czasem chce wiedzieć, co dzieje się z jego prądem.</h2>
+        <p>
+          Dwie ścieżki są celowo nazwane prościej niż w dokumentach: najpierw budzą ciekawość, a dopiero potem prowadzą do rozmowy technicznej.
+        </p>
+      </div>
+      <div className="energy-route-grid">
+        {energyRoutes.map((item) => {
+          const Icon = item.icon;
+          return (
+            <article className="energy-route-card" key={item.title}>
+              <Icon size={28} />
+              <span>{item.label}</span>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+              <SiteLink className="text-link" href={item.href} onNavigate={onNavigate}>
+                Sprawdź tę ścieżkę <ArrowRight size={17} />
+              </SiteLink>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
 
+function SmartEnergyPage({ onNavigate }) {
+  return (
+    <>
+      <PageHero
+        eyebrow="SSO"
+        icon={Sparkles}
+        title="Prąd, który pracuje, kiedy Ty o nim nie myślisz."
+        text="Inteligentne zarządzanie energią dla instalacji PV z magazynem: system analizuje pogodę, ceny, zużycie i moment, w którym energia może mieć największy sens."
+        primary={{ href: "/klienci#formularz", label: "Sprawdź swój dom", icon: Calculator }}
+        secondary={{ href: "/energia-w-obiegu", label: "Zobacz drugi model", icon: Users }}
+        imageStyle={heroImages.smartEnergy}
+        onNavigate={onNavigate}
+      />
+      <section className="section offer-story-section reveal-zone">
+        <div className="section-grid">
+          <div className="section-copy">
+            <p className="eyebrow dark"><BatteryCharging size={18} /> SSO w praktyce</p>
+            <h2>PV produkuje prąd. Pytanie brzmi: czy robi z nim najlepszą możliwą rzecz?</h2>
+            <p>
+              SSO nie jest ładną aplikacją do podglądu wykresów. To warstwa decyzyjna dla domu z fotowoltaiką, falownikiem hybrydowym i magazynem energii.
+              Jej zadaniem jest ograniczyć przypadkowość: kiedy ładować, kiedy zużywać, kiedy zostawić energię na później, a kiedy oddać nadwyżkę.
+            </p>
+            <OfferCallPanel
+              title="Najlepsza rozmowa zaczyna się od rachunku i pytania: kiedy dom zużywa najwięcej?"
+              text="W kilka minut sprawdzimy, czy warto w ogóle rozmawiać o SSO, magazynie energii albo zmianie sposobu pracy instalacji."
+              onNavigate={onNavigate}
+            />
+          </div>
+          <div className="energy-visual-panel">
+            <div className="energy-orbit">
+              <span>PV</span>
+              <span>AI</span>
+              <span>Magazyn</span>
+              <span>Ceny</span>
+            </div>
+            <strong>System szuka momentu, nie tylko produkcji.</strong>
+            <p>Materiał Hydro wskazuje automatyczną analizę pogody, taryf, zużycia i cen prądu w czasie rzeczywistym.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section value-section reveal-zone">
+        <div className="section-heading">
+          <p className="eyebrow dark"><Sparkles size={18} /> Co klient ma zrozumieć</p>
+          <h2>Nie chodzi o obietnicę zysku. Chodzi o kontrolę nad energią, która już jest na dachu.</h2>
+        </div>
+        <div className="offer-grid four">
+          {smartEnergyCards.map((item) => {
+            const Icon = item.icon;
+            return (
+              <article className="offer-card accent-card" key={item.title}>
+                <Icon size={25} />
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <QuestionStrip
+        eyebrow="Pytania, które sprzedają rozmowę"
+        title="Jeśli klient odpowie „nie wiem” na dwa z nich, warto zadzwonić."
+        items={smartEnergyQuestions}
+      />
+
+      <section className="section split-cta-section reveal-zone">
+        <div className="split-cta-grid">
+          <article className="split-cta-card dark">
+            <Zap size={28} />
+            <h3>Nie zaczynaj od telefonu. Zacznij od danych.</h3>
+            <p>Rachunek, profil zużycia i informacja o magazynie pokażą, czy temat SSO ma sens przed pierwszą rozmową.</p>
+            <SiteLink className="button secondary" href="/klienci#formularz" onNavigate={onNavigate}>
+              <FileText size={18} /> Zostaw dane do analizy
+            </SiteLink>
+          </article>
+          <article className="split-cta-card">
+            <FileCheck2 size={28} />
+            <h3>Do analizy przydadzą się trzy rzeczy.</h3>
+            <p>Rachunek za prąd, informacja o profilu zużycia i decyzja, czy klient myśli o magazynie energii teraz, czy później.</p>
+            <SiteLink className="button primary" href="/klienci#formularz" onNavigate={onNavigate}>
+              Zostaw dane do sprawdzenia <ArrowRight size={18} />
+            </SiteLink>
+          </article>
+        </div>
+      </section>
+      <FaqSection />
+    </>
+  );
+}
+
+function EnergyCooperativePage({ onNavigate }) {
+  return (
+    <>
+      <PageHero
+        eyebrow="Spółdzielnia energetyczna"
+        icon={Users}
+        title="Energia w obiegu. Zamiast oddawać nadwyżki w ciemno."
+        text="Model dla klientów, którzy chcą sprawdzić, czy ich prąd może być rozliczany we wspólnym bilansie i pracować w lokalnej grupie, a nie tylko w pojedynczym domu."
+        primary={{ href: "/klienci#formularz", label: "Sprawdź lokalizację", icon: MapPin }}
+        secondary={{ href: "/prad-ktory-pracuje", label: "Zobacz SSO", icon: Sparkles }}
+        imageStyle={heroImages.cooperative}
+        onNavigate={onNavigate}
+      />
+
+      <section className="section offer-story-section reveal-zone">
+        <div className="section-grid reverse">
+          <div className="energy-visual-panel cooperative">
+            <div className="community-map">
+              <span>Dom</span>
+              <span>Firma</span>
+              <span>Gospodarstwo</span>
+              <span>Bilans</span>
+            </div>
+            <strong>Prąd zaczyna mieć kontekst: miejsce, grupę i zasady.</strong>
+            <p>Według materiału Hydro rozliczenie odbywa się w modelu spółdzielczym, a nadwyżki mogą trafiać do wspólnego bilansu.</p>
+          </div>
+          <div className="section-copy">
+            <p className="eyebrow dark"><Handshake size={18} /> Lokalny obieg energii</p>
+            <h2>Klient nie musi od razu znać ustawy o OZE. Ma poczuć, że warto sprawdzić, czy jego prąd może krążyć mądrzej.</h2>
+            <p>
+              Spółdzielnia energetyczna to dobrowolne zrzeszenie osób lub firm, które wspólnie produkują, zużywają i rozliczają energię.
+              To nie jest produkt dla każdego adresu, dlatego najlepszym CTA jest krótka weryfikacja lokalizacji i operatora.
+            </p>
+            <OfferCallPanel
+              title="Najpierw sprawdzamy gminę, operatora i profil zużycia. Dopiero potem rozmawiamy o opłacalności."
+              text="Taka rozmowa jest uczciwsza i lepiej działa sprzedażowo niż obietnica oszczędności bez danych."
+              onNavigate={onNavigate}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="section value-section reveal-zone">
+        <div className="section-heading">
+          <p className="eyebrow dark"><ShieldCheck size={18} /> Co warto powiedzieć klientowi</p>
+          <h2>Spółdzielnia brzmi formalnie. Na stronie ma brzmieć jak prosty test: czy mój prąd może wracać do mnie korzystniej?</h2>
+        </div>
+        <div className="offer-grid four">
+          {cooperativeCards.map((item) => {
+            const Icon = item.icon;
+            return (
+              <article className="offer-card accent-card" key={item.title}>
+                <Icon size={25} />
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="section checklist-section reveal-zone">
+        <div className="section-grid">
+          <div className="section-copy">
+            <p className="eyebrow dark"><SearchCheck size={18} /> Weryfikacja przed rozmową ofertową</p>
+            <h2>Tu nie sprzedaje się „spółdzielni”. Tu sprzedaje się sprawdzenie, czy klient nie zostawia pieniędzy w złym modelu rozliczeń.</h2>
+            <p>
+              Z materiału wynika, że członkostwo nie musi oznaczać aktywnego zarządzania spółdzielnią. Klient może chcieć korzyści rozliczeniowych bez angażowania się organizacyjnie.
+            </p>
+          </div>
+          <div className="checklist-panel">
+            {cooperativeChecks.map((item, index) => (
+              <div className="checklist-row" key={item}>
+                <span>{index + 1}</span>
+                <strong>{item}</strong>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section split-cta-section reveal-zone">
+        <div className="split-cta-grid">
+          <article className="split-cta-card">
+            <MapPin size={28} />
+            <h3>Nie każda lokalizacja przejdzie.</h3>
+            <p>Dlatego formularz powinien zebrać miejscowość i rachunek, a rozmowa ma sprawdzić sens dalszych kroków.</p>
+            <SiteLink className="button primary" href="/klienci#formularz" onNavigate={onNavigate}>
+              Sprawdź mój adres <ArrowRight size={18} />
+            </SiteLink>
+          </article>
+          <article className="split-cta-card dark">
+            <MapPin size={28} />
+            <h3>Najprościej: zostaw miejscowość i podstawowe dane.</h3>
+            <p>Po lokalizacji zwykle szybciej wiadomo, czy rozmawiamy o realnym kierunku, czy szkoda czasu klienta.</p>
+            <SiteLink className="button secondary" href="/klienci#formularz" onNavigate={onNavigate}>
+              <FileText size={18} /> Zgłoś lokalizację
+            </SiteLink>
+          </article>
+        </div>
+      </section>
+      <FaqSection />
+    </>
+  );
+}
+
+function OfferCallPanel({ title, text, onNavigate }) {
+  return (
+    <div className="call-panel">
+      <FileCheck2 size={22} />
+      <div>
+        <strong>{title}</strong>
+        <span>{text}</span>
+        <SiteLink href="/klienci#formularz" onNavigate={onNavigate}>Przejdź do krótkiego formularza</SiteLink>
+      </div>
+    </div>
+  );
+}
+
+function QuestionStrip({ eyebrow, title, items }) {
+  return (
+    <section className="section question-section reveal-zone">
+      <div className="section-heading">
+        <p className="eyebrow dark"><HelpCircle size={18} /> {eyebrow}</p>
+        <h2>{title}</h2>
+      </div>
+      <div className="question-grid">
+        {items.map((item) => (
+          <article className="question-card" key={item}>
+            <HelpCircle size={22} />
+            <p>{item}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ClientsPage({ onNavigate }) {
   return (
     <>
       <PageHero
@@ -550,26 +873,22 @@ function ClientsPage({ onNavigate }) {
             <p className="eyebrow dark"><Zap size={18} /> Kwalifikacja inwestycji OZE</p>
             <h2>Rachunek za prąd zamień w uporządkowane zgłoszenie.</h2>
             <p>
-              Formularz zbiera dane potrzebne do pierwszego kontaktu, a prosty estymator pomaga zobaczyć skalę decyzji jeszcze przed rozmową.
+              Formularz zbiera dane potrzebne do pierwszego kontaktu: lokalizację, rachunek, zakres i temat, który warto sprawdzić przed ofertą.
             </p>
-            <div className="calculator-box" aria-label="Estymator oszczędności">
-              <div className="range-head">
-                <span>Miesięczny rachunek</span>
-                <strong>{formatCurrency(monthlyBill)}</strong>
+            <div className="signal-grid compact">
+              <div className="signal-item">
+                <FileCheck2 size={23} />
+                <div>
+                  <strong>Najpierw dane, potem oferta</strong>
+                  <span>Rachunek, lokalizacja i typ obiektu powiedzą więcej niż przypadkowa kwota bez kontekstu.</span>
+                </div>
               </div>
-              <input
-                aria-label="Miesięczny rachunek za prąd"
-                type="range"
-                min="150"
-                max="1200"
-                step="10"
-                value={monthlyBill}
-                onChange={(event) => setMonthlyBill(Number(event.target.value))}
-              />
-              <div className="estimate-result">
-                <BatteryCharging size={22} />
-                <span>Orientacyjny potencjał roczny</span>
-                <strong>{formatCurrency(estimate)}</strong>
+              <div className="signal-item">
+                <SearchCheck size={23} />
+                <div>
+                  <strong>Krótka rozmowa filtruje sens inwestycji</strong>
+                  <span>Sprawdzamy, czy rozmawiać o PV, magazynie, SSO, pompie ciepła albo spółdzielni energetycznej.</span>
+                </div>
               </div>
             </div>
           </div>
@@ -961,8 +1280,8 @@ function HomeCtaSection({ onNavigate }) {
           <Calculator size={28} />
           <h3>Dla klientów</h3>
           <p>Analiza rachunku, zakresu inwestycji, miejsca montażu i terminu decyzji.</p>
-          <SiteLink className="button primary" href="/klienci" onNavigate={onNavigate}>
-            Przejdź do klientów <ArrowRight size={18} />
+          <SiteLink className="button primary" href="/klienci#formularz" onNavigate={onNavigate}>
+            Przejdź do formularza <ArrowRight size={18} />
           </SiteLink>
         </article>
         <article className="split-cta-card dark">
@@ -984,30 +1303,75 @@ function PrivacyPage({ onNavigate }) {
       <PageHero
         eyebrow="Prywatność"
         icon={ShieldCheck}
-        title="Zgody i dane z formularzy mają być proste, czytelne i bezpieczne."
-        text="To robocza wersja informacji dla strony SOLVA. Przed finalną publikacją warto ją potwierdzić z osobą odpowiedzialną za dokumenty i RODO."
+        title="Prywatność, RODO i dane spółki."
+        text="Zbieramy tylko dane potrzebne do kontaktu, przygotowania rozmowy o OZE albo obsługi zgłoszenia handlowca. Bez publikowania danych osobowych na stronie."
         primary={{ href: "/klienci#formularz", label: "Formularz klienta", icon: Calculator }}
         secondary={{ href: "/handlowcy#formularz", label: "Formularz handlowca", icon: BriefcaseBusiness }}
         imageStyle={heroImages.privacy}
+        compact
         onNavigate={onNavigate}
       />
       <section className="section privacy-section reveal-zone">
         <div className="privacy-grid">
           <article className="privacy-panel">
             <ShieldCheck size={28} />
-            <h3>Co zbieramy</h3>
-            <p>Formularze zbierają dane kontaktowe oraz informacje potrzebne do pierwszej rozmowy: lokalizację, typ inwestycji, rachunek, doświadczenie handlowca lub region działania.</p>
+            <h3>Administrator danych</h3>
+            <p>Administratorem danych jest {legalEntity.fullName}, {legalEntity.address}, KRS {legalEntity.krs}, NIP {legalEntity.nip}, REGON {legalEntity.regon}. SOLVA jest marką handlową używaną przez spółkę.</p>
           </article>
           <article className="privacy-panel">
-            <Phone size={28} />
-            <h3>Po co</h3>
-            <p>Dane służą do kontaktu w sprawie zapytania, kwalifikacji inwestycji OZE albo rozmowy o współpracy handlowej. Nie publikujemy danych osobowych na stronie.</p>
+            <Mail size={28} />
+            <h3>Kontakt w sprawach danych</h3>
+            <p>W sprawach prywatności i danych osobowych można skontaktować się mailowo: <a href={`mailto:${privacyEmail}`}>{privacyEmail}</a>. Ten adres obsługuje także prośby o dostęp, poprawienie lub usunięcie danych.</p>
           </article>
           <article className="privacy-panel">
             <FileText size={28} />
-            <h3>Marka i podmiot</h3>
-            <p>SOLVA jest marką handlową używaną przez {legalEntityName}. Finalna polityka prywatności powinna zostać uzupełniona o pełne dane rejestrowe, podstawę prawną i ewentualnych dostawców narzędzi formularzowych.</p>
+            <h3>Co zbieramy</h3>
+            <p>Formularze mogą zbierać imię i nazwisko, telefon, e-mail, miejscowość, zakres zainteresowania, rachunek miesięczny, typ obiektu, wiadomość, region pracy handlowca oraz podstawowe dane techniczne zgłoszenia.</p>
           </article>
+        </div>
+
+        <div className="privacy-legal">
+          <article>
+            <h2>Informacja RODO</h2>
+            <p>
+              Dane z formularzy są przetwarzane po to, żeby odpowiedzieć na zapytanie, oddzwonić, przygotować wstępną kwalifikację inwestycji OZE, obsłużyć zgłoszenie handlowca albo zabezpieczyć ewentualne roszczenia.
+              Podanie danych jest dobrowolne, ale bez numeru telefonu lub danych kontaktowych nie będziemy mogli obsłużyć zgłoszenia.
+            </p>
+          </article>
+
+          <div className="privacy-table">
+            <div>
+              <strong>Podstawy prawne</strong>
+              <span>art. 6 ust. 1 lit. b RODO - działania przed zawarciem umowy; art. 6 ust. 1 lit. f RODO - prawnie uzasadniony interes kontaktu i obsługi zgłoszeń; art. 6 ust. 1 lit. a RODO - zgoda, jeśli pojawi się marketing lub newsletter; art. 6 ust. 1 lit. c RODO - obowiązki prawne, jeśli będą miały zastosowanie.</span>
+            </div>
+            <div>
+              <strong>Odbiorcy danych</strong>
+              <span>Dane mogą trafić do dostawców hostingu, poczty, formularzy, CRM, narzędzi analitycznych, obsługi IT oraz partnerów potrzebnych do obsługi zapytania, w tym Hydro NRG, jeśli wymaga tego przygotowanie odpowiedzi lub oferty.</span>
+            </div>
+            <div>
+              <strong>Czas przechowywania</strong>
+              <span>Zgłoszenia bez dalszej współpracy warto przechowywać maksymalnie do 12 miesięcy, dane związane z umową lub roszczeniami zgodnie z przepisami i terminami przedawnienia, a dane marketingowe do wycofania zgody. Okresy warto potwierdzić przed startem kampanii.</span>
+            </div>
+            <div>
+              <strong>Prawa użytkownika</strong>
+              <span>Masz prawo dostępu do danych, sprostowania, usunięcia, ograniczenia przetwarzania, przeniesienia danych, sprzeciwu, cofnięcia zgody oraz skargi do Prezesa UODO.</span>
+            </div>
+            <div>
+              <strong>Cookies i analityka</strong>
+              <span>Strona może używać technicznych plików cookies potrzebnych do działania. Analitykę, piksele reklamowe lub remarketing należy uruchamiać dopiero z odpowiednią informacją i zgodą, jeśli będzie wymagana.</span>
+            </div>
+            <div>
+              <strong>SSO i spółdzielnia energetyczna</strong>
+              <span>Treści o SSO, magazynach energii i spółdzielni energetycznej mają charakter informacyjny i sprzedażowy. Nie są poradą prawną, podatkową ani gwarancją oszczędności. Szczegóły wymagają analizy danych klienta i potwierdzenia warunków.</span>
+            </div>
+          </div>
+
+          <div className="privacy-note">
+            <FileCheck2 size={22} />
+            <p>
+              Przed intensywną kampanią reklamową warto zatwierdzić finalną politykę prywatności z osobą od RODO, szczególnie po wdrożeniu CRM, Google Analytics, Meta Pixel, automatyzacji mailowych lub zewnętrznych formularzy.
+            </p>
+          </div>
         </div>
       </section>
     </>
@@ -1020,7 +1384,9 @@ function MobileActionBar({ currentPath, onNavigate }) {
     : { href: "/klienci#formularz", label: "Wycena", icon: Calculator };
   const secondary = currentPath === "/"
     ? { href: "/handlowcy#formularz", label: "Dołącz", icon: BriefcaseBusiness }
-    : { href: `tel:${contactPhone}`, label: "Zadzwoń", icon: Phone, external: true };
+    : currentPath === "/handlowcy"
+      ? { href: "/klienci#formularz", label: "Klienci", icon: Calculator }
+      : { href: "/handlowcy#formularz", label: "Handlowcy", icon: BriefcaseBusiness };
   const PrimaryIcon = primary.icon;
   const SecondaryIcon = secondary.icon;
 
@@ -1030,17 +1396,10 @@ function MobileActionBar({ currentPath, onNavigate }) {
         <PrimaryIcon size={18} />
         <span>{primary.label}</span>
       </SiteLink>
-      {secondary.external ? (
-        <a href={secondary.href}>
-          <SecondaryIcon size={18} />
-          <span>{secondary.label}</span>
-        </a>
-      ) : (
-        <SiteLink href={secondary.href} onNavigate={onNavigate}>
-          <SecondaryIcon size={18} />
-          <span>{secondary.label}</span>
-        </SiteLink>
-      )}
+      <SiteLink href={secondary.href} onNavigate={onNavigate}>
+        <SecondaryIcon size={18} />
+        <span>{secondary.label}</span>
+      </SiteLink>
     </div>
   );
 }
@@ -1064,12 +1423,12 @@ function FaqSection() {
   );
 }
 
-function PageHero({ eyebrow, icon: Icon, title, text, primary, secondary, imageStyle, onNavigate }) {
+function PageHero({ eyebrow, icon: Icon, title, text, primary, secondary, imageStyle, compact = false, onNavigate }) {
   const PrimaryIcon = primary.icon;
   const SecondaryIcon = secondary.icon;
 
   return (
-    <section className="page-hero" style={imageStyle || heroImages.home}>
+    <section className={`page-hero${compact ? " compact-page-hero" : ""}`} style={imageStyle || heroImages.home}>
       <div className="page-hero-content">
         <p className="eyebrow"><Icon size={18} /> {eyebrow}</p>
         <h1>{title}</h1>
@@ -1133,10 +1492,11 @@ function useRevealMotion(dependency) {
 
 function Header({ currentPath, onNavigate }) {
   const navItems = [
-    { href: "/", label: "Główna", path: "/" },
-    { href: "/klienci", label: "Dla klientów", path: "/klienci" },
-    { href: "/handlowcy", label: "Dla handlowców", path: "/handlowcy" },
-    { href: "/#realizacje", label: "Realizacje", path: "/" }
+    { href: "/", label: "Start", path: "/" },
+    { href: "/klienci", label: "Klienci", path: "/klienci" },
+    { href: "/prad-ktory-pracuje", label: "Prąd pracuje", path: "/prad-ktory-pracuje" },
+    { href: "/energia-w-obiegu", label: "Energia w obiegu", path: "/energia-w-obiegu" },
+    { href: "/handlowcy", label: "Handlowcy", path: "/handlowcy" }
   ];
   const contactHref = currentPath === "/handlowcy" ? "/handlowcy#formularz" : "/klienci#formularz";
 
@@ -1158,7 +1518,7 @@ function Header({ currentPath, onNavigate }) {
         ))}
       </nav>
       <SiteLink className="header-cta" href={contactHref} onNavigate={onNavigate}>
-        <Phone size={17} /> Kontakt
+        <Mail size={17} /> Formularz
       </SiteLink>
     </header>
   );
@@ -1203,7 +1563,7 @@ function useSubmit(endpoint, defaults) {
       }
 
       setForm(defaults);
-      setStatus({ type: "success", message: kind === "lead" ? "Zgłoszenie zapisane. Przygotuj ostatni rachunek za prąd do krótkiej rozmowy." : "Zgłoszenie zapisane. Skontaktujemy się w sprawie dalszych kroków i autoryzacji." });
+      setStatus({ type: "success", message: kind === "lead" ? "Zgłoszenie zapisane. Przygotuj ostatni rachunek za prąd do dalszej weryfikacji." : "Zgłoszenie zapisane. Po wstępnej weryfikacji odeślemy kontakt do opiekuna i dalsze kroki autoryzacji." });
     } catch (error) {
       setStatus({ type: "error", message: error.message });
     }
@@ -1254,6 +1614,8 @@ function LeadForm() {
           <select value={form.solution} onChange={(event) => updateField("solution", event.target.value)}>
             <option>Fotowoltaika z analizą rachunku</option>
             <option>PV z magazynem energii</option>
+            <option>SSO - inteligentne zarządzanie energią</option>
+            <option>Spółdzielnia energetyczna</option>
             <option>Pompa ciepła lub źródło ciepła</option>
             <option>Kompleksowa modernizacja OZE</option>
           </select>
@@ -1400,17 +1762,31 @@ function FormStatus({ status }) {
 function Footer({ onNavigate }) {
   return (
     <footer className="site-footer">
-      <div>
+      <div className="footer-brand-panel">
         <img src={logoUrl} alt="SOLVA" />
         <p>SOLVA - marka handlowa {legalEntityName}, partnerski zespół sprzedażowy współpracujący z Hydro NRG.</p>
+        <span>KRS {legalEntity.krs} · NIP {legalEntity.nip} · REGON {legalEntity.regon}</span>
       </div>
-      <div className="footer-links">
-        <a href={`tel:${contactPhone}`}><Phone size={17} /> {contactPhoneDisplay}</a>
-        <a href={`mailto:${contactEmail}`}><Mail size={17} /> {contactEmail}</a>
-        <SiteLink href="/" onNavigate={onNavigate}><MapPin size={17} /> Strona główna</SiteLink>
-        <SiteLink href="/klienci#formularz" onNavigate={onNavigate}><Calculator size={17} /> Dla klientów</SiteLink>
-        <SiteLink href="/handlowcy#formularz" onNavigate={onNavigate}><BriefcaseBusiness size={17} /> Dla handlowców</SiteLink>
-        <SiteLink href="/prywatnosc" onNavigate={onNavigate}><ShieldCheck size={17} /> Prywatność</SiteLink>
+
+      <div className="footer-contact-card">
+        <strong>Kontakt przez formularz</strong>
+        <a href={`mailto:${contactEmail}`}><Mail size={18} /> {contactEmail}</a>
+        <span>Telefon nie jest jeszcze publikowany. Zgłoszenia klientów i handlowców obsługujemy przez formularze.</span>
+      </div>
+
+      <div className="footer-nav">
+        <div>
+          <strong>Oferta</strong>
+          <SiteLink href="/klienci#formularz" onNavigate={onNavigate}>Bezpłatna wycena</SiteLink>
+          <SiteLink href="/prad-ktory-pracuje" onNavigate={onNavigate}>Prąd, który pracuje</SiteLink>
+          <SiteLink href="/energia-w-obiegu" onNavigate={onNavigate}>Energia w obiegu</SiteLink>
+        </div>
+        <div>
+          <strong>Firma</strong>
+          <SiteLink href="/" onNavigate={onNavigate}>Strona główna</SiteLink>
+          <SiteLink href="/handlowcy#formularz" onNavigate={onNavigate}>Dla handlowców</SiteLink>
+          <SiteLink href="/prywatnosc" onNavigate={onNavigate}>Prywatność i RODO</SiteLink>
+        </div>
       </div>
     </footer>
   );
