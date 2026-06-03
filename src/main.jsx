@@ -118,7 +118,7 @@ const partnerDefaults = {
 const realizations = [
   {
     title: "Dom jednorodzinny z PV",
-    meta: "Gotowa instalacja na dachu skośnym. Dobry materiał na stronę główną i komunikację dla klientów indywidualnych.",
+    meta: "Instalacja na dachu skośnym dla klienta indywidualnego. Dobry przykład rozwiązania dopasowanego do domu jednorodzinnego.",
     image: assetUrl("assets/realizations/residential-front.webp"),
     tag: "Klienci indywidualni"
   },
@@ -130,7 +130,7 @@ const realizations = [
   },
   {
     title: "Pompa ciepła przy budynku",
-    meta: "Materiał pod ofertę pomp ciepła i modernizacji źródeł ogrzewania.",
+    meta: "Rozwiązanie dla klientów, którzy chcą połączyć OZE z modernizacją źródła ogrzewania.",
     image: assetUrl("assets/realizations/heat-pump.webp"),
     tag: "Pompy ciepła"
   },
@@ -148,7 +148,7 @@ const realizations = [
   },
   {
     title: "Detale wykonania",
-    meta: "Zdjęcie pod sekcję pomp, źródeł ciepła i kompleksowej modernizacji energetycznej.",
+    meta: "Zaplecze techniczne pokazujące, że przy inwestycji liczy się nie tylko dobór urządzeń, ale też porządek wykonania.",
     image: assetUrl("assets/realizations/technical-room.webp"),
     tag: "Detale"
   }
@@ -248,8 +248,8 @@ const clientProcess = [
 const partnerProcess = [
   { title: "Zgłoszenie", text: "Kandydat podaje region, doświadczenie, źródła klientów i preferowany zakres produktów." },
   { title: "Rozmowa i autoryzacja", text: "Potwierdzamy zasady współpracy, standard obsługi i dokumenty potrzebne do startu." },
-  { title: "Onboarding", text: "Po akceptacji można przygotować dostęp do procesu, materiałów, CRM i szkolenia produktowego." },
-  { title: "Praca na klientach", text: "Leady, statusy, notatki i dokumenty powinny być prowadzone w uzgodnionym systemie." }
+  { title: "Onboarding", text: "Po akceptacji omawiamy proces, standard obsługi, produkty i materiały potrzebne do startu." },
+  { title: "Praca z klientem", text: "Rozmowy, statusy i dokumenty prowadzimy w uporządkowany sposób, żeby klient od początku wiedział, co dzieje się dalej." }
 ];
 
 const partnerTracks = [
@@ -272,9 +272,9 @@ const partnerNextSteps = [
 ];
 
 const materialSlots = [
-  { icon: Camera, title: "Zdjęcia realizacji", text: "Domy, obiekty firmowe, instalacje gruntowe i pompy ciepła pokazane tak, żeby klient szybko rozumiał skalę prac." },
-  { icon: FileText, title: "Zakres usług", text: "Prosty opis rozwiązań, które można sprawdzić przed ofertą: PV, magazyny energii, pompy ciepła, EMS i energia w obiegu." },
-  { icon: Play, title: "Wideo i ruch", text: "Krótkie materiały z realizacji albo animacja procesu mogą później wzmocnić reklamę i formularze leadowe." }
+  { icon: Camera, title: "Widoczne wykonawstwo", text: "Zdjęcia domów, obiektów firmowych, instalacji gruntowych i pomp ciepła pomagają szybko ocenić skalę prac." },
+  { icon: FileText, title: "Jasny zakres rozmowy", text: "Od początku wiadomo, czy sprawdzamy PV, magazyn energii, pompę ciepła, EMS czy energię w obiegu." },
+  { icon: Play, title: "Prosta ścieżka kontaktu", text: "Krótki formularz zbiera najważniejsze dane, a dalsza rozmowa opiera się na konkretach, nie na przypadkowych obietnicach." }
 ];
 
 const faqItems = [
@@ -323,7 +323,7 @@ const faqItems = [
 const seoByPath = {
   "/": {
     title: "SOLVA | Partner Hydro NRG",
-    description: "SOLVA pozyskuje leady OZE i rozwija partnerski zespół handlowy: fotowoltaika, magazyny energii, pompy ciepła i termomodernizacja."
+    description: "SOLVA pomaga klientom sprawdzić kierunek inwestycji OZE i rozwija partnerski zespół handlowy: fotowoltaika, magazyny energii, pompy ciepła i termomodernizacja."
   },
   "/klienci": {
     title: "SOLVA | Bezpłatna analiza OZE dla klientów",
@@ -343,7 +343,7 @@ const seoByPath = {
   },
   "/prywatnosc": {
     title: "SOLVA | Prywatność i zgody",
-    description: "Informacje o kontakcie, danych z formularzy i zasadach publikacji materiałów na stronie SOLVA."
+    description: "Informacje o kontakcie, danych z formularzy i zasadach przetwarzania danych przez SOLVA."
   }
 };
 
@@ -470,7 +470,7 @@ async function submitToStaticEndpoint(kind, form) {
   });
 
   if (!response.ok) {
-    throw new Error("Nie udało się wysłać formularza przez zewnętrzny endpoint.");
+    throw new Error("Nie udało się wysłać formularza. Spróbuj ponownie za chwilę albo napisz na kontakt@solvaoze.pl.");
   }
 }
 
@@ -556,7 +556,7 @@ function HomePage({ onNavigate }) {
           <h1>SOLVA</h1>
           <div className="partner-pill"><ShieldCheck size={18} /> Fotowoltaika, pompy ciepła, magazyny energii</div>
           <p className="hero-copy">
-            Kwalifikujemy klientów, porządkujemy proces sprzedaży i rozwijamy zespół handlowy OZE w modelu partnerskim z Hydro NRG.
+            Pomagamy klientom sprawdzić sens inwestycji OZE i rozwijamy partnerski zespół handlowy w modelu współpracy z Hydro NRG.
           </p>
           <div className="hero-actions" aria-label="Główne akcje">
             <SiteLink className="button primary" href="/klienci#formularz" onNavigate={onNavigate}>
@@ -718,7 +718,7 @@ function EnergyCooperativePage({ onNavigate }) {
               <span>Bilans</span>
             </div>
             <strong>Prąd zaczyna mieć kontekst: miejsce, grupę i zasady.</strong>
-            <p>Według materiału Hydro rozliczenie odbywa się w modelu spółdzielczym, a nadwyżki mogą trafiać do wspólnego bilansu.</p>
+            <p>Rozmowa zaczyna się od lokalizacji, zużycia i tego, czy energia może działać w szerszym, lepiej poukładanym modelu.</p>
           </div>
           <div className="section-copy">
             <p className="eyebrow dark"><Handshake size={18} /> Lokalny obieg energii</p>
@@ -739,7 +739,7 @@ function EnergyCooperativePage({ onNavigate }) {
       <section className="section value-section reveal-zone">
         <div className="section-heading">
           <p className="eyebrow dark"><ShieldCheck size={18} /> Prościej niż brzmi</p>
-          <h2>To nie jest deklaracja przystąpienia. To pierwszy test, czy warto w ogóle o tym rozmawiać.</h2>
+          <h2>Najpierw sprawdzamy warunki, dopiero potem rozmawiamy o formalnościach.</h2>
         </div>
         <div className="offer-grid four">
           {cooperativeCards.map((item) => {
@@ -830,7 +830,7 @@ function ClientsPage({ onNavigate }) {
       <GalleryPreviewSection
         eyebrow="Zdjęcia realizacji"
         icon={Camera}
-        title="Klient powinien od razu zobaczyć prawdziwe wykonawstwo."
+        title="Zobacz przykłady wykonawstwa i zakresu prac."
         text="Zdjęcia pomagają szybko poczuć skalę prac, typ obiektu i standard wykonania przed rozmową o szczegółach."
         items={clientGallery}
       />
@@ -909,7 +909,7 @@ function PartnersPage({ onNavigate }) {
         eyebrow="Dla handlowców"
         icon={TrendingUp}
         title="Sprzedawaj OZE w uporządkowanym modelu partnerskim."
-        text="SOLVA szuka handlowców, liderów regionalnych i osób z bazą kontaktów, które chcą pracować na zatwierdzonych ofertach, procesie i materiałach Hydro NRG."
+        text="SOLVA szuka handlowców, liderów regionalnych i osób z bazą kontaktów, które chcą pracować w uporządkowanym modelu współpracy OZE."
         primary={{ href: "#formularz", label: "Wyślij zgłoszenie", icon: BadgeCheck }}
         secondary={{ href: "/klienci", label: "Zobacz ofertę dla klientów", icon: Calculator }}
         imageStyle={heroImages.partners}
@@ -917,10 +917,10 @@ function PartnersPage({ onNavigate }) {
       />
       <PartnerTracksSection />
       <GalleryPreviewSection
-        eyebrow="Materiały sprzedażowe"
+        eyebrow="Skala rozwiązań OZE"
         icon={Camera}
-        title="Handlowiec musi widzieć, na czym będzie pracować."
-        text="Na stronie rekrutacyjnej pokazujemy większe instalacje, skalę wykonawstwa i materiały, które pomagają kandydatom zrozumieć ofertę."
+        title="Handlowiec musi widzieć, jaką wartość pokazuje klientowi."
+        text="Większe instalacje, obiekty firmowe i detale wykonania pomagają prowadzić rozmowę z klientem konkretnie, bez pustych haseł."
         items={partnerGallery}
       />
 
@@ -985,7 +985,7 @@ function PartnersPage({ onNavigate }) {
                 <Users size={23} />
                 <div>
                   <strong>Baza kontaktów</strong>
-                  <span>Własne źródła leadów, polecenia, teren albo zespół.</span>
+                  <span>Własne kontakty, polecenia, praca terenowa albo zespół sprzedażowy.</span>
                 </div>
               </div>
             </div>
@@ -1032,7 +1032,7 @@ function CompanySection() {
     <section className="section value-section reveal-zone" aria-label="Opis firmy SOLVA">
       <div className="section-heading">
         <p className="eyebrow dark"><Target size={18} /> O SOLVA</p>
-        <h2>Budujemy markę, która łączy leady klientów z uporządkowaną sprzedażą OZE.</h2>
+        <h2>Łączymy potrzeby klientów z uporządkowaną sprzedażą OZE.</h2>
       </div>
       <ClientSegmentsSection />
       <div className="signal-grid">
@@ -1059,7 +1059,7 @@ function ClientOfferSection() {
       <div className="section-heading">
         <p className="eyebrow dark"><Zap size={18} /> Zakres dla klientów</p>
         <h2>Rozmowa może objąć kilka kierunków inwestycji OZE.</h2>
-        <p>Na tym etapie zbieramy potrzeby i zakres, a szczegóły oferty potwierdzamy dopiero po weryfikacji.</p>
+        <p>Na początku zbieramy potrzeby i zakres, a szczegóły oferty potwierdzamy dopiero po weryfikacji.</p>
       </div>
       <div className="offer-grid">
         {solutionAreas.map((item) => {
@@ -1082,7 +1082,7 @@ function ClientAudienceSection() {
     <section className="section value-section reveal-zone">
       <div className="section-heading">
         <p className="eyebrow dark"><Target size={18} /> Dla kogo</p>
-        <h2>Trzy najważniejsze grupy klientów, które warto prowadzić osobnym językiem.</h2>
+        <h2>Trzy grupy klientów, dla których przygotowujemy osobną kwalifikację.</h2>
       </div>
       <ClientSegmentsSection />
     </section>
@@ -1184,8 +1184,8 @@ function MaterialsSection() {
   return (
     <section className="section materials-section reveal-zone">
       <div className="section-heading">
-        <p className="eyebrow dark"><FileText size={18} /> Materiały i zaufanie</p>
-        <h2>Strona ma prowadzić do kontaktu, ale nie może obiecywać bez danych.</h2>
+        <p className="eyebrow dark"><FileText size={18} /> Zaufanie i konkrety</p>
+        <h2>Dobra rozmowa o OZE zaczyna się od danych, nie od gotowej obietnicy.</h2>
       </div>
       <div className="materials-grid">
         {materialSlots.map((item) => {
@@ -1208,10 +1208,10 @@ function AssetStageSection() {
     <section className="section asset-stage-section reveal-zone">
       <div className="asset-stage">
         <div className="asset-stage-copy">
-          <p className="eyebrow dark"><Layers3 size={18} /> Interaktywny motyw instalacji</p>
-          <h2>Najmocniejsze zdjęcie może pracować jak wizytówka marki.</h2>
+          <p className="eyebrow dark"><Layers3 size={18} /> Instalacja w centrum uwagi</p>
+          <h2>Dobrze dobrana instalacja ma działać technicznie i wyglądać porządnie.</h2>
           <p>
-            W kolejnym kroku z tego typu zdjęć można przygotować wycięty dom z panelami, subtelny efekt 3D albo krótką animację pod kampanie leadowe.
+            Dlatego przed rozmową ofertową zbieramy podstawowe informacje o budynku, rachunku i oczekiwanym zakresie inwestycji.
           </p>
         </div>
         <div className="featured-installation" aria-label="Przykładowa realizacja fotowoltaiczna">
@@ -1220,7 +1220,7 @@ function AssetStageSection() {
             <SunMedium size={20} />
             <div>
               <strong>PV na domu</strong>
-              <span>kadr do hero, kampanii i sekcji realizacji</span>
+              <span>pierwszy krok do rozmowy o konkretnym zakresie</span>
             </div>
           </div>
         </div>
@@ -1330,11 +1330,11 @@ function PrivacyPage({ onNavigate }) {
             </div>
             <div>
               <strong>Odbiorcy danych</strong>
-              <span>Dane mogą trafić do dostawców hostingu, poczty, formularzy, CRM, narzędzi analitycznych, obsługi IT oraz partnerów potrzebnych do obsługi zapytania, w tym Hydro NRG, jeśli wymaga tego przygotowanie odpowiedzi lub oferty.</span>
+              <span>Dane mogą trafić do dostawców hostingu, poczty, formularzy, narzędzi obsługi zgłoszeń, obsługi IT oraz partnerów potrzebnych do obsługi zapytania, w tym Hydro NRG, jeśli wymaga tego przygotowanie odpowiedzi lub oferty.</span>
             </div>
             <div>
               <strong>Czas przechowywania</strong>
-              <span>Zgłoszenia bez dalszej współpracy warto przechowywać maksymalnie do 12 miesięcy, dane związane z umową lub roszczeniami zgodnie z przepisami i terminami przedawnienia, a dane marketingowe do wycofania zgody. Okresy warto potwierdzić przed startem kampanii.</span>
+              <span>Zgłoszenia bez dalszej współpracy mogą być przechowywane maksymalnie do 12 miesięcy, dane związane z umową lub roszczeniami zgodnie z przepisami i terminami przedawnienia, a dane marketingowe do wycofania zgody.</span>
             </div>
             <div>
               <strong>Prawa użytkownika</strong>
@@ -1353,7 +1353,7 @@ function PrivacyPage({ onNavigate }) {
           <div className="privacy-note">
             <FileCheck2 size={22} />
             <p>
-              Przed intensywną kampanią reklamową warto zatwierdzić finalną politykę prywatności z osobą od RODO, szczególnie po wdrożeniu CRM, Google Analytics, Meta Pixel, automatyzacji mailowych lub zewnętrznych formularzy.
+              Dane z formularzy wykorzystujemy wyłącznie do obsługi zgłoszenia, kontaktu zwrotnego i przygotowania dalszej rozmowy. Jeśli zakres narzędzi lub partnerów technicznych zostanie rozszerzony, informacja o prywatności zostanie odpowiednio zaktualizowana.
             </p>
           </div>
         </div>
@@ -1655,7 +1655,7 @@ function useSubmit(endpoint, defaults) {
       }
 
       setForm(defaults);
-      setStatus({ type: "success", message: kind === "lead" ? "Zgłoszenie zapisane. Przygotuj ostatni rachunek za prąd do dalszej weryfikacji." : "Zgłoszenie zapisane. Po wstępnej weryfikacji odeślemy kontakt do opiekuna i dalsze kroki autoryzacji." });
+      setStatus({ type: "success", message: kind === "lead" ? "Zgłoszenie zapisane. Przygotuj ostatni rachunek za prąd do dalszej weryfikacji." : "Zgłoszenie zapisane. Po wstępnej weryfikacji wrócimy z informacją o dalszych krokach autoryzacji." });
     } catch (error) {
       setStatus({ type: "error", message: error.message });
     }

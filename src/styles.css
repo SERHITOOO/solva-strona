@@ -1213,44 +1213,6 @@ textarea:focus {
   backdrop-filter: blur(10px);
 }
 
-.media-placeholder {
-  display: grid;
-  place-items: center;
-  position: relative;
-  aspect-ratio: 1.55 / 1;
-  margin-bottom: 18px;
-  border: 1px dashed #9fb7c4;
-  border-radius: 8px;
-  color: var(--leaf-dark);
-  background:
-    linear-gradient(135deg, rgba(242, 148, 0, 0.22), rgba(0, 49, 79, 0.11)),
-    #f6f9fb;
-  overflow: hidden;
-}
-
-.media-placeholder::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  transform: translateX(-120%);
-  background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.64) 50%, transparent 80%);
-  animation: placeholderSweep 5.6s ease-in-out infinite;
-}
-
-.media-placeholder.video-motion svg {
-  position: relative;
-  z-index: 1;
-  animation: playPulse 1.8s ease-in-out infinite;
-}
-
-.media-placeholder span {
-  position: absolute;
-  right: 12px;
-  bottom: 10px;
-  color: rgba(0, 49, 79, 0.34);
-  font-weight: 900;
-}
-
 .asset-stage-section {
   background: #ffffff;
 }
@@ -1747,27 +1709,6 @@ textarea:focus {
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes placeholderSweep {
-  0%,
-  50% {
-    transform: translateX(-120%);
-  }
-  78%,
-  100% {
-    transform: translateX(120%);
-  }
-}
-
-@keyframes playPulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.14);
   }
 }
 
@@ -2337,7 +2278,6 @@ textarea:focus {
 
   .hero-media,
   .featured-installation img,
-  .media-placeholder::before,
   .roof-plane,
   .energy-line,
   .play-orb {
