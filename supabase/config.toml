@@ -1,0 +1,4 @@
+project_id = "solva-strona"
+
+[functions.submit-form]
+verify_jwt = false

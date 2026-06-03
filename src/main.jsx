@@ -456,7 +456,10 @@ function buildMailtoHref(kind, form) {
 }
 
 async function submitToStaticEndpoint(kind, form) {
-  const payload = buildSubmissionPayload(kind, form);
+  const payload = {
+    kind,
+    ...buildSubmissionPayload(kind, form)
+  };
   const response = await fetch(staticFormEndpoint, {
     method: "POST",
     headers: {

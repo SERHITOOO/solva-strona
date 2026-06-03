@@ -59,6 +59,20 @@ Kolejny etap po walidacji leadów:
 - Resend do powiadomień mailowych.
 - Docelowo własny CRM i API pod `api.solvaoze.pl`.
 
+Szczegółowy plan uruchomienia darmowego backendu znajduje się w `BACKEND_START.md`.
+Repo zawiera też gotowe pliki Supabase:
+
+- `supabase/migrations/202606030001_create_submissions.sql` - tabela zgłoszeń.
+- `supabase/functions/submit-form/index.ts` - endpoint przyjmujący formularze i wysyłający powiadomienie przez Resend.
+
+Po wdrożeniu funkcji w Supabase ustaw w GitHub Actions zmienną:
+
+```text
+VITE_FORM_ENDPOINT=https://TWOJ_PROJECT_REF.functions.supabase.co/submit-form
+```
+
+Workflow GitHub Pages przekaże tę zmienną do buildu strony.
+
 ## Materiały do podmiany
 
 - Hero: `public/assets/solar-hero.png`
