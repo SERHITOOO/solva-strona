@@ -173,9 +173,9 @@ const recruitment = [
 ];
 
 const proof = [
-  { value: "OZE", label: "PV, magazyny, pompy i termomodernizacja" },
-  { value: "0 zł", label: "za wstępną analizę inwestycji" },
-  { value: "3 kroki", label: "zgłoszenie, weryfikacja i rozmowa z doradcą" }
+  { icon: SunMedium, value: "Zakres OZE", label: "PV, magazyny, pompy i termomodernizacja" },
+  { icon: SearchCheck, value: "Wstępna analiza", label: "bez opłat za sprawdzenie kierunku inwestycji" },
+  { icon: BadgeCheck, value: "Prosty kontakt", label: "zgłoszenie, weryfikacja i rozmowa z doradcą" }
 ];
 
 const clientSegments = [
@@ -1017,12 +1017,20 @@ function PartnersPage({ onNavigate }) {
 function ProofStrip() {
   return (
     <section className="lead-strip reveal-zone" aria-label="Najważniejsze informacje">
-      {proof.map((item) => (
+      {proof.map((item) => {
+        const Icon = item.icon;
+        return (
         <div className="proof-item" key={item.label}>
-          <strong>{item.value}</strong>
-          <span>{item.label}</span>
+          <div className="proof-icon" aria-hidden="true">
+            <Icon size={21} />
+          </div>
+          <div>
+            <strong>{item.value}</strong>
+            <span>{item.label}</span>
+          </div>
         </div>
-      ))}
+        );
+      })}
     </section>
   );
 }

@@ -402,37 +402,70 @@ h3 {
 
 .lead-strip {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  margin: -28px auto 0;
-  width: min(1040px, calc(100% - 36px));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin: -44px auto 0;
+  width: min(1120px, calc(100% - 40px));
+  padding: 8px;
   position: relative;
   z-index: 4;
   overflow: hidden;
-  border: 1px solid rgba(215, 228, 235, 0.9);
-  border-radius: 8px;
-  background: var(--line);
-  box-shadow: var(--soft-shadow);
+  border: 1px solid rgba(215, 228, 235, 0.92);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 24px 70px rgba(0, 49, 79, 0.16);
+  backdrop-filter: blur(18px);
 }
 
 .proof-item {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 14px;
-  min-height: 92px;
-  padding: 20px;
-  background: var(--paper);
+  gap: 15px;
+  min-height: 94px;
+  padding: 18px 20px;
+  border-radius: 8px;
+  background: transparent;
+}
+
+.proof-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 18px;
+  right: 0;
+  bottom: 18px;
+  width: 1px;
+  background: rgba(215, 228, 235, 0.95);
+}
+
+.proof-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(0, 109, 143, 0.14);
+  border-radius: 8px;
+  color: var(--leaf);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(231, 244, 248, 0.92));
 }
 
 .proof-item strong {
-  color: var(--solar);
-  font-size: 2.15rem;
-  line-height: 1;
+  display: block;
+  color: var(--ink);
+  font-size: 1.06rem;
+  line-height: 1.08;
 }
 
 .proof-item span {
+  display: block;
+  margin-top: 6px;
   color: var(--muted);
-  font-weight: 700;
+  font-size: 0.92rem;
+  font-weight: 750;
+  line-height: 1.35;
 }
 
 .section {
@@ -1951,8 +1984,20 @@ textarea:focus {
     grid-template-columns: 1fr;
   }
 
+  .lead-strip {
+    width: min(640px, calc(100% - 32px));
+    margin-top: -34px;
+    gap: 8px;
+    padding: 8px;
+  }
+
   .proof-item {
-    min-height: 78px;
+    min-height: auto;
+    background: rgba(242, 247, 250, 0.74);
+  }
+
+  .proof-item:not(:last-child)::after {
+    display: none;
   }
 
   h1 {
@@ -2097,18 +2142,29 @@ textarea:focus {
   }
 
   .lead-strip {
-    margin-top: -18px;
+    margin-top: -22px;
     width: calc(100% - 28px);
   }
 
   .proof-item {
     min-height: auto;
-    padding: 16px;
+    gap: 12px;
+    padding: 14px;
   }
 
   .proof-item strong {
-    min-width: 78px;
-    font-size: 1.8rem;
+    min-width: 0;
+    font-size: 1rem;
+  }
+
+  .proof-item span {
+    margin-top: 4px;
+    font-size: 0.86rem;
+  }
+
+  .proof-icon {
+    width: 40px;
+    height: 40px;
   }
 
   .materials-section,
