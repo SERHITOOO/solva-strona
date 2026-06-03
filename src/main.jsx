@@ -175,7 +175,7 @@ const recruitment = [
 const proof = [
   { value: "OZE", label: "PV, magazyny, pompy i termomodernizacja" },
   { value: "0 zł", label: "za wstępną analizę inwestycji" },
-  { value: "CRM", label: "porządek w leadach i statusach klientów" }
+  { value: "3 kroki", label: "zgłoszenie, weryfikacja i rozmowa z doradcą" }
 ];
 
 const clientSegments = [
@@ -196,7 +196,7 @@ const solutionAreas = [
 const trustSignals = [
   { icon: SearchCheck, title: "Najpierw potrzeby", text: "Nie zaczynamy od oferty. Zbieramy rachunek, miejsce inwestycji, termin i oczekiwany zakres." },
   { icon: ShieldCheck, title: "Bez pustych obietnic", text: "Najpierw sprawdzamy dane, a dopiero potem rozmawiamy o rozwiązaniu i możliwych korzyściach." },
-  { icon: FileCheck2, title: "Dowody do uzupełnienia", text: "Po otrzymaniu materiałów dodamy realizacje, certyfikaty, logotypy i opisy potwierdzone przez Hydro NRG." }
+  { icon: FileCheck2, title: "Realizacje i potwierdzenia", text: "Pokazujemy wykonawstwo, zakres usług i jasne zasady rozmowy. Szczegóły każdej oferty potwierdzamy indywidualnie." }
 ];
 
 const energyRoutes = [
@@ -272,9 +272,9 @@ const partnerNextSteps = [
 ];
 
 const materialSlots = [
-  { icon: Camera, title: "Zdjęcia realizacji", text: "Mamy bazę pod domy, obiekty firmowe, instalacje gruntowe i pompy ciepła. Finalnie warto dodać krótkie podpisy z lokalizacją i zakresem." },
-  { icon: FileText, title: "Materiały produktowe", text: "Do podmiany po stronie marketingu: opisy usług, certyfikaty, logotypy, karty katalogowe i potwierdzone nazwy rozwiązań." },
-  { icon: Play, title: "Wideo i ruch", text: "Najlepszy kolejny krok to krótki film z realizacji lub animacja procesu: zgłoszenie, analiza, oferta, montaż." }
+  { icon: Camera, title: "Zdjęcia realizacji", text: "Domy, obiekty firmowe, instalacje gruntowe i pompy ciepła pokazane tak, żeby klient szybko rozumiał skalę prac." },
+  { icon: FileText, title: "Zakres usług", text: "Prosty opis rozwiązań, które można sprawdzić przed ofertą: PV, magazyny energii, pompy ciepła, EMS i energia w obiegu." },
+  { icon: Play, title: "Wideo i ruch", text: "Krótkie materiały z realizacji albo animacja procesu mogą później wzmocnić reklamę i formularze leadowe." }
 ];
 
 const faqItems = [
@@ -305,8 +305,8 @@ const faqItems = [
   },
   {
     audience: ["all", "clients", "partners"],
-    question: "Czy na stronie są już finalne materiały Hydro NRG?",
-    answer: "Mamy pierwszą bazę zdjęć realizacji. Certyfikaty, filmy, logotypy i opisy produktowe warto jeszcze potwierdzić z osobą odpowiedzialną za marketing."
+    question: "Czy mogę zobaczyć przykłady realizacji?",
+    answer: "Tak. Na stronie pokazujemy przykładowe kadry wykonawstwa, a przy rozmowie można dopasować zakres i materiały do podobnego typu inwestycji."
   },
   {
     audience: ["all", "clients"],
@@ -522,9 +522,11 @@ function App() {
   }, [path]);
 
   useRevealMotion(path);
+  useScrollProgress(path);
 
   return (
     <>
+      <ScrollProgress />
       <Header currentPath={path} onNavigate={navigate} />
       <main>
         {path === "/klienci" ? <ClientsPage onNavigate={navigate} /> : null}
@@ -816,7 +818,7 @@ function ClientsPage({ onNavigate }) {
         title="Sprawdź, czy OZE ma sens dla Twojego domu albo firmy."
         text="Zostaw podstawowe dane, a my uporządkujemy pierwszą kwalifikację pod fotowoltaikę, magazyn energii, pompę ciepła lub szerszą modernizację."
         primary={{ href: "#formularz", label: "Przejdź do formularza", icon: Mail }}
-        secondary={{ href: "/#realizacje", label: "Zobacz miejsce na realizacje", icon: Camera }}
+        secondary={{ href: "/#realizacje", label: "Zobacz realizacje", icon: Camera }}
         imageStyle={heroImages.clients}
         onNavigate={onNavigate}
       />
@@ -826,7 +828,7 @@ function ClientsPage({ onNavigate }) {
         eyebrow="Zdjęcia realizacji"
         icon={Camera}
         title="Klient powinien od razu zobaczyć prawdziwe wykonawstwo."
-        text="Te kadry są bazą pod finalne podpisy, lokalizacje i parametry realizacji po potwierdzeniu materiałów marketingowych."
+        text="Zdjęcia pomagają szybko poczuć skalę prac, typ obiektu i standard wykonania przed rozmową o szczegółach."
         items={clientGallery}
       />
 
@@ -945,8 +947,8 @@ function PartnersPage({ onNavigate }) {
           </div>
           <div className="quote-panel" aria-label="Miejsce na film rekrutacyjny">
             <div className="play-orb"><Play size={30} fill="currentColor" /></div>
-            <strong>Film o współpracy</strong>
-            <span>Tu można osadzić wideo o modelu pracy, autoryzacji handlowca, CRM i produktach OZE po otrzymaniu materiałów.</span>
+            <strong>Rozmowa startowa</strong>
+            <span>Omówimy region, źródła klientów, doświadczenie i ścieżkę autoryzacji, zanim wejdziesz w pracę na procesie.</span>
           </div>
         </div>
         <div className="partner-timeline" aria-label="Proces startu handlowca">
@@ -1179,8 +1181,8 @@ function MaterialsSection() {
   return (
     <section className="section materials-section reveal-zone">
       <div className="section-heading">
-        <p className="eyebrow dark"><FileText size={18} /> Materiały do uzupełnienia</p>
-        <h2>Mamy bazę zdjęć. Teraz warto dołożyć opisy, certyfikaty i krótkie filmy.</h2>
+        <p className="eyebrow dark"><FileText size={18} /> Materiały i zaufanie</p>
+        <h2>Strona ma prowadzić do kontaktu, ale nie może obiecywać bez danych.</h2>
       </div>
       <div className="materials-grid">
         {materialSlots.map((item) => {
@@ -1451,30 +1453,95 @@ function SiteLink({ href, onNavigate, children, ...props }) {
   );
 }
 
+function ScrollProgress() {
+  return <div className="scroll-progress" aria-hidden="true" />;
+}
+
 function useRevealMotion(dependency) {
   useEffect(() => {
     const elements = Array.from(document.querySelectorAll(".reveal-zone"));
+    const root = document.documentElement;
+    let lastScrollY = window.scrollY;
+    let scrollFrame = 0;
+
+    function updateDirection() {
+      const currentScrollY = window.scrollY;
+
+      if (Math.abs(currentScrollY - lastScrollY) > 4) {
+        root.dataset.scrollDirection = currentScrollY < lastScrollY ? "up" : "down";
+        lastScrollY = currentScrollY;
+      }
+
+      scrollFrame = 0;
+    }
+
+    function handleScroll() {
+      if (!scrollFrame) {
+        scrollFrame = window.requestAnimationFrame(updateDirection);
+      }
+    }
 
     if (!("IntersectionObserver" in window)) {
       elements.forEach((element) => element.classList.add("is-visible"));
       return undefined;
     }
 
+    root.dataset.scrollDirection = "down";
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
+          entry.target.classList.toggle("is-visible", entry.isIntersecting);
         });
       },
-      { threshold: 0.18 }
+      { threshold: 0.14, rootMargin: "-7% 0px -9% 0px" }
     );
 
-    elements.forEach((element) => observer.observe(element));
+    elements.forEach((element, index) => {
+      element.style.setProperty("--reveal-delay", `${Math.min(index % 4, 3) * 55}ms`);
+      observer.observe(element);
+    });
 
-    return () => observer.disconnect();
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollFrame) {
+        window.cancelAnimationFrame(scrollFrame);
+      }
+      observer.disconnect();
+    };
+  }, [dependency]);
+}
+
+function useScrollProgress(dependency) {
+  useEffect(() => {
+    const root = document.documentElement;
+    let frame = 0;
+
+    function updateProgress() {
+      const scrollable = Math.max(1, root.scrollHeight - window.innerHeight);
+      const progress = Math.min(1, Math.max(0, window.scrollY / scrollable));
+      root.style.setProperty("--scroll-progress", progress.toFixed(4));
+      frame = 0;
+    }
+
+    function scheduleProgress() {
+      if (!frame) {
+        frame = window.requestAnimationFrame(updateProgress);
+      }
+    }
+
+    updateProgress();
+    window.addEventListener("scroll", scheduleProgress, { passive: true });
+    window.addEventListener("resize", scheduleProgress);
+
+    return () => {
+      window.removeEventListener("scroll", scheduleProgress);
+      window.removeEventListener("resize", scheduleProgress);
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
+    };
   }, [dependency]);
 }
 

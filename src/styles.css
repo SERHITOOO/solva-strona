@@ -26,6 +26,7 @@
 
 html {
   scroll-behavior: smooth;
+  --scroll-progress: 0;
 }
 
 #start,
@@ -41,6 +42,21 @@ body {
   background:
     linear-gradient(180deg, rgba(243, 247, 250, 0.84), rgba(248, 251, 247, 1) 720px),
     #f3f7fa;
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  width: 100%;
+  height: 3px;
+  background:
+    linear-gradient(90deg, var(--solar) 0%, #ffd08a 38%, var(--leaf) 100%);
+  box-shadow: 0 0 18px rgba(242, 148, 0, 0.34);
+  pointer-events: none;
+  transform: scaleX(var(--scroll-progress));
+  transform-origin: left center;
 }
 
 button,
@@ -147,16 +163,46 @@ nav a:hover {
 }
 
 .reveal-zone {
+  --reveal-y: 28px;
+  --reveal-clip-top: 0%;
+  --reveal-clip-bottom: 13%;
   opacity: 0;
-  transform: translateY(28px);
+  clip-path: inset(var(--reveal-clip-top) 0 var(--reveal-clip-bottom) 0 round 8px);
+  transform: translate3d(0, var(--reveal-y), 0) scale(0.985);
   transition:
-    opacity 700ms ease,
-    transform 700ms ease;
+    opacity 540ms ease,
+    clip-path 640ms cubic-bezier(0.2, 0.78, 0.24, 1),
+    transform 640ms cubic-bezier(0.2, 0.78, 0.24, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform, clip-path;
+}
+
+html[data-scroll-direction="up"] .reveal-zone:not(.is-visible) {
+  --reveal-y: -22px;
+  --reveal-clip-top: 13%;
+  --reveal-clip-bottom: 0%;
 }
 
 .reveal-zone.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  clip-path: inset(0 0 0 0 round 0);
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.reveal-zone.is-visible :is(.insight-card, .offer-card, .track-card, .next-card, .media-card, .material-card, .signal-item, .process-step, .timeline-step) {
+  animation: itemRise 560ms cubic-bezier(0.2, 0.78, 0.24, 1) both;
+}
+
+.reveal-zone.is-visible :is(.insight-card, .offer-card, .track-card, .next-card, .media-card, .material-card, .signal-item, .process-step, .timeline-step):nth-child(2) {
+  animation-delay: 60ms;
+}
+
+.reveal-zone.is-visible :is(.insight-card, .offer-card, .track-card, .next-card, .media-card, .material-card, .signal-item, .process-step, .timeline-step):nth-child(3) {
+  animation-delay: 110ms;
+}
+
+.reveal-zone.is-visible :is(.insight-card, .offer-card, .track-card, .next-card, .media-card, .material-card, .signal-item, .process-step, .timeline-step):nth-child(4) {
+  animation-delay: 150ms;
 }
 
 .hero {
@@ -1693,6 +1739,17 @@ textarea:focus {
   }
 }
 
+@keyframes itemRise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 @keyframes placeholderSweep {
   0%,
   50% {
@@ -2288,7 +2345,7 @@ textarea:focus {
   }
 
   .reveal-zone {
-    transform: translateY(12px);
+    --reveal-y: 12px;
     transition-duration: 360ms;
   }
 }
@@ -2305,6 +2362,11 @@ textarea:focus {
 
   .reveal-zone {
     opacity: 1;
+    clip-path: none;
     transform: none;
+  }
+
+  .scroll-progress {
+    display: none;
   }
 }
