@@ -136,7 +136,7 @@ const realizations = [
   },
   {
     title: "Fotowoltaika z lotu ptaka",
-    meta: "Kadr techniczny pokazujący ułożenie paneli i miejsce montażu na dachu.",
+    meta: "Kadr pokazujący ułożenie paneli i efekt montażu na dachu.",
     image: assetUrl("assets/realizations/home-aerial.webp"),
     tag: "Dachy skośne"
   },
@@ -147,10 +147,10 @@ const realizations = [
     tag: "Grunt i skala"
   },
   {
-    title: "Zaplecze techniczne",
+    title: "Detale wykonania",
     meta: "Zdjęcie pod sekcję pomp, źródeł ciepła i kompleksowej modernizacji energetycznej.",
     image: assetUrl("assets/realizations/technical-room.webp"),
-    tag: "Technika"
+    tag: "Detale"
   }
 ];
 
@@ -187,15 +187,15 @@ const clientSegments = [
 const solutionAreas = [
   { icon: SunMedium, title: "Fotowoltaika", text: "Dobór kierunku rozmowy na podstawie rachunku, typu dachu, miejsca montażu, działki i planowanego terminu decyzji." },
   { icon: BatteryCharging, title: "Magazyny energii", text: "Wstępna kwalifikacja klientów z większym zużyciem, autokonsumpcją lub potrzebą zabezpieczenia pracy instalacji." },
-  { icon: Sparkles, title: "SSO", text: "Inteligentne zarządzanie energią: pogoda, taryfy, magazyn i moment, w którym energia może pracować korzystniej." },
-  { icon: Users, title: "Spółdzielnia energetyczna", text: "Wstępne sprawdzenie, czy lokalizacja i operator pozwalają rozmawiać o wspólnym bilansowaniu energii." },
+  { icon: Sparkles, title: "EMS", text: "Pomaga lepiej wykorzystać energię z instalacji i sprawdzić, czy magazyn energii ma sens w Twojej sytuacji." },
+  { icon: Users, title: "Energia w obiegu", text: "Wstępne sprawdzenie, czy adres pozwala rozmawiać o korzystniejszym wykorzystaniu nadwyżek energii." },
   { icon: WalletCards, title: "Finansowanie i programy wsparcia", text: "Możemy porozmawiać o dostępnych kierunkach finansowania, a szczegóły wymagają potwierdzenia przed ofertą." },
   { icon: FileCheck2, title: "Analiza pod ofertę", text: "Porządkujemy zgłoszenie tak, aby doradca szybciej wiedział, z jakim klientem i zakresem prac rozmawia." }
 ];
 
 const trustSignals = [
   { icon: SearchCheck, title: "Najpierw potrzeby", text: "Nie zaczynamy od oferty. Zbieramy rachunek, miejsce inwestycji, termin i oczekiwany zakres." },
-  { icon: ShieldCheck, title: "Bez pustych obietnic", text: "Komunikacja opiera się na zatwierdzonych materiałach, procedurach i informacjach technicznych." },
+  { icon: ShieldCheck, title: "Bez pustych obietnic", text: "Najpierw sprawdzamy dane, a dopiero potem rozmawiamy o rozwiązaniu i możliwych korzyściach." },
   { icon: FileCheck2, title: "Dowody do uzupełnienia", text: "Po otrzymaniu materiałów dodamy realizacje, certyfikaty, logotypy i opisy potwierdzone przez Hydro NRG." }
 ];
 
@@ -203,31 +203,31 @@ const energyRoutes = [
   {
     icon: Sparkles,
     title: "Prąd, który pracuje",
-    label: "zarabiaj na prądzie / SSO",
-    text: "Dla osób, które mają lub planują PV z magazynem i chcą sprawdzić, czy energia może być używana, ładowana albo sprzedawana w lepszym momencie.",
+    label: "EMS / lepsze wykorzystanie energii",
+    text: "Dla osób, które mają lub planują PV z magazynem i chcą sprawdzić, czy prąd z instalacji może pracować rozsądniej.",
     href: "/prad-ktory-pracuje"
   },
   {
     icon: Users,
     title: "Energia w obiegu",
-    label: "dziel się prądem / spółdzielnia energetyczna",
-    text: "Dla klientów, którzy nie chcą oddawać nadwyżek w ciemno i wolą sprawdzić, czy lokalne bilansowanie energii może obniżyć rachunki.",
+    label: "nadwyżki energii / weryfikacja adresu",
+    text: "Dla klientów, którzy chcą sprawdzić, czy nadwyżki energii można wykorzystać w lepszym modelu niż standardowe rozliczenie.",
     href: "/energia-w-obiegu"
   }
 ];
 
 const smartEnergyCards = [
-  { icon: Sparkles, title: "AI pilnuje energii 24/7", text: "SSO analizuje pogodę, taryfy, ceny prądu i zwyczaje domowników, żeby podpowiedzieć lepszy moment ładowania, zużycia lub oddania energii." },
-  { icon: BatteryCharging, title: "Magazyn nie stoi bez pomysłu", text: "System może sterować ładowaniem i rozładowaniem magazynu w czasie rzeczywistym, zamiast zostawiać decyzję przypadkowi." },
-  { icon: TrendingUp, title: "Nadwyżka ma mieć moment", text: "Materiał Hydro wskazuje sprzedaż nadwyżek wtedy, gdy ceny są korzystniejsze. Każdy wynik wymaga jednak analizy instalacji i profilu zużycia." },
-  { icon: ShieldCheck, title: "Wygoda bez ręcznego pilnowania", text: "Największa wartość jest w automatyce: mniej zerkania na ceny, mniej ręcznego przełączania i większy porządek w pracy falownika oraz magazynu." }
+  { icon: Sparkles, title: "Więcej porządku w energii", text: "EMS pomaga sprawdzić, kiedy prąd z instalacji lepiej zużyć, zachować w magazynie albo oddać dalej." },
+  { icon: BatteryCharging, title: "Magazyn z konkretnym celem", text: "Jeśli myślisz o magazynie energii, warto najpierw zobaczyć, czy pasuje do Twojego sposobu zużycia prądu." },
+  { icon: TrendingUp, title: "Nadwyżka bez przypadkowości", text: "Zamiast zgadywać, można oprzeć rozmowę o rachunek, zużycie i to, kiedy dom naprawdę potrzebuje energii." },
+  { icon: ShieldCheck, title: "Bez obietnic bez danych", text: "Najpierw krótka weryfikacja, dopiero potem rozmowa o rozwiązaniu, kosztach i możliwych efektach." }
 ];
 
 const cooperativeCards = [
-  { icon: Users, title: "Wspólny bilans zamiast samotnej nadwyżki", text: "Spółdzielnia energetyczna pozwala rozliczać energię w ramach grupy członków, a nie patrzeć na każdą instalację wyłącznie osobno." },
-  { icon: SunMedium, title: "Model spółdzielczy zamiast standardowego net-billingu", text: "Z materiałów wynika, że energia może być rozliczana korzystniej niż w klasycznym modelu. Szczegóły zależą od lokalizacji, operatora i warunków członkostwa." },
-  { icon: MapPin, title: "Nie wszędzie i nie dla każdego", text: "Spółdzielnię można zakładać na terenie gmin wiejskich lub miejsko-wiejskich. Przed rozmową warto sprawdzić gminę i operatora sieci." },
-  { icon: FileCheck2, title: "Legalny model, konkretne formalności", text: "Spółdzielnie energetyczne działają na podstawie ustawy o OZE i są wpisywane do rejestru KOWR. Umowę i koszty trzeba potwierdzić przed decyzją." }
+  { icon: Users, title: "Nadwyżki z większym sensem", text: "Jeśli instalacja produkuje więcej energii niż zużywasz na bieżąco, warto sprawdzić, czy istnieje korzystniejsza ścieżka rozliczenia." },
+  { icon: SunMedium, title: "Adres ma znaczenie", text: "Nie każdy dom, firma czy gospodarstwo kwalifikuje się do tej rozmowy. Dlatego pierwszym krokiem jest sprawdzenie lokalizacji." },
+  { icon: MapPin, title: "Prosty start", text: "Na początku wystarczy miejscowość, rachunek i informacja, czy instalacja już działa, czy dopiero jest planowana." },
+  { icon: FileCheck2, title: "Szczegóły po weryfikacji", text: "Warunki, formalności i opłacalność warto omawiać dopiero wtedy, gdy wiemy, że temat pasuje do adresu." }
 ];
 
 const cooperativeChecks = [
@@ -286,12 +286,12 @@ const faqItems = [
   {
     audience: ["all", "clients"],
     question: "Jakie rozwiązania można zgłosić przez formularz?",
-    answer: "Fotowoltaikę, magazyny energii, SSO, spółdzielnię energetyczną, pompy ciepła, źródła ciepła oraz szerszą analizę OZE dla domu lub firmy."
+    answer: "Fotowoltaikę, magazyny energii, EMS, energię w obiegu, pompy ciepła, źródła ciepła oraz szerszą analizę OZE dla domu lub firmy."
   },
   {
     audience: ["all", "clients"],
-    question: "Czy SSO oznacza gwarantowany zarobek na prądzie?",
-    answer: "Nie obiecujemy wyniku bez danych. SSO ma pomóc lepiej zarządzać energią, magazynem i momentem oddawania nadwyżek, ale sens rozwiązania trzeba sprawdzić na rachunku, instalacji i profilu zużycia."
+    question: "Czy EMS oznacza gwarantowany zarobek na prądzie?",
+    answer: "Nie obiecujemy wyniku bez danych. EMS ma pomóc lepiej wykorzystać energię z instalacji, ale sens rozwiązania trzeba sprawdzić na rachunku, instalacji i sposobie zużycia prądu."
   },
   {
     audience: ["all", "clients"],
@@ -335,11 +335,11 @@ const seoByPath = {
   },
   "/prad-ktory-pracuje": {
     title: "SOLVA | Prąd, który pracuje",
-    description: "SSO, inteligentne zarządzanie energią, magazyn energii i automatyka, która pomaga lepiej wykorzystać produkcję z fotowoltaiki."
+    description: "EMS, lepsze wykorzystanie energii, magazyn energii i weryfikacja, czy instalacja może pracować rozsądniej."
   },
   "/energia-w-obiegu": {
     title: "SOLVA | Energia w obiegu",
-    description: "Spółdzielnia energetyczna, wspólne bilansowanie energii i sprawdzenie, czy lokalny obieg prądu może obniżyć rachunki."
+    description: "Energia w obiegu, nadwyżki z fotowoltaiki i sprawdzenie, czy adres pasuje do dalszej rozmowy."
   },
   "/prywatnosc": {
     title: "SOLVA | Prywatność i zgody",
@@ -609,10 +609,10 @@ function SmartEnergyPage({ onNavigate }) {
   return (
     <>
       <PageHero
-        eyebrow="SSO"
+        eyebrow="EMS"
         icon={Sparkles}
         title="Prąd, który pracuje, kiedy Ty o nim nie myślisz."
-        text="Inteligentne zarządzanie energią dla instalacji PV z magazynem: system analizuje pogodę, ceny, zużycie i moment, w którym energia może mieć największy sens."
+        text="EMS pomaga lepiej wykorzystać energię z fotowoltaiki i sprawdzić, czy magazyn energii pasuje do Twojego domu albo firmy."
         primary={{ href: "/klienci#formularz", label: "Sprawdź swój dom", icon: Calculator }}
         secondary={{ href: "/energia-w-obiegu", label: "Zobacz drugi model", icon: Users }}
         imageStyle={heroImages.smartEnergy}
@@ -621,27 +621,27 @@ function SmartEnergyPage({ onNavigate }) {
       <section className="section offer-story-section reveal-zone">
         <div className="section-grid">
           <div className="section-copy">
-            <p className="eyebrow dark"><BatteryCharging size={18} /> SSO w praktyce</p>
+            <p className="eyebrow dark"><BatteryCharging size={18} /> EMS w praktyce</p>
             <h2>PV produkuje prąd. Pytanie brzmi: czy robi z nim najlepszą możliwą rzecz?</h2>
             <p>
               Jeśli masz fotowoltaikę albo myślisz o magazynie energii, warto sprawdzić, czy dom nie oddaje prądu w złym momencie.
-              SSO pomaga uporządkować pracę instalacji: kiedy korzystać z własnej energii, kiedy ją zostawić na później i kiedy nadwyżka może mieć większy sens.
+              EMS pomaga uporządkować pracę instalacji: kiedy korzystać z własnej energii, kiedy ją zostawić na później i kiedy nadwyżka może mieć większy sens.
             </p>
             <OfferCallPanel
               title="Wystarczy rachunek i kilka informacji o domu."
-              text="Nie obiecujemy zysku bez danych. Najpierw sprawdzamy, czy SSO albo magazyn energii w ogóle pasują do Twojej sytuacji."
+              text="Nie obiecujemy zysku bez danych. Najpierw sprawdzamy, czy EMS albo magazyn energii w ogóle pasują do Twojej sytuacji."
               onNavigate={onNavigate}
             />
           </div>
           <div className="energy-visual-panel">
             <div className="energy-orbit">
               <span>PV</span>
-              <span>AI</span>
+              <span>EMS</span>
               <span>Magazyn</span>
-              <span>Ceny</span>
+              <span>Rachunek</span>
             </div>
-            <strong>System szuka momentu, nie tylko produkcji.</strong>
-            <p>Materiał Hydro wskazuje automatyczną analizę pogody, taryf, zużycia i cen prądu w czasie rzeczywistym.</p>
+            <strong>Chodzi o lepszy porządek w energii, nie o zgadywanie.</strong>
+            <p>Najpierw patrzymy na rachunek, zużycie i to, czy magazyn energii ma sens w konkretnym przypadku.</p>
           </div>
         </div>
       </section>
@@ -669,7 +669,7 @@ function SmartEnergyPage({ onNavigate }) {
         <div className="split-cta-grid">
           <article className="split-cta-card dark">
             <Zap size={28} />
-            <h3>Nie musisz znać technicznych szczegółów.</h3>
+            <h3>Nie musisz znać szczegółów działania.</h3>
             <p>Rachunek, obecne zużycie i informacja o instalacji wystarczą, żeby wstępnie ocenić kierunek.</p>
             <SiteLink className="button secondary" href="/klienci#formularz" onNavigate={onNavigate}>
               <FileText size={18} /> Zostaw dane do analizy
@@ -678,7 +678,7 @@ function SmartEnergyPage({ onNavigate }) {
           <article className="split-cta-card">
             <FileCheck2 size={28} />
             <h3>Najpierw krótka weryfikacja.</h3>
-            <p>Po zgłoszeniu sprawdzamy, czy rozmawiamy o samej PV, magazynie, SSO czy szerszym uporządkowaniu energii w domu.</p>
+            <p>Po zgłoszeniu sprawdzamy, czy rozmawiamy o samej PV, magazynie, EMS czy szerszym uporządkowaniu energii w domu.</p>
             <SiteLink className="button primary" href="/klienci#formularz" onNavigate={onNavigate}>
               Zostaw dane do sprawdzenia <ArrowRight size={18} />
             </SiteLink>
@@ -693,12 +693,12 @@ function EnergyCooperativePage({ onNavigate }) {
   return (
     <>
       <PageHero
-        eyebrow="Spółdzielnia energetyczna"
+        eyebrow="Energia w obiegu"
         icon={Users}
         title="Energia w obiegu. Zamiast oddawać nadwyżki w ciemno."
         text="Model dla klientów, którzy chcą sprawdzić, czy ich prąd może być rozliczany we wspólnym bilansie i pracować w lokalnej grupie, a nie tylko w pojedynczym domu."
         primary={{ href: "/klienci#formularz", label: "Sprawdź lokalizację", icon: MapPin }}
-        secondary={{ href: "/prad-ktory-pracuje", label: "Zobacz SSO", icon: Sparkles }}
+        secondary={{ href: "/prad-ktory-pracuje", label: "Zobacz EMS", icon: Sparkles }}
         imageStyle={heroImages.cooperative}
         onNavigate={onNavigate}
       />
@@ -719,7 +719,7 @@ function EnergyCooperativePage({ onNavigate }) {
             <p className="eyebrow dark"><Handshake size={18} /> Lokalny obieg energii</p>
             <h2>Nie musisz znać ustawy o OZE. Wystarczy sprawdzić, czy Twój adres pasuje do takiego modelu.</h2>
             <p>
-              Spółdzielnia energetyczna to dobrowolne zrzeszenie osób lub firm, które wspólnie produkują, zużywają i rozliczają energię.
+              Energia w obiegu to kierunek dla osób i firm, które chcą sprawdzić, czy nadwyżki z instalacji można wykorzystać rozsądniej.
               To nie jest rozwiązanie dla każdego adresu, dlatego pierwszym krokiem jest krótka weryfikacja lokalizacji i operatora.
             </p>
             <OfferCallPanel
@@ -866,7 +866,7 @@ function ClientsPage({ onNavigate }) {
                 <SearchCheck size={23} />
                 <div>
                   <strong>Krótka rozmowa filtruje sens inwestycji</strong>
-                  <span>Sprawdzamy, czy rozmawiać o PV, magazynie, SSO, pompie ciepła albo spółdzielni energetycznej.</span>
+                  <span>Sprawdzamy, czy rozmawiać o PV, magazynie, EMS, pompie ciepła albo energii w obiegu.</span>
                 </div>
               </div>
             </div>
@@ -915,7 +915,7 @@ function PartnersPage({ onNavigate }) {
         eyebrow="Materiały sprzedażowe"
         icon={Camera}
         title="Handlowiec musi widzieć, na czym będzie pracować."
-        text="Na stronie rekrutacyjnej pokazujemy większe instalacje, skalę wykonawstwa i zaplecze techniczne jako materiał do rozmów z kandydatami."
+        text="Na stronie rekrutacyjnej pokazujemy większe instalacje, skalę wykonawstwa i materiały, które pomagają kandydatom zrozumieć ofertę."
         items={partnerGallery}
       />
 
@@ -973,7 +973,7 @@ function PartnersPage({ onNavigate }) {
                 <SearchCheck size={23} />
                 <div>
                   <strong>Doświadczenie</strong>
-                  <span>Sprzedaż, OZE, usługi techniczne albo praca z klientem.</span>
+                  <span>Sprzedaż, OZE, usługi dla domu albo praca z klientem.</span>
                 </div>
               </div>
               <div className="signal-item">
@@ -1054,7 +1054,7 @@ function ClientOfferSection() {
       <div className="section-heading">
         <p className="eyebrow dark"><Zap size={18} /> Zakres dla klientów</p>
         <h2>Rozmowa może objąć kilka kierunków inwestycji OZE.</h2>
-        <p>Na tym etapie zbieramy potrzeby i zakres, a szczegóły techniczne lub finansowe potwierdzamy przed ofertą.</p>
+        <p>Na tym etapie zbieramy potrzeby i zakres, a szczegóły oferty potwierdzamy dopiero po weryfikacji.</p>
       </div>
       <div className="offer-grid">
         {solutionAreas.map((item) => {
@@ -1305,7 +1305,7 @@ function PrivacyPage({ onNavigate }) {
           <article className="privacy-panel">
             <FileText size={28} />
             <h3>Co zbieramy</h3>
-            <p>Formularze mogą zbierać imię i nazwisko, telefon, e-mail, miejscowość, zakres zainteresowania, rachunek miesięczny, typ obiektu, wiadomość, region pracy handlowca oraz podstawowe dane techniczne zgłoszenia.</p>
+            <p>Formularze mogą zbierać imię i nazwisko, telefon, e-mail, miejscowość, zakres zainteresowania, rachunek miesięczny, typ obiektu, wiadomość, region pracy handlowca oraz podstawowe informacje o zgłoszeniu.</p>
           </article>
         </div>
 
@@ -1337,11 +1337,11 @@ function PrivacyPage({ onNavigate }) {
             </div>
             <div>
               <strong>Cookies i analityka</strong>
-              <span>Strona może używać technicznych plików cookies potrzebnych do działania. Analitykę, piksele reklamowe lub remarketing należy uruchamiać dopiero z odpowiednią informacją i zgodą, jeśli będzie wymagana.</span>
+              <span>Strona może używać niezbędnych plików cookies potrzebnych do działania. Analitykę, piksele reklamowe lub remarketing należy uruchamiać dopiero z odpowiednią informacją i zgodą, jeśli będzie wymagana.</span>
             </div>
             <div>
-              <strong>SSO i spółdzielnia energetyczna</strong>
-              <span>Treści o SSO, magazynach energii i spółdzielni energetycznej mają charakter informacyjny i sprzedażowy. Nie są poradą prawną, podatkową ani gwarancją oszczędności. Szczegóły wymagają analizy danych klienta i potwierdzenia warunków.</span>
+              <strong>EMS i energia w obiegu</strong>
+              <span>Treści o EMS, magazynach energii i energii w obiegu mają charakter informacyjny i sprzedażowy. Nie są poradą prawną, podatkową ani gwarancją oszczędności. Szczegóły wymagają analizy danych klienta i potwierdzenia warunków.</span>
             </div>
           </div>
 
@@ -1524,6 +1524,7 @@ function Header({ currentPath, onNavigate }) {
         onClick={() => setMobileMenuOpen((isOpen) => !isOpen)}
       >
         {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+        <span className="mobile-menu-label">Menu</span>
       </button>
       <div className={`mobile-menu-panel${isMobileMenuOpen ? " open" : ""}`} id="mobile-nav">
         <span>Wybierz temat</span>
@@ -1635,8 +1636,8 @@ function LeadForm() {
           <select value={form.solution} onChange={(event) => updateField("solution", event.target.value)}>
             <option>Fotowoltaika z analizą rachunku</option>
             <option>PV z magazynem energii</option>
-            <option>SSO - inteligentne zarządzanie energią</option>
-            <option>Spółdzielnia energetyczna</option>
+            <option>EMS - lepsze wykorzystanie energii</option>
+            <option>Energia w obiegu</option>
             <option>Pompa ciepła lub źródło ciepła</option>
             <option>Kompleksowa modernizacja OZE</option>
           </select>
