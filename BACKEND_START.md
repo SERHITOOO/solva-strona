@@ -1,88 +1,83 @@
-# SOLVA - tani backend na start
+# SOLVA - backend zgłoszeń
 
-Cel: przez 1-2 miesiace zbierac kontakty ze strony bez placenia za serwer, a pozniej podpiac je pod wlasny CRM.
+Aktualny cel: przez 1-2 miesiace zbierac kontakty ze strony bez stalego kosztu serwera, a pozniej podpiac je pod wlasny CRM.
 
-## Rekomendowany zestaw
+## Co juz dziala
 
-- Supabase Free - baza `submissions` i funkcja `submit-form`.
-- Resend Free - powiadomienia mailowe o nowych zgłoszeniach na `m.pokora@hydro-energy.pl`.
-- Cloudflare Turnstile Free - antyspam do formularzy, do wlaczenia po podstawowym uruchomieniu.
-- GitHub Pages - frontend zostaje tam, gdzie jest.
+- Frontend: GitHub Pages pod domena `https://solvaoze.pl`.
+- Backend formularzy: Supabase project `SOLVA`, ref `sraivpmzkqkiasfjftjq`.
+- Edge Function: `submit-form`.
+- Endpoint produkcyjny: `https://sraivpmzkqkiasfjftjq.functions.supabase.co/submit-form`.
+- GitHub Actions variable: `VITE_FORM_ENDPOINT` ustawione na endpoint Supabase.
+- Baza danych: tabela `public.submissions`.
+- Mailbox firmowy: `kontakt@solvaoze.pl` w OVH/Zimbra.
 
-## Dane kont
+## Gdzie trafiaja zgloszenia
 
-Rejestracja kont:
-
-- e-mail: `m.pokora@hydro-energy.pl`
-- hasla: zapisac w Menedzerze hasel / iCloud Keychain / 1Password / Bitwarden, nie w pliku tekstowym.
-
-## Supabase
-
-1. Utworz projekt w Supabase, np. `solva`.
-2. W SQL Editor uruchom migracje:
-   `supabase/migrations/202606030001_create_submissions.sql`
-3. Zainstaluj i zaloguj CLI, jesli jeszcze go nie ma:
-
-```bash
-npm install -g supabase
-supabase login
-```
-
-4. Polacz repo z projektem:
-
-```bash
-supabase link --project-ref TWOJ_PROJECT_REF
-```
-
-5. Ustaw sekrety funkcji:
-
-```bash
-supabase secrets set NOTIFY_EMAIL=m.pokora@hydro-energy.pl
-supabase secrets set FROM_EMAIL="SOLVA <kontakt@solvaoze.pl>"
-supabase secrets set ALLOWED_ORIGINS=https://solvaoze.pl,https://www.solvaoze.pl,http://localhost:5174
-supabase secrets set RESEND_API_KEY=TU_WKLEJ_KLUCZ_RESEND
-```
-
-6. Wdroz funkcje:
-
-```bash
-supabase functions deploy submit-form
-```
-
-Endpoint bedzie mial format:
+Supabase Dashboard:
 
 ```text
-https://TWOJ_PROJECT_REF.functions.supabase.co/submit-form
+https://supabase.com/dashboard/project/sraivpmzkqkiasfjftjq/editor
 ```
 
-## Resend
+Tabela:
 
-1. Zaloz konto na `m.pokora@hydro-energy.pl`.
+```text
+public.submissions
+```
+
+Typy zgloszen:
+
+- `kind = lead` - formularz klienta.
+- `kind = partner` - formularz handlowca.
+
+Najwazniejsze pola:
+
+- `status` - domyslnie `new`.
+- `full_name`, `phone`, `email`, `location`.
+- `payload` - pelna tresc formularza.
+- `tracking` - strona, referrer i parametry UTM.
+- `created_at` - data wplyniecia.
+
+## Co jeszcze nie jest aktywne
+
+Automatyczne powiadomienia e-mail nie sa jeszcze wlaczone, bo brakuje `RESEND_API_KEY`.
+
+Funkcja jest juz przygotowana tak, zeby po dodaniu klucza wysylac powiadomienia na:
+
+```text
+kontakt@solvaoze.pl
+```
+
+## Jak wlaczyc powiadomienia e-mail
+
+1. Zaloz konto w Resend.
 2. Dodaj domene `solvaoze.pl`.
 3. W OVH dodaj rekordy DNS pokazane przez Resend.
 4. Po weryfikacji domeny utworz API Key.
-5. Wklej go do Supabase jako `RESEND_API_KEY`.
+5. Ustaw sekret w Supabase:
 
-## GitHub Pages
-
-W repo `SERHITOOO/solva-strona` ustaw zmienna:
-
-```text
-Settings -> Secrets and variables -> Actions -> Variables
-VITE_FORM_ENDPOINT=https://TWOJ_PROJECT_REF.functions.supabase.co/submit-form
+```bash
+npx supabase secrets set RESEND_API_KEY=TU_WKLEJ_KLUCZ_RESEND
+npx supabase functions deploy submit-form
 ```
 
-Po zapisaniu zmiennej uruchom ponownie workflow `Deploy GitHub Pages`.
+## Koszty na start
 
-## Co bedzie dzialac
+- GitHub Pages: `0 zl / miesiac` dla obecnego hostingu frontendu.
+- Supabase Free: `0 zl / miesiac` na start, w limicie m.in. 500 MB bazy i 500 000 wywolan Edge Functions.
+- Resend Free: `0 zl / miesiac` na start, po konfiguracji domeny i API key.
+- OVH: domena i mailbox sa osobno po stronie OVH.
 
-- Formularz klienta zapisuje rekord `kind = lead`.
-- Formularz handlowca zapisuje rekord `kind = partner`.
-- Kazde zgloszenie wysyla mail na `m.pokora@hydro-energy.pl`.
-- Dane zostaja w Supabase do eksportu CSV albo pozniejszego podpiecia CRM.
+Na tym etapie nie ma sensu placic za drogi hosting backendu. Supabase Free spokojnie wystarczy do walidacji, czy leady i handlowcy faktycznie wplywaja.
 
-## Czego nie robimy
+## Migracja do CRM
 
-- Nie wystawiamy laptopa jako publicznego serwera.
-- Nie zapisujemy hasel w zwyklym pliku na pulpicie.
-- Nie publikujemy sekretow API w repozytorium.
+Gdy CRM bedzie gotowy, najlepszy wariant:
+
+- zostawic `submissions` jako bufor danych,
+- dodac endpoint CRM,
+- po zapisie w Supabase przekazywac rekord do CRM,
+- albo zmienic `VITE_FORM_ENDPOINT` na docelowe `https://api.solvaoze.pl/...`.
+
+Nie trzeba przebudowywac calej strony.

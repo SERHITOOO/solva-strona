@@ -14,19 +14,19 @@ npm install
 npm run dev
 ```
 
-Frontend działa przez Vite, a API Express zapisuje zgłoszenia lokalnie w katalogu `data/`.
+Frontend działa przez Vite. Lokalnie można użyć API Express, a produkcyjnie formularze są podpięte do Supabase Edge Function.
 
 ## Publiczny podgląd
 
-GitHub Pages publikuje statyczny frontend. W takim trybie formularz użyje `VITE_FORM_ENDPOINT`, jeśli zmienna zostanie ustawiona podczas buildu. Bez tej zmiennej formularz otworzy gotową wiadomość e-mail do wysłania na adres kontaktowy.
+GitHub Pages publikuje statyczny frontend pod domeną `solvaoze.pl`. Produkcyjny build ma ustawione `VITE_FORM_ENDPOINT`, więc formularze zapisują zgłoszenia w Supabase.
 
-Na domenie publicznej bez hostowanego backendu formularze działają w trybie przejściowym:
+Tryby działania formularzy:
 
 - lokalnie używają `/api/leads` i `/api/partners`,
-- produkcyjnie użyją `VITE_FORM_ENDPOINT`, jeśli zostanie ustawiony,
-- bez endpointu otworzą gotowego maila z danymi zgłoszenia.
+- produkcyjnie używają Supabase Edge Function `submit-form`,
+- bez endpointu otworzą gotowego maila z danymi zgłoszenia jako awaryjny fallback.
 
-To pozwala wystartować bez stałego kosztu backendu, a później podpiąć Supabase, Make, CRM albo własne API bez przebudowy strony.
+To pozwala wystartować bez stałego kosztu backendu, a później podpiąć Make, CRM albo własne API bez przebudowy strony.
 
 Docelowo warto podpiąć jeden z wariantów:
 
@@ -45,30 +45,30 @@ Docelowo warto podpiąć jeden z wariantów:
 
 ## Tani start bez CRM
 
-Rekomendowany wariant na pierwszy miesiąc:
+Aktualny wariant na pierwszy miesiąc:
 
 - GitHub Pages + domena `solvaoze.pl` - frontend bez kosztu miesięcznego.
-- Formularze w trybie mailowym albo przez darmowy endpoint formularzowy - bez serwera.
+- Supabase Free - baza zgłoszeń `submissions` i funkcja `submit-form`.
+- Mailbox `kontakt@solvaoze.pl` - kontakt firmowy w OVH/Zimbra.
 - Statusy i pola są już przygotowane pod CRM: `status`, `zrodlo`, `marka`, `podmiot`, tracking UTM.
 - Gdy CRM będzie gotowy, najprostsza migracja to przekierowanie formularzy na `VITE_API_BASE` albo `VITE_FORM_ENDPOINT`.
 
 Kolejny etap po walidacji leadów:
 
-- Supabase Free jako baza zgłoszeń klientów i handlowców.
 - Cloudflare Turnstile do antyspamu.
-- Resend do powiadomień mailowych.
+- Resend do automatycznych powiadomień mailowych na `kontakt@solvaoze.pl`.
 - Docelowo własny CRM i API pod `api.solvaoze.pl`.
 
 Szczegółowy plan uruchomienia darmowego backendu znajduje się w `BACKEND_START.md`.
 Repo zawiera też gotowe pliki Supabase:
 
 - `supabase/migrations/202606030001_create_submissions.sql` - tabela zgłoszeń.
-- `supabase/functions/submit-form/index.ts` - endpoint przyjmujący formularze i wysyłający powiadomienie przez Resend.
+- `supabase/functions/submit-form/index.ts` - endpoint przyjmujący formularze; po dodaniu `RESEND_API_KEY` wyśle też powiadomienie przez Resend.
 
 Po wdrożeniu funkcji w Supabase ustaw w GitHub Actions zmienną:
 
 ```text
-VITE_FORM_ENDPOINT=https://TWOJ_PROJECT_REF.functions.supabase.co/submit-form
+VITE_FORM_ENDPOINT=https://sraivpmzkqkiasfjftjq.functions.supabase.co/submit-form
 ```
 
 Workflow GitHub Pages przekaże tę zmienną do buildu strony.

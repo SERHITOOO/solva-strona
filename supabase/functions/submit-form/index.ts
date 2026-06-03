@@ -14,7 +14,7 @@ const allowedOrigins = (Deno.env.get("ALLOWED_ORIGINS") || defaultOrigins.join("
   .map((origin) => origin.trim())
   .filter(Boolean);
 
-const notifyEmail = Deno.env.get("NOTIFY_EMAIL") || "m.pokora@hydro-energy.pl";
+const notifyEmail = Deno.env.get("NOTIFY_EMAIL") || "kontakt@solvaoze.pl";
 const fromEmail = Deno.env.get("FROM_EMAIL") || "SOLVA <kontakt@solvaoze.pl>";
 const resendApiKey = Deno.env.get("RESEND_API_KEY") || "";
 const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
