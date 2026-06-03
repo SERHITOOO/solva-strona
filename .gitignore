@@ -3,6 +3,7 @@ dist/
 .codex-screenshots/
 .env
 .DS_Store
+supabase/.temp/
 npm-debug.log*
 PROMPT.md
 REBRANDING_PROMPT.md
