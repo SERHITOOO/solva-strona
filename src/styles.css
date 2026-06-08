@@ -110,17 +110,35 @@ nav {
 }
 
 nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 10px;
+  border-radius: 7px;
   transition:
+    background 160ms ease,
     color 160ms ease,
     transform 160ms ease;
 }
 
 nav a.active {
   color: var(--solar-strong);
+  background: rgba(242, 148, 0, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(242, 148, 0, 0.2);
 }
 
 nav a:hover {
   color: var(--solar-strong);
+  background: rgba(242, 148, 0, 0.08);
+}
+
+nav a:focus-visible,
+.brand:focus-visible,
+.header-cta:focus-visible,
+.mobile-menu-toggle:focus-visible,
+.mobile-menu-panel a:focus-visible {
+  outline: 2px solid rgba(242, 148, 0, 0.75);
+  outline-offset: 3px;
 }
 
 .header-cta,
