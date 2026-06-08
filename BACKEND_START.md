@@ -7,7 +7,7 @@ Aktualny cel: przez 1-2 miesiace zbierac kontakty ze strony bez stalego kosztu s
 - Frontend: GitHub Pages pod domena `https://solvaoze.pl`.
 - Backend formularzy: Supabase project `SOLVA`, ref `sraivpmzkqkiasfjftjq`.
 - Edge Function: `submit-form`.
-- Endpoint produkcyjny: `https://sraivpmzkqkiasfjftjq.functions.supabase.co/submit-form`.
+- Endpoint produkcyjny: `https://sraivpmzkqkiasfjftjq.supabase.co/functions/v1/submit-form`.
 - GitHub Actions variable: `VITE_FORM_ENDPOINT` ustawione na endpoint Supabase.
 - Baza danych: tabela `public.submissions`.
 - Mailbox firmowy: `kontakt@solvaoze.pl` w OVH/Zimbra.

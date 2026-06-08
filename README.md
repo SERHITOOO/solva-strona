@@ -68,7 +68,7 @@ Repo zawiera też gotowe pliki Supabase:
 Po wdrożeniu funkcji w Supabase ustaw w GitHub Actions zmienną:
 
 ```text
-VITE_FORM_ENDPOINT=https://sraivpmzkqkiasfjftjq.functions.supabase.co/submit-form
+VITE_FORM_ENDPOINT=https://sraivpmzkqkiasfjftjq.supabase.co/functions/v1/submit-form
 ```
 
 Workflow GitHub Pages przekaże tę zmienną do buildu strony.
