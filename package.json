@@ -7,7 +7,7 @@
     "dev": "concurrently \"npm:dev:api\" \"npm:dev:web\"",
     "dev:web": "vite --host 0.0.0.0",
     "dev:api": "node server/index.js",
-    "build": "vite build",
+    "build": "vite build && node scripts/generate-route-meta.mjs",
     "preview": "vite preview --host 0.0.0.0",
     "start": "node server/index.js"
   },

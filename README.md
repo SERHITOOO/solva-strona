@@ -75,7 +75,7 @@ Workflow GitHub Pages przekaże tę zmienną do buildu strony.
 
 ## Materiały do podmiany
 
-- Hero: `public/assets/solar-hero.png`
+- Podglądy linków: `public/assets/og/*.jpg`
 - Logo: `public/assets/solva-logo.svg`
 - Sekcje realizacji, materiałów Hydro, wideo i 3D są teraz przygotowane pod późniejszą podmianę na realne zdjęcia, filmy, certyfikaty i opisy usług.
 - Logo pod Pracuj.pl: `public/assets/job-boards/pracuj-logo-180.png` albo większe `public/assets/job-boards/pracuj-logo-512.png`.
