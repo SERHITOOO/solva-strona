@@ -20,7 +20,6 @@ import {
   Mail,
   MapPin,
   Menu,
-  Play,
   SearchCheck,
   ShieldCheck,
   Sparkles,
@@ -274,7 +273,7 @@ const partnerNextSteps = [
 const materialSlots = [
   { icon: Camera, title: "Widoczne wykonawstwo", text: "Zdjęcia domów, obiektów firmowych, instalacji gruntowych i pomp ciepła pomagają szybko ocenić skalę prac." },
   { icon: FileText, title: "Jasny zakres rozmowy", text: "Od początku wiadomo, czy sprawdzamy PV, magazyn energii, pompę ciepła, EMS czy energię w obiegu." },
-  { icon: Play, title: "Prosta ścieżka kontaktu", text: "Krótki formularz zbiera najważniejsze dane, a dalsza rozmowa opiera się na konkretach, nie na przypadkowych obietnicach." }
+  { icon: ClipboardCheck, title: "Prosta ścieżka kontaktu", text: "Krótki formularz zbiera najważniejsze dane, a dalsza rozmowa opiera się na konkretach, nie na przypadkowych obietnicach." }
 ];
 
 const faqItems = [
@@ -948,10 +947,18 @@ function PartnersPage({ onNavigate }) {
               })}
             </div>
           </div>
-          <div className="quote-panel" aria-label="Miejsce na film rekrutacyjny">
-            <div className="play-orb"><Play size={30} fill="currentColor" /></div>
+          <div className="quote-panel" aria-label="Rozmowa startowa z kandydatem">
+            <div className="quote-panel-marker">
+              <ClipboardCheck size={30} />
+              <span>Start współpracy</span>
+            </div>
             <strong>Rozmowa startowa</strong>
             <span>Omówimy region, źródła klientów, doświadczenie i ścieżkę autoryzacji, zanim wejdziesz w pracę na procesie.</span>
+            <div className="quote-panel-points" aria-label="Zakres rozmowy startowej">
+              <span>Region działania</span>
+              <span>Źródła klientów</span>
+              <span>Model współpracy</span>
+            </div>
           </div>
         </div>
         <div className="partner-timeline" aria-label="Proces startu handlowca">
