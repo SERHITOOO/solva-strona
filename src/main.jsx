@@ -117,37 +117,37 @@ const partnerDefaults = {
 const realizations = [
   {
     title: "Dom jednorodzinny z PV",
-    meta: "Instalacja na dachu skośnym dla klienta indywidualnego. Dobry przykład rozwiązania dopasowanego do domu jednorodzinnego.",
+    meta: "Fotowoltaika dopasowana do domu, dachu i codziennego zużycia energii. Przed ofertą sprawdzamy rachunek, potrzeby domowników i warunki montażu.",
     image: assetUrl("assets/realizations/residential-front.webp"),
     tag: "Klienci indywidualni"
   },
   {
     title: "Instalacja na dużym dachu",
-    meta: "Realizacja na obiekcie firmowym pokazuje skalę wykonawstwa i potencjał dla przedsiębiorców.",
+    meta: "Duże dachy firmowe mogą realnie obniżać koszt energii w działalności. Analizujemy profil zużycia, miejsce montażu i sens połączenia PV z magazynem energii.",
     image: assetUrl("assets/realizations/commercial-roof.webp"),
     tag: "Firmy i obiekty"
   },
   {
     title: "Pompa ciepła przy budynku",
-    meta: "Rozwiązanie dla klientów, którzy chcą połączyć OZE z modernizacją źródła ogrzewania.",
+    meta: "Pompa ciepła może być częścią szerszej modernizacji domu. Przed rozmową o urządzeniu warto sprawdzić budynek, obecne ogrzewanie i planowane zużycie energii.",
     image: assetUrl("assets/realizations/heat-pump.webp"),
     tag: "Pompy ciepła"
   },
   {
-    title: "Fotowoltaika z lotu ptaka",
-    meta: "Kadr pokazujący ułożenie paneli i efekt montażu na dachu.",
+    title: "Fotowoltaika na dachu skośnym",
+    meta: "Układ paneli powinien wynikać z konstrukcji dachu, stron świata i możliwego zacienienia. Dlatego przed ofertą porządkujemy podstawowe informacje o budynku.",
     image: assetUrl("assets/realizations/home-aerial.webp"),
     tag: "Dachy skośne"
   },
   {
     title: "Instalacja gruntowa",
-    meta: "Dobry przykład dla klientów z większą działką, firm i obiektów o większym zużyciu energii.",
+    meta: "Gdy dach nie jest najlepszym miejscem montażu albo zapotrzebowanie jest większe, warto sprawdzić instalację gruntową. To rozwiązanie wymaga dobrej oceny działki i skali zużycia.",
     image: assetUrl("assets/realizations/ground-mount.webp"),
     tag: "Grunt i skala"
   },
   {
-    title: "Detale wykonania",
-    meta: "Zaplecze techniczne pokazujące, że przy inwestycji liczy się nie tylko dobór urządzeń, ale też porządek wykonania.",
+    title: "Zaplecze techniczne",
+    meta: "Dobra inwestycja OZE to nie tylko panele na dachu. Liczy się także sposób podłączenia, dobór urządzeń i uporządkowane wykonanie całego zaplecza technicznego.",
     image: assetUrl("assets/realizations/technical-room.webp"),
     tag: "Detale"
   }
@@ -178,9 +178,9 @@ const proof = [
 ];
 
 const clientSegments = [
-  { icon: SunMedium, title: "Domy jednorodzinne", text: "Analiza rachunku, dachu, miejsca montażu i terminu inwestycji, zanim klient trafi do rozmowy ofertowej." },
-  { icon: Building2, title: "Firmy i obiekty usługowe", text: "Kwalifikacja dachu płaskiego lub skośnego, profilu zużycia oraz potencjału pod PV, magazyn energii lub pompę ciepła." },
-  { icon: BatteryCharging, title: "Większe inwestycje OZE", text: "Wstępna rozmowa o instalacjach gruntowych, źródłach ciepła i szerszej modernizacji energetycznej." }
+  { icon: SunMedium, title: "Domy jednorodzinne", text: "Sprawdzamy rachunek, dach, miejsce montażu i termin inwestycji, żeby rozmowa ofertowa była konkretna od pierwszego kontaktu." },
+  { icon: Building2, title: "Firmy i obiekty usługowe", text: "Przy firmach liczy się profil zużycia, dostępna powierzchnia i to, czy PV warto połączyć z magazynem energii albo pompą ciepła." },
+  { icon: BatteryCharging, title: "Większe inwestycje OZE", text: "Jeśli temat jest większy niż standardowa instalacja na domu, porządkujemy dane i wskazujemy, co warto zweryfikować w pierwszej kolejności." }
 ];
 
 const solutionAreas = [
@@ -188,8 +188,8 @@ const solutionAreas = [
   { icon: BatteryCharging, title: "Magazyny energii", text: "Wstępna kwalifikacja klientów z większym zużyciem, autokonsumpcją lub potrzebą zabezpieczenia pracy instalacji." },
   { icon: Sparkles, title: "EMS", text: "Pomaga lepiej wykorzystać energię z instalacji i sprawdzić, czy magazyn energii ma sens w Twojej sytuacji." },
   { icon: Users, title: "Energia w obiegu", text: "Wstępne sprawdzenie, czy adres pozwala rozmawiać o korzystniejszym wykorzystaniu nadwyżek energii." },
-  { icon: WalletCards, title: "Finansowanie i programy wsparcia", text: "Możemy porozmawiać o dostępnych kierunkach finansowania, a szczegóły wymagają potwierdzenia przed ofertą." },
-  { icon: FileCheck2, title: "Analiza pod ofertę", text: "Porządkujemy zgłoszenie tak, aby doradca szybciej wiedział, z jakim klientem i zakresem prac rozmawia." }
+  { icon: WalletCards, title: "Finansowanie i programy wsparcia", text: "Możemy omówić dostępne kierunki finansowania i sprawdzić, które z nich warto brać pod uwagę przy Twojej inwestycji." },
+  { icon: FileCheck2, title: "Analiza przed ofertą", text: "Zbieramy podstawowe informacje, żeby szybciej ustalić, czy rozmawiamy o PV, magazynie energii, pompie ciepła czy szerszej modernizacji." }
 ];
 
 const trustSignals = [
@@ -261,7 +261,7 @@ const partnerTracks = [
 const clientNextSteps = [
   { icon: Mail, title: "1. Zostawiasz kontakt", text: "W formularzu podajesz lokalizację, rachunek, zakres i termin decyzji." },
   { icon: SearchCheck, title: "2. Weryfikacja zgłoszenia", text: "Doprecyzowujemy potrzeby i prosimy o dane potrzebne do analizy, jeśli zgłoszenie wymaga uzupełnienia." },
-  { icon: FileCheck2, title: "3. Porządek przed ofertą", text: "Zgłoszenie trafia dalej z jasnym zakresem: PV, magazyn, pompa ciepła lub modernizacja." }
+  { icon: FileCheck2, title: "3. Jasny kierunek rozmowy", text: "Po weryfikacji wiadomo, czy rozmowa dotyczy PV, magazynu energii, pompy ciepła czy szerszej modernizacji." }
 ];
 
 const partnerNextSteps = [
@@ -271,9 +271,9 @@ const partnerNextSteps = [
 ];
 
 const materialSlots = [
-  { icon: Camera, title: "Widoczne wykonawstwo", text: "Zdjęcia domów, obiektów firmowych, instalacji gruntowych i pomp ciepła pomagają szybko ocenić skalę prac." },
-  { icon: FileText, title: "Jasny zakres rozmowy", text: "Od początku wiadomo, czy sprawdzamy PV, magazyn energii, pompę ciepła, EMS czy energię w obiegu." },
-  { icon: ClipboardCheck, title: "Prosta ścieżka kontaktu", text: "Krótki formularz zbiera najważniejsze dane, a dalsza rozmowa opiera się na konkretach, nie na przypadkowych obietnicach." }
+  { icon: Camera, title: "Realne przykłady inwestycji", text: "Zdjęcia domów, firm, instalacji gruntowych i pomp ciepła pomagają łatwiej wyobrazić sobie, jaki zakres może pasować do Twojej sytuacji." },
+  { icon: FileText, title: "Jasny zakres rozmowy", text: "Od początku ustalamy, czy chodzi o PV, magazyn energii, pompę ciepła, EMS czy temat nadwyżek energii." },
+  { icon: ClipboardCheck, title: "Prosta ścieżka kontaktu", text: "Krótki formularz zbiera najważniejsze dane, a dalsza rozmowa opiera się na konkretach zamiast ogólnych obietnic." }
 ];
 
 const faqItems = [
@@ -305,7 +305,7 @@ const faqItems = [
   {
     audience: ["all", "clients", "partners"],
     question: "Czy mogę zobaczyć przykłady realizacji?",
-    answer: "Tak. Na stronie pokazujemy przykładowe kadry wykonawstwa, a przy rozmowie można dopasować zakres i materiały do podobnego typu inwestycji."
+    answer: "Tak. Możesz zobaczyć przykładowe kadry wykonawstwa, a przy rozmowie dopasujemy zakres do podobnego typu inwestycji."
   },
   {
     audience: ["all", "clients"],
@@ -553,7 +553,7 @@ function HomePage({ onNavigate }) {
         <div className="hero-content">
           <p className="eyebrow"><SunMedium size={18} /> Partner Hydro NRG</p>
           <h1>SOLVA</h1>
-          <div className="partner-pill"><ShieldCheck size={18} /> Fotowoltaika, pompy ciepła, magazyny energii</div>
+          <div className="partner-pill"><ShieldCheck size={18} /> <span>Fotowoltaika, pompy ciepła, magazyny energii</span></div>
           <p className="hero-copy">
             Pomagamy klientom sprawdzić sens inwestycji OZE i rozwijamy partnerski zespół handlowy w modelu współpracy z Hydro NRG.
           </p>
@@ -586,7 +586,7 @@ function EnergyRoutesSection({ onNavigate }) {
         <p className="eyebrow dark"><Zap size={18} /> Dwa tematy do sprawdzenia</p>
         <h2>Masz albo planujesz fotowoltaikę? Sprawdź, czy prąd może pracować rozsądniej.</h2>
         <p>
-          Nie pokazujemy tu kalkulatora bez danych. Najpierw wystarczy rachunek, lokalizacja i informacja, czy instalacja już działa.
+          Nie zaczynamy od kalkulatora bez danych. Najpierw wystarczy rachunek, lokalizacja i informacja, czy instalacja już działa.
         </p>
       </div>
       <div className="energy-route-grid">
@@ -918,8 +918,8 @@ function PartnersPage({ onNavigate }) {
       <GalleryPreviewSection
         eyebrow="Skala rozwiązań OZE"
         icon={Camera}
-        title="Handlowiec musi widzieć, jaką wartość pokazuje klientowi."
-        text="Większe instalacje, obiekty firmowe i detale wykonania pomagają prowadzić rozmowę z klientem konkretnie, bez pustych haseł."
+        title="Handlowiec powinien sprzedawać konkretną wartość, nie same hasła."
+        text="Większe instalacje, obiekty firmowe i detale wykonania pomagają prowadzić rozmowę z klientem spokojnie, rzeczowo i na faktach."
         items={partnerGallery}
       />
 
@@ -1150,8 +1150,8 @@ function MediaSection() {
     <section className="section media-section reveal-zone" id="realizacje">
       <div className="section-heading">
         <p className="eyebrow dark"><Camera size={18} /> Realizacje i wykonawstwo</p>
-        <h2>Realne zdjęcia realizacji od razu podnoszą wiarygodność strony.</h2>
-        <p>Wybrane kadry pokazują domy jednorodzinne, większe obiekty, instalacje gruntowe oraz zaplecze pomp ciepła.</p>
+        <h2>Zobacz, jak różne mogą być dobrze dobrane inwestycje OZE.</h2>
+        <p>Dom jednorodzinny, większy obiekt, instalacja gruntowa czy pompa ciepła wymagają innej rozmowy i innych danych przed ofertą.</p>
       </div>
       <div className="media-grid">
         {realizations.map((item, index) => {
