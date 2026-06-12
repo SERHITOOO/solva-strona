@@ -34,8 +34,15 @@ function getCorsHeaders(origin: string | null) {
     "Access-Control-Allow-Origin": safeOrigin,
     "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Cache-Control": "no-store",
+    "Vary": "Origin",
+    "X-Content-Type-Options": "nosniff",
     "Content-Type": "application/json"
   };
+}
+
+function isAllowedRequestOrigin(origin: string | null) {
+  return !origin || allowedOrigins.includes(origin);
 }
 
 function cleanText(value: unknown, maxLength = 320) {
@@ -261,6 +268,10 @@ Deno.serve(async (request) => {
 
   if (request.method !== "POST") {
     return new Response(JSON.stringify({ error: "Metoda niedozwolona." }), { status: 405, headers });
+  }
+
+  if (!isAllowedRequestOrigin(origin)) {
+    return new Response(JSON.stringify({ error: "Ta domena nie może wysyłać zgłoszeń." }), { status: 403, headers });
   }
 
   const ip = request.headers.get("cf-connecting-ip") || request.headers.get("x-forwarded-for") || "unknown";

@@ -21,6 +21,17 @@ const allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
   .filter(Boolean);
 const recentRequests = new Map();
 
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+
+  if (req.path.startsWith("/api")) {
+    res.setHeader("Cache-Control", "no-store");
+  }
+
+  next();
+});
+
 app.use(
   cors({
     origin(origin, callback) {

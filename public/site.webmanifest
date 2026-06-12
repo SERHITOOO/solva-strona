@@ -1,0 +1,18 @@
+{
+  "name": "SOLVA",
+  "short_name": "SOLVA",
+  "description": "SOLVA - partner Hydro NRG. Kwalifikacja inwestycji OZE i współpraca handlowa.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f3f7fa",
+  "theme_color": "#00314f",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

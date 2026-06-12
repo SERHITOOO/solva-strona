@@ -174,8 +174,8 @@ const recruitment = [
 
 const proof = [
   { icon: SunMedium, value: "Zakres OZE", label: "PV, magazyny, pompy i termomodernizacja" },
-  { icon: SearchCheck, value: "Wstępna analiza", label: "bez opłat za sprawdzenie kierunku inwestycji" },
-  { icon: BadgeCheck, value: "Prosty kontakt", label: "zgłoszenie, weryfikacja i rozmowa z doradcą" }
+  { icon: SearchCheck, value: "0 zł", label: "za wstępne sprawdzenie kierunku inwestycji" },
+  { icon: BadgeCheck, value: "Bez presji", label: "najpierw dane i rozmowa, dopiero potem decyzja" }
 ];
 
 const clientSegments = [
@@ -481,9 +481,10 @@ async function submitToStaticEndpoint(kind, form, turnstileToken) {
     },
     body: JSON.stringify(payload)
   });
+  const result = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    throw new Error("Nie udało się wysłać formularza. Spróbuj ponownie za chwilę albo napisz na kontakt@solvaoze.pl.");
+    throw new Error(result.error || "Nie udało się wysłać formularza. Spróbuj ponownie za chwilę albo napisz na kontakt@solvaoze.pl.");
   }
 }
 
@@ -569,11 +570,11 @@ function HomePage({ onNavigate }) {
           <h1>SOLVA</h1>
           <div className="partner-pill"><ShieldCheck size={18} /> <span>Fotowoltaika, pompy ciepła, magazyny energii</span></div>
           <p className="hero-copy">
-            Pomagamy klientom sprawdzić sens inwestycji OZE i rozwijamy partnerski zespół handlowy w modelu współpracy z Hydro NRG.
+            Kwalifikujemy inwestycje OZE dla klientów i rozwijamy partnerski zespół handlowy w modelu współpracy z Hydro NRG.
           </p>
           <div className="hero-actions" aria-label="Główne akcje">
             <SiteLink className="button primary" href="/klienci#formularz" onNavigate={onNavigate}>
-              <Calculator size={19} /> Bezpłatna wycena
+              <Calculator size={19} /> Sprawdź inwestycję
             </SiteLink>
             <SiteLink className="button secondary" href="/handlowcy#formularz" onNavigate={onNavigate}>
               <BriefcaseBusiness size={19} /> Dołącz do zespołu
@@ -1821,25 +1822,25 @@ function LeadForm() {
   return (
     <form className="lead-form" onSubmit={(event) => submit(event, "lead")}>
       <FormStatus status={status} />
-      <input type="text" className="hidden-field" tabIndex="-1" autoComplete="off" value={form.companyWebsite} onChange={(event) => updateField("companyWebsite", event.target.value)} />
+      <input type="text" name="companyWebsite" className="hidden-field" tabIndex="-1" autoComplete="off" value={form.companyWebsite} onChange={(event) => updateField("companyWebsite", event.target.value)} />
       <div className="field-row">
         <label>
           <span>Imię i nazwisko</span>
-          <input value={form.fullName} onChange={(event) => updateField("fullName", event.target.value)} required placeholder="Jan Kowalski" />
+          <input name="name" value={form.fullName} onChange={(event) => updateField("fullName", event.target.value)} required autoComplete="name" maxLength="120" placeholder="Jan Kowalski" />
         </label>
         <label>
           <span>Telefon</span>
-          <input value={form.phone} onChange={(event) => updateField("phone", event.target.value)} required inputMode="tel" placeholder="+48 600 000 000" />
+          <input name="tel" value={form.phone} onChange={(event) => updateField("phone", event.target.value)} required type="tel" inputMode="tel" autoComplete="tel" maxLength="40" placeholder="+48 600 000 000" />
         </label>
       </div>
       <div className="field-row">
         <label>
           <span>E-mail</span>
-          <input value={form.email} onChange={(event) => updateField("email", event.target.value)} type="email" placeholder="kontakt@firma.pl" />
+          <input name="email" value={form.email} onChange={(event) => updateField("email", event.target.value)} type="email" inputMode="email" autoComplete="email" maxLength="120" placeholder="kontakt@firma.pl" />
         </label>
         <label>
           <span>Miejscowość</span>
-          <input value={form.location} onChange={(event) => updateField("location", event.target.value)} required placeholder="np. Kraków" />
+          <input name="address-level2" value={form.location} onChange={(event) => updateField("location", event.target.value)} required autoComplete="address-level2" maxLength="120" placeholder="np. Kraków" />
         </label>
       </div>
       <div className="field-row">
@@ -1885,7 +1886,7 @@ function LeadForm() {
       </div>
       <label>
         <span>Wiadomość</span>
-        <textarea value={form.message} onChange={(event) => updateField("message", event.target.value)} placeholder="Np. interesuje mnie fotowoltaika z magazynem energii" />
+        <textarea name="message" value={form.message} onChange={(event) => updateField("message", event.target.value)} maxLength="800" placeholder="Np. interesuje mnie fotowoltaika z magazynem energii" />
       </label>
       <Consent checked={form.consent} onChange={(value) => updateField("consent", value)} />
       <TurnstileWidget resetKey={turnstileResetKey} onVerify={setTurnstileToken} />
@@ -1902,25 +1903,25 @@ function PartnerForm() {
   return (
     <form className="lead-form" onSubmit={(event) => submit(event, "partner")}>
       <FormStatus status={status} />
-      <input type="text" className="hidden-field" tabIndex="-1" autoComplete="off" value={form.companyWebsite} onChange={(event) => updateField("companyWebsite", event.target.value)} />
+      <input type="text" name="companyWebsite" className="hidden-field" tabIndex="-1" autoComplete="off" value={form.companyWebsite} onChange={(event) => updateField("companyWebsite", event.target.value)} />
       <div className="field-row">
         <label>
           <span>Imię i nazwisko</span>
-          <input value={form.fullName} onChange={(event) => updateField("fullName", event.target.value)} required placeholder="Anna Nowak" />
+          <input name="name" value={form.fullName} onChange={(event) => updateField("fullName", event.target.value)} required autoComplete="name" maxLength="120" placeholder="Anna Nowak" />
         </label>
         <label>
           <span>Telefon</span>
-          <input value={form.phone} onChange={(event) => updateField("phone", event.target.value)} required inputMode="tel" placeholder="+48 600 000 000" />
+          <input name="tel" value={form.phone} onChange={(event) => updateField("phone", event.target.value)} required type="tel" inputMode="tel" autoComplete="tel" maxLength="40" placeholder="+48 600 000 000" />
         </label>
       </div>
       <div className="field-row">
         <label>
           <span>E-mail</span>
-          <input value={form.email} onChange={(event) => updateField("email", event.target.value)} type="email" placeholder="kontakt@firma.pl" />
+          <input name="email" value={form.email} onChange={(event) => updateField("email", event.target.value)} type="email" inputMode="email" autoComplete="email" maxLength="120" placeholder="kontakt@firma.pl" />
         </label>
         <label>
           <span>Miasto lub region</span>
-          <input value={form.city} onChange={(event) => updateField("city", event.target.value)} required placeholder="np. Śląsk" />
+          <input name="address-level2" value={form.city} onChange={(event) => updateField("city", event.target.value)} required autoComplete="address-level2" maxLength="120" placeholder="np. Śląsk" />
         </label>
       </div>
       <div className="field-row">
@@ -1968,7 +1969,7 @@ function PartnerForm() {
       </label>
       <label>
         <span>Wiadomość</span>
-        <textarea value={form.message} onChange={(event) => updateField("message", event.target.value)} placeholder="Napisz krótko o regionie, doświadczeniu albo oczekiwaniach" />
+        <textarea name="message" value={form.message} onChange={(event) => updateField("message", event.target.value)} maxLength="800" placeholder="Napisz krótko o regionie, doświadczeniu albo oczekiwaniach" />
       </label>
       <Consent checked={form.consent} onChange={(value) => updateField("consent", value)} />
       <TurnstileWidget resetKey={turnstileResetKey} onVerify={setTurnstileToken} />
@@ -1997,7 +1998,7 @@ function FormStatus({ status }) {
   }
 
   return (
-    <div className={`form-status ${status.type}`} role="status">
+    <div className={`form-status ${status.type}`} role="status" aria-live="polite">
       {status.type === "success" ? <Check size={18} /> : <Sparkles size={18} />}
       <span>{status.message}</span>
     </div>
