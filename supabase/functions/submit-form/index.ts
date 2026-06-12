@@ -17,6 +17,8 @@ const allowedOrigins = (Deno.env.get("ALLOWED_ORIGINS") || defaultOrigins.join("
 const notifyEmail = Deno.env.get("NOTIFY_EMAIL") || "kontakt@solvaoze.pl";
 const fromEmail = Deno.env.get("FROM_EMAIL") || "SOLVA <kontakt@solvaoze.pl>";
 const resendApiKey = Deno.env.get("RESEND_API_KEY") || "";
+const googleSheetsWebhookUrl = Deno.env.get("GOOGLE_SHEETS_WEBHOOK_URL") || "";
+const googleSheetsWebhookToken = Deno.env.get("GOOGLE_SHEETS_WEBHOOK_TOKEN") || "";
 const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
 const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
 const turnstileSecret = Deno.env.get("TURNSTILE_SECRET_KEY") || "";
@@ -177,6 +179,30 @@ async function sendNotification(payload: Record<string, unknown>, kind: "lead" |
   });
 }
 
+async function mirrorToGoogleSheets(row: Record<string, unknown>) {
+  if (!googleSheetsWebhookUrl) {
+    return;
+  }
+
+  const targetUrl = new URL(googleSheetsWebhookUrl);
+  if (googleSheetsWebhookToken) {
+    targetUrl.searchParams.set("token", googleSheetsWebhookToken);
+  }
+
+  const response = await fetch(targetUrl.toString(), {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify(row)
+  });
+
+  if (!response.ok) {
+    const details = await response.text().catch(() => "");
+    throw new Error(`Google Sheets webhook failed: ${response.status} ${details.slice(0, 240)}`);
+  }
+}
+
 Deno.serve(async (request) => {
   const origin = request.headers.get("origin");
   const headers = getCorsHeaders(origin);
@@ -231,6 +257,7 @@ Deno.serve(async (request) => {
   }
 
   await sendNotification(payload, kind).catch((error) => console.error(error));
+  await mirrorToGoogleSheets(row).catch((error) => console.error(error));
 
   return new Response(JSON.stringify({ ok: true }), { status: 201, headers });
 });
