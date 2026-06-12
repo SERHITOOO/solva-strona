@@ -959,6 +959,14 @@ textarea:focus {
   text-underline-offset: 3px;
 }
 
+.turnstile-box {
+  display: flex;
+  min-height: 70px;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: hidden;
+}
+
 .hidden-field {
   position: absolute;
   left: -9999px;
@@ -2396,6 +2404,11 @@ textarea:focus {
 
   .submit-button {
     min-height: 54px;
+  }
+
+  .turnstile-box {
+    min-height: 76px;
+    transform-origin: left center;
   }
 
   .process-step {

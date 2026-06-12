@@ -49,13 +49,14 @@ Aktualny wariant na pierwszy miesiąc:
 
 - GitHub Pages + domena `solvaoze.pl` - frontend bez kosztu miesięcznego.
 - Supabase Free - baza zgłoszeń `submissions` i funkcja `submit-form`.
+- Google Sheets - roboczy widok zgłoszeń w arkuszu `SOLVA - Leady i handlowcy`.
 - Mailbox `kontakt@solvaoze.pl` - kontakt firmowy w OVH/Zimbra.
 - Statusy i pola są już przygotowane pod CRM: `status`, `zrodlo`, `marka`, `podmiot`, tracking UTM.
 - Gdy CRM będzie gotowy, najprostsza migracja to przekierowanie formularzy na `VITE_API_BASE` albo `VITE_FORM_ENDPOINT`.
 
 Kolejny etap po walidacji leadów:
 
-- Cloudflare Turnstile do antyspamu.
+- Cloudflare Turnstile do antyspamu: frontend czyta `VITE_TURNSTILE_SITE_KEY`, a Supabase sprawdza `TURNSTILE_SECRET_KEY`.
 - Resend do automatycznych powiadomień mailowych na `kontakt@solvaoze.pl`.
 - Docelowo własny CRM i API pod `api.solvaoze.pl`.
 
@@ -69,6 +70,7 @@ Po wdrożeniu funkcji w Supabase ustaw w GitHub Actions zmienną:
 
 ```text
 VITE_FORM_ENDPOINT=https://sraivpmzkqkiasfjftjq.supabase.co/functions/v1/submit-form
+VITE_TURNSTILE_SITE_KEY=PUBLICZNY_SITE_KEY_CLOUDFLARE
 ```
 
 Workflow GitHub Pages przekaże tę zmienną do buildu strony.

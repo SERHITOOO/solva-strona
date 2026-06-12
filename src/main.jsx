@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   ArrowRight,
@@ -48,6 +48,7 @@ const contactEmail = "kontakt@solvaoze.pl";
 const privacyEmail = contactEmail;
 const staticFormEndpoint = import.meta.env.VITE_FORM_ENDPOINT || "";
 const apiBaseUrl = (import.meta.env.VITE_API_BASE || "").replace(/\/$/, "");
+const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || "";
 const legalEntityName = "JTJ FUND sp. z o.o.";
 const legalEntity = {
   fullName: "JTJ FUND SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
@@ -458,7 +459,7 @@ function buildMailtoHref(kind, form) {
   const payload = buildSubmissionPayload(kind, form);
   const subject = kind === "lead" ? "SOLVA - zgłoszenie klienta" : "SOLVA - zgłoszenie handlowca";
   const body = Object.entries(payload)
-    .filter(([key]) => !["companyWebsite", "tracking"].includes(key))
+    .filter(([key]) => !["companyWebsite", "tracking", "turnstileToken"].includes(key))
     .map(([key, value]) => `${key}: ${formatFieldValue(value)}`)
     .join("\n");
   const tracking = payload.tracking?.page ? `\n\nStrona zgłoszenia: ${payload.tracking.page}` : "";
@@ -466,10 +467,11 @@ function buildMailtoHref(kind, form) {
   return `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`${body}${tracking}`)}`;
 }
 
-async function submitToStaticEndpoint(kind, form) {
+async function submitToStaticEndpoint(kind, form, turnstileToken) {
   const payload = {
     kind,
-    ...buildSubmissionPayload(kind, form)
+    ...buildSubmissionPayload(kind, form),
+    turnstileToken
   };
   const response = await fetch(staticFormEndpoint, {
     method: "POST",
@@ -1670,9 +1672,94 @@ function Header({ currentPath, onNavigate }) {
   );
 }
 
+let turnstileScriptPromise;
+
+function loadTurnstileScript() {
+  if (!turnstileSiteKey || typeof window === "undefined") {
+    return Promise.resolve();
+  }
+
+  if (window.turnstile) {
+    return Promise.resolve();
+  }
+
+  if (!turnstileScriptPromise) {
+    turnstileScriptPromise = new Promise((resolve, reject) => {
+      const existingScript = document.querySelector("script[data-solva-turnstile]");
+      if (existingScript) {
+        existingScript.addEventListener("load", resolve, { once: true });
+        existingScript.addEventListener("error", reject, { once: true });
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      script.async = true;
+      script.defer = true;
+      script.dataset.solvaTurnstile = "true";
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  return turnstileScriptPromise;
+}
+
+function TurnstileWidget({ resetKey, onVerify }) {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (!turnstileSiteKey) {
+      onVerify("");
+      return undefined;
+    }
+
+    let cancelled = false;
+    let widgetId = null;
+
+    onVerify("");
+    loadTurnstileScript()
+      .then(() => {
+        if (cancelled || !containerRef.current || !window.turnstile) {
+          return;
+        }
+
+        containerRef.current.innerHTML = "";
+        widgetId = window.turnstile.render(containerRef.current, {
+          sitekey: turnstileSiteKey,
+          theme: "light",
+          callback: (token) => onVerify(token),
+          "expired-callback": () => onVerify(""),
+          "error-callback": () => onVerify("")
+        });
+      })
+      .catch(() => onVerify(""));
+
+    return () => {
+      cancelled = true;
+      if (widgetId !== null && window.turnstile) {
+        window.turnstile.remove(widgetId);
+      }
+    };
+  }, [onVerify, resetKey]);
+
+  if (!turnstileSiteKey) {
+    return null;
+  }
+
+  return (
+    <div className="turnstile-box">
+      <div ref={containerRef} />
+    </div>
+  );
+}
+
 function useSubmit(endpoint, defaults) {
   const [form, setForm] = useState(defaults);
   const [status, setStatus] = useState({ type: "idle", message: "" });
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileResetKey, setTurnstileResetKey] = useState(0);
 
   function updateField(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -1683,9 +1770,15 @@ function useSubmit(endpoint, defaults) {
     setStatus({ type: "loading", message: "Przygotowuję zgłoszenie..." });
 
     try {
+      if (turnstileSiteKey && !turnstileToken) {
+        throw new Error("Potwierdź zabezpieczenie formularza i spróbuj ponownie.");
+      }
+
       if (staticFormEndpoint) {
-        await submitToStaticEndpoint(kind, form);
+        await submitToStaticEndpoint(kind, form, turnstileToken);
         setForm(defaults);
+        setTurnstileToken("");
+        setTurnstileResetKey((value) => value + 1);
         setStatus({ type: "success", message: kind === "lead" ? "Zgłoszenie wysłane. Do rozmowy przygotuj ostatni rachunek lub kwotę za prąd." : "Zgłoszenie wysłane. Do rozmowy przygotuj region, doświadczenie i źródła klientów." });
         return;
       }
@@ -1700,7 +1793,7 @@ function useSubmit(endpoint, defaults) {
       const response = await fetch(getApiUrl(endpoint), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, tracking: getTrackingData() })
+        body: JSON.stringify({ ...form, turnstileToken, tracking: getTrackingData() })
       });
       const payload = await response.json().catch(() => ({}));
 
@@ -1709,17 +1802,21 @@ function useSubmit(endpoint, defaults) {
       }
 
       setForm(defaults);
+      setTurnstileToken("");
+      setTurnstileResetKey((value) => value + 1);
       setStatus({ type: "success", message: kind === "lead" ? "Zgłoszenie zapisane. Do rozmowy przygotuj ostatni rachunek lub kwotę za prąd." : "Zgłoszenie zapisane. Po wstępnej weryfikacji wrócimy z kolejnymi krokami autoryzacji." });
     } catch (error) {
+      setTurnstileToken("");
+      setTurnstileResetKey((value) => value + 1);
       setStatus({ type: "error", message: error.message });
     }
   }
 
-  return { form, status, updateField, submit };
+  return { form, status, updateField, submit, setTurnstileToken, turnstileResetKey };
 }
 
 function LeadForm() {
-  const { form, status, updateField, submit } = useSubmit("/api/leads", leadDefaults);
+  const { form, status, updateField, submit, setTurnstileToken, turnstileResetKey } = useSubmit("/api/leads", leadDefaults);
 
   return (
     <form className="lead-form" onSubmit={(event) => submit(event, "lead")}>
@@ -1791,6 +1888,7 @@ function LeadForm() {
         <textarea value={form.message} onChange={(event) => updateField("message", event.target.value)} placeholder="Np. interesuje mnie fotowoltaika z magazynem energii" />
       </label>
       <Consent checked={form.consent} onChange={(value) => updateField("consent", value)} />
+      <TurnstileWidget resetKey={turnstileResetKey} onVerify={setTurnstileToken} />
       <button className="submit-button" type="submit" disabled={status.type === "loading"}>
         <Mail size={19} /> Wyślij zapytanie <ArrowRight size={19} />
       </button>
@@ -1799,7 +1897,7 @@ function LeadForm() {
 }
 
 function PartnerForm() {
-  const { form, status, updateField, submit } = useSubmit("/api/partners", partnerDefaults);
+  const { form, status, updateField, submit, setTurnstileToken, turnstileResetKey } = useSubmit("/api/partners", partnerDefaults);
 
   return (
     <form className="lead-form" onSubmit={(event) => submit(event, "partner")}>
@@ -1873,6 +1971,7 @@ function PartnerForm() {
         <textarea value={form.message} onChange={(event) => updateField("message", event.target.value)} placeholder="Napisz krótko o regionie, doświadczeniu albo oczekiwaniach" />
       </label>
       <Consent checked={form.consent} onChange={(value) => updateField("consent", value)} />
+      <TurnstileWidget resetKey={turnstileResetKey} onVerify={setTurnstileToken} />
       <button className="submit-button" type="submit" disabled={status.type === "loading"}>
         <BadgeCheck size={19} /> Wyślij zgłoszenie <ArrowRight size={19} />
       </button>

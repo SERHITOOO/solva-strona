@@ -10,6 +10,7 @@ Aktualny cel: przez 1-2 miesiace zbierac kontakty ze strony bez stalego kosztu s
 - Endpoint produkcyjny: `https://sraivpmzkqkiasfjftjq.supabase.co/functions/v1/submit-form`.
 - GitHub Actions variable: `VITE_FORM_ENDPOINT` ustawione na endpoint Supabase.
 - Baza danych: tabela `public.submissions`.
+- Kopia robocza zgłoszeń: Google Sheets `SOLVA - Leady i handlowcy`.
 - Mailbox firmowy: `kontakt@solvaoze.pl` w OVH/Zimbra.
 
 ## Gdzie trafiaja zgloszenia
@@ -39,7 +40,23 @@ Najwazniejsze pola:
 - `tracking` - strona, referrer i parametry UTM.
 - `created_at` - data wplyniecia.
 
+Google Sheets:
+
+```text
+https://docs.google.com/spreadsheets/d/1a3Zaxd-yK4DGCgRrg6vUbPPhNUgYPi0fUf35tUSap6Y/edit
+```
+
+Zakladki:
+
+- `Leady - klienci`
+- `Handlowcy`
+
 ## Co jeszcze nie jest aktywne
+
+Cloudflare Turnstile jest przygotowany w kodzie, ale wymaga jeszcze:
+
+- GitHub Actions variable: `VITE_TURNSTILE_SITE_KEY`
+- Supabase secret: `TURNSTILE_SECRET_KEY`
 
 Automatyczne powiadomienia e-mail nie sa jeszcze wlaczone, bo brakuje `RESEND_API_KEY`.
 

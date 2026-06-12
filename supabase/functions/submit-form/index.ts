@@ -237,6 +237,10 @@ Deno.serve(async (request) => {
   }
 
   const tracking = normalizeTracking(payload.tracking);
+  const storedPayload = { ...payload };
+  delete storedPayload.companyWebsite;
+  delete storedPayload.turnstileToken;
+
   const row = {
     kind,
     status: "new",
@@ -245,7 +249,7 @@ Deno.serve(async (request) => {
     email: cleanText(payload.email, 120),
     location: kind === "lead" ? cleanText(payload.location, 120) : cleanText(payload.city, 120),
     source: "solvaoze.pl",
-    payload,
+    payload: storedPayload,
     tracking
   };
   const supabase = createClient(supabaseUrl, serviceRoleKey);
