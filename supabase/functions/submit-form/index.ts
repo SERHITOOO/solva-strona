@@ -288,7 +288,14 @@ Deno.serve(async (request) => {
     return new Response(JSON.stringify({ error: "Endpoint nie ma ustawionej konfiguracji Supabase." }), { status: 500, headers });
   }
 
-  const payload = await request.json().catch(() => null) as Record<string, unknown> | null;
+  const rawBody = await request.text();
+  if (new TextEncoder().encode(rawBody).length > maxBodySize) {
+    return new Response(JSON.stringify({ error: "Zgłoszenie jest zbyt duże." }), { status: 413, headers });
+  }
+
+  const payload = await Promise.resolve()
+    .then(() => JSON.parse(rawBody || "{}") as Record<string, unknown>)
+    .catch(() => null);
   if (!payload) {
     return new Response(JSON.stringify({ error: "Nieprawidłowe dane formularza." }), { status: 400, headers });
   }

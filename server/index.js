@@ -21,6 +21,13 @@ const allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
   .filter(Boolean);
 const recentRequests = new Map();
 
+function getAdminToken(req) {
+  const header = req.headers.authorization || "";
+  const match = header.match(/^Bearer\s+(.+)$/i);
+
+  return match ? match[1] : req.query.token;
+}
+
 app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
@@ -208,7 +215,7 @@ app.post("/api/partners", rateLimit, async (req, res) => {
 });
 
 app.get("/api/submissions", async (req, res) => {
-  if (!adminToken || req.query.token !== adminToken) {
+  if (!adminToken || getAdminToken(req) !== adminToken) {
     return res.status(401).json({ error: "Brak dostępu." });
   }
 

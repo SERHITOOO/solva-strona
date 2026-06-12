@@ -80,6 +80,24 @@ a {
   text-decoration: none;
 }
 
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 100;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: #fff;
+  background: var(--leaf-dark);
+  font-weight: 900;
+  transform: translateY(-150%);
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 .site-header {
   position: fixed;
   top: 0;
@@ -2180,9 +2198,16 @@ textarea:focus {
   }
 
   .site-header {
-    grid-template-columns: minmax(0, 1fr) auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 8px 12px;
     gap: 8px;
+  }
+
+  .brand {
+    min-width: 0;
+    flex: 0 1 auto;
   }
 
   .brand img {
@@ -2194,6 +2219,7 @@ textarea:focus {
   }
 
   .mobile-menu-toggle {
+    flex: 0 0 auto;
     width: auto;
     min-width: 46px;
     min-height: 42px;
@@ -2208,7 +2234,8 @@ textarea:focus {
   }
 
   .mobile-menu-panel {
-    top: calc(100% + 6px);
+    position: fixed;
+    top: 62px;
     right: 10px;
     left: 10px;
   }
@@ -2309,27 +2336,36 @@ textarea:focus {
   }
 
   .lead-strip {
+    overflow: visible;
     margin-top: -22px;
     width: calc(100% - 28px);
   }
 
   .proof-item {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
     align-items: flex-start;
     min-height: auto;
     gap: 12px;
     padding: 14px;
   }
 
+  .proof-item > div:not(.proof-icon) {
+    min-width: 0;
+  }
+
   .proof-item strong {
     min-width: 0;
     font-size: 1rem;
     overflow-wrap: anywhere;
+    white-space: normal;
   }
 
   .proof-item span {
     margin-top: 4px;
     font-size: 0.86rem;
     overflow-wrap: anywhere;
+    white-space: normal;
   }
 
   .proof-icon {

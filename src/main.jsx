@@ -543,9 +543,10 @@ function App() {
 
   return (
     <>
+      <a className="skip-link" href="#main-content">Przejdź do treści</a>
       <ScrollProgress />
       <Header currentPath={path} onNavigate={navigate} />
-      <main>
+      <main id="main-content">
         {path === "/klienci" ? <ClientsPage onNavigate={navigate} /> : null}
         {path === "/handlowcy" ? <PartnersPage onNavigate={navigate} /> : null}
         {path === "/prad-ktory-pracuje" ? <SmartEnergyPage onNavigate={navigate} /> : null}
@@ -1427,7 +1428,7 @@ function MobileActionBar({ currentPath, onNavigate }) {
     ? { href: "/handlowcy#formularz", label: "Dołącz", icon: BriefcaseBusiness }
     : currentPath === "/handlowcy"
       ? { href: "/klienci#formularz", label: "Klienci", icon: Calculator }
-      : { href: "/handlowcy#formularz", label: "Handlowcy", icon: BriefcaseBusiness };
+      : { href: "/handlowcy#formularz", label: "Zespół", icon: BriefcaseBusiness };
   const PrimaryIcon = primary.icon;
   const SecondaryIcon = secondary.icon;
 

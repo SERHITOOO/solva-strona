@@ -8,6 +8,7 @@
     "dev:web": "vite --host 0.0.0.0",
     "dev:api": "node server/index.js",
     "build": "vite build && node scripts/generate-route-meta.mjs",
+    "check": "npm run build && npm audit --omit=dev",
     "preview": "vite preview --host 0.0.0.0",
     "start": "node server/index.js"
   },
