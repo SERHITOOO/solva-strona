@@ -195,7 +195,7 @@ const solutionAreas = [
 const trustSignals = [
   { icon: SearchCheck, title: "Najpierw potrzeby", text: "Nie zaczynamy od oferty. Zbieramy rachunek, miejsce inwestycji, termin i oczekiwany zakres." },
   { icon: ShieldCheck, title: "Bez pustych obietnic", text: "Najpierw sprawdzamy dane, a dopiero potem rozmawiamy o rozwiązaniu i możliwych korzyściach." },
-  { icon: FileCheck2, title: "Realizacje i potwierdzenia", text: "Pokazujemy wykonawstwo, zakres usług i jasne zasady rozmowy. Szczegóły każdej oferty potwierdzamy indywidualnie." }
+  { icon: FileCheck2, title: "Realizacje i potwierdzenia", text: "Zobaczysz przykłady wykonania, zakres rozmowy i jasne kroki przed ofertą. Szczegóły każdej inwestycji potwierdzamy indywidualnie." }
 ];
 
 const energyRoutes = [
@@ -268,6 +268,18 @@ const partnerNextSteps = [
   { icon: Mail, title: "1. Wysyłasz zgłoszenie", text: "Podajesz region, doświadczenie, dostępność i źródła klientów." },
   { icon: SearchCheck, title: "2. Wstępna kwalifikacja", text: "Ustalamy, czy rozmawiamy o współpracy indywidualnej, liderze czy zespole." },
   { icon: ClipboardCheck, title: "3. Autoryzacja i start", text: "Szczegóły dokumentów, rozliczeń i materiałów potwierdzamy przed rozpoczęciem współpracy." }
+];
+
+const clientFormPrep = [
+  { icon: FileText, title: "Rachunek lub kwota", text: "Wystarczy ostatnia kwota za prąd. Zdjęcie rachunku przyda się dopiero przy rozmowie." },
+  { icon: MapPin, title: "Miejscowość i obiekt", text: "Dom, firma, gospodarstwo, dach albo grunt. To pomaga od razu wybrać dobry kierunek." },
+  { icon: Target, title: "Cel inwestycji", text: "Niższy rachunek, magazyn, pompa, EMS albo nadwyżki energii. Nie musisz znać rozwiązania na starcie." }
+];
+
+const partnerFormPrep = [
+  { icon: MapPin, title: "Region działania", text: "Wpisz miasto, województwo albo obszar, w którym realnie możesz obsługiwać klientów." },
+  { icon: TrendingUp, title: "Doświadczenie", text: "Sprzedaż, OZE, praca terenowa, obsługa klienta lub prowadzenie własnego zespołu." },
+  { icon: Users, title: "Źródła klientów", text: "Polecenia, baza kontaktów, działania lokalne albo zespół. To ustawia rozmowę startową." }
 ];
 
 const materialSlots = [
@@ -884,6 +896,7 @@ function ClientsPage({ onNavigate }) {
                 <span>Dom, firma, gospodarstwo albo obiekt usługowy.</span>
               </div>
             </div>
+            <FormPrepPanel title="Co przyspieszy rozmowę?" items={clientFormPrep} />
             <LeadForm />
           </div>
         </div>
@@ -1005,6 +1018,7 @@ function PartnersPage({ onNavigate }) {
                 <span>Odezwiemy się w sprawie dalszych kroków i autoryzacji.</span>
               </div>
             </div>
+            <FormPrepPanel title="Co warto wpisać konkretnie?" items={partnerFormPrep} />
             <PartnerForm />
           </div>
         </div>
@@ -1039,6 +1053,31 @@ function ProofStrip() {
         );
       })}
     </section>
+  );
+}
+
+function FormPrepPanel({ title, items }) {
+  return (
+    <div className="form-prep-panel" aria-label={title}>
+      <div className="form-prep-head">
+        <Sparkles size={18} />
+        <strong>{title}</strong>
+      </div>
+      <div className="form-prep-grid">
+        {items.map((item) => {
+          const Icon = item.icon;
+          return (
+            <div className="form-prep-item" key={item.title}>
+              <Icon size={18} />
+              <div>
+                <strong>{item.title}</strong>
+                <span>{item.text}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -1647,7 +1686,7 @@ function useSubmit(endpoint, defaults) {
       if (staticFormEndpoint) {
         await submitToStaticEndpoint(kind, form);
         setForm(defaults);
-        setStatus({ type: "success", message: kind === "lead" ? "Zgłoszenie wysłane. Przygotuj rachunek za prąd, żeby rozmowa była konkretna." : "Zgłoszenie wysłane. Przygotuj region, doświadczenie i źródła klientów do rozmowy." });
+        setStatus({ type: "success", message: kind === "lead" ? "Zgłoszenie wysłane. Do rozmowy przygotuj ostatni rachunek lub kwotę za prąd." : "Zgłoszenie wysłane. Do rozmowy przygotuj region, doświadczenie i źródła klientów." });
         return;
       }
 
@@ -1670,7 +1709,7 @@ function useSubmit(endpoint, defaults) {
       }
 
       setForm(defaults);
-      setStatus({ type: "success", message: kind === "lead" ? "Zgłoszenie zapisane. Przygotuj ostatni rachunek za prąd do dalszej weryfikacji." : "Zgłoszenie zapisane. Po wstępnej weryfikacji wrócimy z informacją o dalszych krokach autoryzacji." });
+      setStatus({ type: "success", message: kind === "lead" ? "Zgłoszenie zapisane. Do rozmowy przygotuj ostatni rachunek lub kwotę za prąd." : "Zgłoszenie zapisane. Po wstępnej weryfikacji wrócimy z kolejnymi krokami autoryzacji." });
     } catch (error) {
       setStatus({ type: "error", message: error.message });
     }

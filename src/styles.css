@@ -473,6 +473,8 @@ h3 {
 
 .proof-item > div {
   min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .proof-item:not(:last-child)::after {
@@ -788,6 +790,67 @@ h3 {
   margin-top: 4px;
   color: var(--muted);
   line-height: 1.5;
+}
+
+.form-prep-panel {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 14px;
+  border: 1px solid #d8e7ee;
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f8fbfd 100%);
+}
+
+.form-prep-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--leaf-dark);
+  font-size: 0.94rem;
+  font-weight: 900;
+}
+
+.form-prep-head svg {
+  color: var(--solar-strong);
+}
+
+.form-prep-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.form-prep-item {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px;
+  border-radius: 8px;
+  background: #eef6f8;
+}
+
+.form-prep-item svg {
+  margin-top: 2px;
+  color: var(--leaf);
+}
+
+.form-prep-item strong,
+.form-prep-item span {
+  display: block;
+}
+
+.form-prep-item strong {
+  color: var(--leaf-dark);
+  font-size: 0.93rem;
+}
+
+.form-prep-item span {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
 }
 
 .tabs {
@@ -2144,13 +2207,16 @@ textarea:focus {
 
   h1,
   .page-hero h1 {
-    font-size: 2.55rem;
-    line-height: 1;
+    max-width: 100%;
+    font-size: clamp(2rem, 9.4vw, 2.22rem);
+    line-height: 1.04;
+    overflow-wrap: anywhere;
   }
 
   h2 {
     font-size: 1.72rem;
     line-height: 1.08;
+    overflow-wrap: anywhere;
   }
 
   h3 {
@@ -2180,15 +2246,17 @@ textarea:focus {
   }
 
   .hero-content {
-    width: calc(100% - 28px);
-    margin: 0 auto;
+    width: min(340px, calc(100vw - 32px));
+    margin-right: 14px;
+    margin-left: 14px;
     padding-top: 104px;
     padding-bottom: 58px;
   }
 
   .page-hero-content {
-    width: calc(100% - 28px);
-    margin: 0 auto;
+    width: min(340px, calc(100vw - 32px));
+    margin-right: 14px;
+    margin-left: 14px;
     padding-top: 104px;
     padding-bottom: 46px;
   }
@@ -2200,8 +2268,10 @@ textarea:focus {
 
   .hero-copy,
   .page-hero-content > p:not(.eyebrow) {
+    max-width: 100%;
     font-size: 1.02rem;
     line-height: 1.55;
+    overflow-wrap: anywhere;
   }
 
   .partner-pill {
@@ -2236,6 +2306,7 @@ textarea:focus {
   }
 
   .proof-item {
+    align-items: flex-start;
     min-height: auto;
     gap: 12px;
     padding: 14px;
@@ -2244,11 +2315,13 @@ textarea:focus {
   .proof-item strong {
     min-width: 0;
     font-size: 1rem;
+    overflow-wrap: anywhere;
   }
 
   .proof-item span {
     margin-top: 4px;
     font-size: 0.86rem;
+    overflow-wrap: anywhere;
   }
 
   .proof-icon {
@@ -2280,6 +2353,19 @@ textarea:focus {
 
   .form-shell {
     padding: 14px;
+  }
+
+  .form-prep-panel {
+    padding: 12px;
+  }
+
+  .form-prep-item {
+    grid-template-columns: 28px 1fr;
+    padding: 9px;
+  }
+
+  .form-prep-item:nth-child(n+3) {
+    display: none;
   }
 
   .energy-route-card h3 {
@@ -2391,7 +2477,7 @@ textarea:focus {
     bottom: 10px;
     z-index: 35;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
     padding: 8px;
     border: 1px solid rgba(215, 228, 235, 0.96);
@@ -2406,12 +2492,20 @@ textarea:focus {
     align-items: center;
     justify-content: center;
     gap: 7px;
+    min-width: 0;
     min-height: 48px;
     border-radius: 7px;
     color: var(--leaf-dark);
     background: #f2f7fa;
     font-size: 0.78rem;
     font-weight: 900;
+  }
+
+  .mobile-action-bar span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .mobile-action-bar a:first-child {
