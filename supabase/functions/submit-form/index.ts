@@ -22,6 +22,10 @@ const googleSheetsWebhookToken = Deno.env.get("GOOGLE_SHEETS_WEBHOOK_TOKEN") || 
 const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
 const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
 const turnstileSecret = Deno.env.get("TURNSTILE_SECRET_KEY") || "";
+const maxBodySize = 96 * 1024;
+const rateLimitWindowMs = 60 * 1000;
+const rateLimitMaxRequests = 8;
+const recentRequests = new Map<string, number[]>();
 
 function getCorsHeaders(origin: string | null) {
   const safeOrigin = origin && allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
@@ -43,6 +47,16 @@ function cleanText(value: unknown, maxLength = 320) {
 
 function hasConsent(value: unknown) {
   return value === true || cleanText(value, 12).toLowerCase() === "tak";
+}
+
+function isValidEmail(value: unknown) {
+  const email = cleanText(value, 120);
+
+  if (!email) {
+    return true;
+  }
+
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 function getKind(payload: Record<string, unknown>) {
@@ -87,6 +101,10 @@ function validate(payload: Record<string, unknown>, kind: "lead" | "partner") {
     return "Podaj prawidłowy numer telefonu.";
   }
 
+  if (!isValidEmail(payload.email)) {
+    return "Podaj prawidłowy adres e-mail albo zostaw to pole puste.";
+  }
+
   if (kind === "lead" && cleanText(payload.location, 120).length < 2) {
     return "Podaj miejscowość inwestycji.";
   }
@@ -96,6 +114,31 @@ function validate(payload: Record<string, unknown>, kind: "lead" | "partner") {
   }
 
   return "";
+}
+
+function isRateLimited(ip: string) {
+  const now = Date.now();
+  const current = (recentRequests.get(ip) || []).filter((timestamp) => now - timestamp < rateLimitWindowMs);
+
+  if (current.length >= rateLimitMaxRequests) {
+    recentRequests.set(ip, current);
+    return true;
+  }
+
+  current.push(now);
+  recentRequests.set(ip, current);
+
+  for (const [key, timestamps] of recentRequests) {
+    const active = timestamps.filter((timestamp) => now - timestamp < rateLimitWindowMs);
+
+    if (active.length) {
+      recentRequests.set(key, active);
+    } else {
+      recentRequests.delete(key);
+    }
+  }
+
+  return false;
 }
 
 async function verifyTurnstile(token: string, ip: string) {
@@ -164,7 +207,7 @@ async function sendNotification(payload: Record<string, unknown>, kind: "lead" |
     : "SOLVA - nowe zgłoszenie handlowca";
   const text = submissionSummary(payload, kind);
 
-  await fetch("https://api.resend.com/emails", {
+  const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${resendApiKey}`,
@@ -177,6 +220,11 @@ async function sendNotification(payload: Record<string, unknown>, kind: "lead" |
       text
     })
   });
+
+  if (!response.ok) {
+    const details = await response.text().catch(() => "");
+    throw new Error(`Resend notification failed: ${response.status} ${details.slice(0, 240)}`);
+  }
 }
 
 async function mirrorToGoogleSheets(row: Record<string, unknown>) {
@@ -215,6 +263,16 @@ Deno.serve(async (request) => {
     return new Response(JSON.stringify({ error: "Metoda niedozwolona." }), { status: 405, headers });
   }
 
+  const ip = request.headers.get("cf-connecting-ip") || request.headers.get("x-forwarded-for") || "unknown";
+  if (isRateLimited(ip)) {
+    return new Response(JSON.stringify({ error: "Za dużo zgłoszeń w krótkim czasie. Spróbuj ponownie za chwilę." }), { status: 429, headers });
+  }
+
+  const contentLength = Number(request.headers.get("content-length") || "0");
+  if (contentLength > maxBodySize) {
+    return new Response(JSON.stringify({ error: "Zgłoszenie jest zbyt duże." }), { status: 413, headers });
+  }
+
   if (!supabaseUrl || !serviceRoleKey) {
     return new Response(JSON.stringify({ error: "Endpoint nie ma ustawionej konfiguracji Supabase." }), { status: 500, headers });
   }
@@ -230,7 +288,6 @@ Deno.serve(async (request) => {
     return new Response(JSON.stringify({ error: validationError }), { status: 400, headers });
   }
 
-  const ip = request.headers.get("cf-connecting-ip") || request.headers.get("x-forwarded-for") || "";
   const turnstileToken = cleanText(payload.turnstileToken, 1200);
   if (!(await verifyTurnstile(turnstileToken, ip))) {
     return new Response(JSON.stringify({ error: "Nie udało się potwierdzić zabezpieczenia formularza." }), { status: 400, headers });

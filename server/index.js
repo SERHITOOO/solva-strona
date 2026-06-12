@@ -134,6 +134,11 @@ function validateSubmission(raw, type) {
     return "Podaj prawidłowy numer telefonu.";
   }
 
+  const email = cleanText(raw.email, 120);
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return "Podaj prawidłowy adres e-mail albo zostaw to pole puste.";
+  }
+
   if (type === "lead" && cleanText(raw.location, 120).length < 2) {
     return "Podaj miejscowość inwestycji.";
   }

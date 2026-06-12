@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://solvaoze.pl/sitemap.xml
