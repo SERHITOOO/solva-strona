@@ -2098,17 +2098,17 @@ textarea:focus {
     will-change: max-height, opacity, transform;
     visibility: hidden;
     transition:
-      max-height 420ms cubic-bezier(0.22, 1, 0.36, 1),
-      padding 420ms cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 260ms ease,
-      box-shadow 320ms ease,
+      max-height 560ms cubic-bezier(0.22, 1, 0.36, 1),
+      padding 560ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 280ms ease,
+      box-shadow 340ms ease,
       opacity 240ms ease,
-      transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
-      visibility 0s linear 430ms;
+      transform 560ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s linear 580ms;
   }
 
   .mobile-menu-panel.open {
-    max-height: min(72vh, 540px);
+    max-height: min(72vh, calc(var(--mobile-menu-height, 520px) + 20px));
     padding: 10px;
     border-color: rgba(215, 228, 235, 0.96);
     box-shadow: 0 18px 54px rgba(0, 49, 79, 0.2);
@@ -2119,6 +2119,25 @@ textarea:focus {
     transform: translateY(0);
     visibility: visible;
     transition-delay: 0s;
+  }
+
+  .mobile-menu-panel.closing {
+    max-height: 0;
+    padding: 0 10px;
+    border-color: rgba(215, 228, 235, 0);
+    box-shadow: 0 18px 54px rgba(0, 49, 79, 0);
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transform: translateY(-8px);
+    visibility: visible;
+    transition:
+      max-height 720ms cubic-bezier(0.16, 1, 0.3, 1),
+      padding 720ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 360ms ease 180ms,
+      box-shadow 360ms ease 180ms,
+      opacity 240ms ease 420ms,
+      transform 720ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .mobile-menu-toggle[aria-expanded="true"] {

@@ -1608,6 +1608,10 @@ function useScrollProgress(dependency) {
 
 function Header({ currentPath, onNavigate }) {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMobileMenuClosing, setMobileMenuClosing] = useState(false);
+  const [mobileMenuHeight, setMobileMenuHeight] = useState(0);
+  const mobileMenuPanelRef = useRef(null);
+  const mobileMenuCloseTimeoutRef = useRef(null);
   const navItems = [
     { href: "/", label: "Start", path: "/" },
     { href: "/klienci", label: "Klienci", path: "/klienci" },
@@ -1617,9 +1621,65 @@ function Header({ currentPath, onNavigate }) {
     { href: "/prywatnosc", label: "Prywatność", path: "/prywatnosc", mobileOnly: true }
   ];
   const contactHref = currentPath === "/handlowcy" ? "/handlowcy#formularz" : "/klienci#formularz";
+  const mobileMenuPanelClass = [
+    "mobile-menu-panel",
+    isMobileMenuOpen ? "open" : "",
+    isMobileMenuClosing ? "closing" : ""
+  ].filter(Boolean).join(" ");
+  const mobileMenuStyle = { "--mobile-menu-height": `${mobileMenuHeight || 520}px` };
+
+  function updateMobileMenuHeight() {
+    if (mobileMenuPanelRef.current) {
+      setMobileMenuHeight(mobileMenuPanelRef.current.scrollHeight);
+    }
+  }
+
+  function openMobileMenu() {
+    window.clearTimeout(mobileMenuCloseTimeoutRef.current);
+    updateMobileMenuHeight();
+    setMobileMenuClosing(false);
+    setMobileMenuOpen(true);
+  }
+
+  function closeMobileMenu() {
+    if (!isMobileMenuOpen && !isMobileMenuClosing) {
+      return;
+    }
+
+    window.clearTimeout(mobileMenuCloseTimeoutRef.current);
+    updateMobileMenuHeight();
+    setMobileMenuOpen(false);
+    setMobileMenuClosing(true);
+    mobileMenuCloseTimeoutRef.current = window.setTimeout(() => {
+      setMobileMenuClosing(false);
+    }, 780);
+  }
+
+  function toggleMobileMenu() {
+    if (isMobileMenuOpen) {
+      closeMobileMenu();
+      return;
+    }
+
+    openMobileMenu();
+  }
+
+  useEffect(() => {
+    if (!isMobileMenuOpen && !isMobileMenuClosing) {
+      return undefined;
+    }
+
+    updateMobileMenuHeight();
+    window.addEventListener("resize", updateMobileMenuHeight);
+    return () => {
+      window.removeEventListener("resize", updateMobileMenuHeight);
+    };
+  }, [currentPath, isMobileMenuClosing, isMobileMenuOpen]);
+
+  useEffect(() => () => window.clearTimeout(mobileMenuCloseTimeoutRef.current), []);
 
   function handleNavigate(href) {
-    setMobileMenuOpen(false);
+    closeMobileMenu();
     onNavigate(href);
   }
 
@@ -1649,12 +1709,17 @@ function Header({ currentPath, onNavigate }) {
         aria-label={isMobileMenuOpen ? "Zamknij menu" : "Otwórz menu"}
         aria-controls="mobile-nav"
         aria-expanded={isMobileMenuOpen}
-        onClick={() => setMobileMenuOpen((isOpen) => !isOpen)}
+        onClick={toggleMobileMenu}
       >
         {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
         <span className="mobile-menu-label">Menu</span>
       </button>
-      <div className={`mobile-menu-panel${isMobileMenuOpen ? " open" : ""}`} id="mobile-nav">
+      <div
+        className={mobileMenuPanelClass}
+        id="mobile-nav"
+        ref={mobileMenuPanelRef}
+        style={mobileMenuStyle}
+      >
         <span>Wybierz temat</span>
         {navItems.map((item) => (
           <SiteLink
