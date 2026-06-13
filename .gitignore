@@ -4,6 +4,7 @@ dist/
 .env
 .DS_Store
 supabase/.temp/
+integrations/google-sheets/.clasp.json
 npm-debug.log*
 PROMPT.md
 REBRANDING_PROMPT.md

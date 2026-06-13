@@ -31,9 +31,10 @@ import {
   X,
   Zap
 } from "lucide-react";
+import { getFaqItemsForAudience } from "./content/faq.js";
+import { getCanonicalUrl, getOgImageUrl, routes, seoByPath } from "./content/seo.js";
 import "./styles.css";
 
-const routes = ["/", "/klienci", "/handlowcy", "/prad-ktory-pracuje", "/energia-w-obiegu", "/prywatnosc"];
 const appBasePath = import.meta.env.BASE_URL === "/" ? "" : import.meta.env.BASE_URL.replace(/\/$/, "");
 const heroImages = {
   home: { "--hero-image": `url("${assetUrl("assets/realizations/hero-home.webp")}")` },
@@ -289,76 +290,6 @@ const materialSlots = [
   { icon: ClipboardCheck, title: "Prosta ścieżka kontaktu", text: "Krótki formularz zbiera najważniejsze dane, a dalsza rozmowa opiera się na konkretach zamiast ogólnych obietnic." }
 ];
 
-const faqItems = [
-  {
-    audience: ["all", "clients", "partners"],
-    question: "Czy SOLVA jest osobną marką?",
-    answer: `Tak. SOLVA to marka handlowa używana przez ${legalEntityName}, która komunikuje partnerski zespół sprzedażowy współpracujący z Hydro NRG.`
-  },
-  {
-    audience: ["all", "clients"],
-    question: "Jakie rozwiązania można zgłosić przez formularz?",
-    answer: "Fotowoltaikę, magazyny energii, EMS, energię w obiegu, pompy ciepła, źródła ciepła oraz szerszą analizę OZE dla domu lub firmy."
-  },
-  {
-    audience: ["all", "clients"],
-    question: "Czy EMS oznacza gwarantowany zarobek na prądzie?",
-    answer: "Nie obiecujemy wyniku bez danych. EMS ma pomóc lepiej wykorzystać energię z instalacji, ale sens rozwiązania trzeba sprawdzić na rachunku, instalacji i sposobie zużycia prądu."
-  },
-  {
-    audience: ["all", "clients"],
-    question: "Czy każdy może wejść do spółdzielni energetycznej?",
-    answer: "Nie. Najpierw trzeba sprawdzić lokalizację, operatora sieci, warunki członkostwa i profil zużycia. Dlatego na stronie prowadzimy do rozmowy, a nie do obietnicy bez weryfikacji."
-  },
-  {
-    audience: ["all", "partners"],
-    question: "Czy handlowiec może mieć własny zespół?",
-    answer: "Tak, formularz jest przygotowany także dla liderów i osób z własną bazą kontaktów. Szczegóły współpracy wymagają potwierdzenia przed startem."
-  },
-  {
-    audience: ["all", "clients", "partners"],
-    question: "Czy mogę zobaczyć przykłady realizacji?",
-    answer: "Tak. Możesz zobaczyć przykładowe kadry wykonawstwa, a przy rozmowie dopasujemy zakres do podobnego typu inwestycji."
-  },
-  {
-    audience: ["all", "clients"],
-    question: "Co warto przygotować przed analizą?",
-    answer: "Najbardziej pomaga aktualny rachunek za prąd, miejscowość, informacja o budynku oraz to, czy instalacja już istnieje, czy dopiero jest planowana."
-  },
-  {
-    audience: ["all", "partners"],
-    question: "Co warto przygotować przed zgłoszeniem handlowca?",
-    answer: "Najlepiej określić region działania, doświadczenie sprzedażowe, dostępność, źródła klientów i informację, czy współpraca ma dotyczyć jednej osoby czy zespołu."
-  }
-];
-
-const seoByPath = {
-  "/": {
-    title: "SOLVA | Partner Hydro NRG",
-    description: "SOLVA pomaga klientom sprawdzić kierunek inwestycji OZE i rozwija partnerski zespół handlowy: fotowoltaika, magazyny energii, pompy ciepła i termomodernizacja."
-  },
-  "/klienci": {
-    title: "SOLVA | Bezpłatna analiza OZE dla klientów",
-    description: "Zgłoś rachunek za prąd i sprawdź kierunek inwestycji OZE: fotowoltaika, magazyn energii, pompa ciepła lub szersza modernizacja."
-  },
-  "/handlowcy": {
-    title: "SOLVA | Współpraca dla handlowców OZE",
-    description: "Dołącz do zespołu sprzedażowego SOLVA jako handlowiec OZE, lider regionu albo partner z własną bazą kontaktów."
-  },
-  "/prad-ktory-pracuje": {
-    title: "SOLVA | Prąd, który pracuje",
-    description: "EMS, lepsze wykorzystanie energii, magazyn energii i weryfikacja, czy instalacja może pracować rozsądniej."
-  },
-  "/energia-w-obiegu": {
-    title: "SOLVA | Energia w obiegu",
-    description: "Energia w obiegu, nadwyżki z fotowoltaiki i sprawdzenie, czy adres pasuje do dalszej rozmowy."
-  },
-  "/prywatnosc": {
-    title: "SOLVA | Prywatność i zgody",
-    description: "Informacje o kontakcie, danych z formularzy i zasadach przetwarzania danych przez SOLVA."
-  }
-};
-
 function getTrackingData() {
   if (typeof window === "undefined") {
     return {};
@@ -392,10 +323,20 @@ function setMetaAttribute(selector, attribute, value) {
 
 function updateSeo(path) {
   const seo = seoByPath[path] || seoByPath["/"];
+  const canonicalUrl = getCanonicalUrl(path);
+  const imageUrl = getOgImageUrl(seo);
+
   document.title = seo.title;
   setMetaAttribute('meta[name="description"]', "content", seo.description);
   setMetaAttribute('meta[property="og:title"]', "content", seo.title);
   setMetaAttribute('meta[property="og:description"]', "content", seo.description);
+  setMetaAttribute('meta[property="og:url"]', "content", canonicalUrl);
+  setMetaAttribute('meta[property="og:image"]', "content", imageUrl);
+  setMetaAttribute('meta[property="og:image:secure_url"]', "content", imageUrl);
+  setMetaAttribute('meta[property="og:image:alt"]', "content", seo.imageAlt);
+  setMetaAttribute('meta[name="twitter:title"]', "content", seo.title);
+  setMetaAttribute('meta[name="twitter:description"]', "content", seo.description);
+  setMetaAttribute('meta[name="twitter:image"]', "content", imageUrl);
 
   let canonical = document.querySelector('link[rel="canonical"]');
   if (!canonical) {
@@ -404,7 +345,7 @@ function updateSeo(path) {
     document.head.appendChild(canonical);
   }
 
-  canonical.setAttribute("href", new URL(toPublicPath(path), window.location.origin).href);
+  canonical.setAttribute("href", canonicalUrl);
 }
 
 function isLocalHost() {
@@ -429,6 +370,16 @@ function formatFieldValue(value) {
   }
 
   return value || "-";
+}
+
+function trimForMailto(value, maxLength = 420) {
+  const text = String(value || "").trim();
+
+  if (text.length <= maxLength) {
+    return text;
+  }
+
+  return `${text.slice(0, maxLength - 1).trim()}…`;
 }
 
 function buildSubmissionPayload(kind, form) {
@@ -457,14 +408,19 @@ function buildSubmissionPayload(kind, form) {
 
 function buildMailtoHref(kind, form) {
   const payload = buildSubmissionPayload(kind, form);
+  const compactPayload = {
+    ...payload,
+    message: trimForMailto(payload.message, 420)
+  };
   const subject = kind === "lead" ? "SOLVA - zgłoszenie klienta" : "SOLVA - zgłoszenie handlowca";
-  const body = Object.entries(payload)
+  const body = Object.entries(compactPayload)
     .filter(([key]) => !["companyWebsite", "tracking", "turnstileToken"].includes(key))
     .map(([key, value]) => `${key}: ${formatFieldValue(value)}`)
     .join("\n");
-  const tracking = payload.tracking?.page ? `\n\nStrona zgłoszenia: ${payload.tracking.page}` : "";
+  const tracking = payload.tracking?.page ? `\n\nStrona zgłoszenia: ${trimForMailto(payload.tracking.page, 220)}` : "";
+  const mailBody = trimForMailto(`${body}${tracking}`, 1800);
 
-  return `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`${body}${tracking}`)}`;
+  return `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
 }
 
 async function submitToStaticEndpoint(kind, form, turnstileToken) {
@@ -496,6 +452,38 @@ function getInitialPath() {
   const routePath = stripBasePath(window.location.pathname);
 
   return routes.includes(routePath) ? routePath : "/";
+}
+
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, info) {
+    console.error("SOLVA render error", error, info);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <main className="error-fallback" id="main-content">
+          <img src={logoUrl} alt="SOLVA" />
+          <h1>Strona chwilowo nie może się poprawnie załadować.</h1>
+          <p>Odśwież stronę albo napisz bezpośrednio na {contactEmail}. Formularze wrócą po ponownym załadowaniu aplikacji.</p>
+          <a className="button primary" href={`mailto:${contactEmail}`}>
+            <Mail size={19} /> Napisz do SOLVA
+          </a>
+        </main>
+      );
+    }
+
+    return this.props.children;
+  }
 }
 
 function App() {
@@ -1447,15 +1435,12 @@ function MobileActionBar({ currentPath, onNavigate }) {
 }
 
 function FaqSection({ audience = "all" } = {}) {
-  const visibleItems = audience === "all"
-    ? faqItems
-    : faqItems.filter((item) => item.audience.includes(audience));
+  const visibleItems = getFaqItemsForAudience(audience);
   const titleByAudience = {
     all: "Najważniejsze pytania zanim zostawisz kontakt.",
     clients: "Najważniejsze pytania przed zostawieniem zgłoszenia.",
     partners: "Najważniejsze pytania przed zgłoszeniem współpracy."
   };
-
   return (
     <section className="section faq-section reveal-zone" id="faq">
       <div className="section-heading">
@@ -1498,12 +1483,17 @@ function PageHero({ eyebrow, icon: Icon, title, text, primary, secondary, imageS
 }
 
 function SiteLink({ href, onNavigate, children, ...props }) {
-  const publicHref = typeof window === "undefined" ? href : toPublicPath(parseRouteHref(href).path, parseRouteHref(href).hash);
+  const { path, hash } = parseRouteHref(href);
+  const publicHref = typeof window === "undefined" ? href : toPublicPath(path, hash);
 
   return (
     <a
       href={publicHref}
       onClick={(event) => {
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+          return;
+        }
+
         event.preventDefault();
         onNavigate(href);
       }}
@@ -1827,6 +1817,7 @@ function useSubmit(endpoint, defaults) {
   const [status, setStatus] = useState({ type: "idle", message: "" });
   const [turnstileToken, setTurnstileToken] = useState("");
   const [turnstileResetKey, setTurnstileResetKey] = useState(0);
+  const canSubmit = status.type !== "loading" && (!turnstileSiteKey || Boolean(turnstileToken));
 
   function updateField(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -1879,11 +1870,11 @@ function useSubmit(endpoint, defaults) {
     }
   }
 
-  return { form, status, updateField, submit, setTurnstileToken, turnstileResetKey };
+  return { canSubmit, form, status, updateField, submit, setTurnstileToken, turnstileResetKey };
 }
 
 function LeadForm() {
-  const { form, status, updateField, submit, setTurnstileToken, turnstileResetKey } = useSubmit("/api/leads", leadDefaults);
+  const { canSubmit, form, status, updateField, submit, setTurnstileToken, turnstileResetKey } = useSubmit("/api/leads", leadDefaults);
 
   return (
     <form className="lead-form" onSubmit={(event) => submit(event, "lead")}>
@@ -1896,7 +1887,7 @@ function LeadForm() {
         </label>
         <label>
           <span>Telefon</span>
-          <input name="tel" value={form.phone} onChange={(event) => updateField("phone", event.target.value)} required type="tel" inputMode="tel" autoComplete="tel" maxLength="40" placeholder="+48 600 000 000" />
+          <input name="tel" value={form.phone} onChange={(event) => updateField("phone", event.target.value)} required type="tel" inputMode="tel" autoComplete="tel" maxLength="40" pattern={String.raw`[+0-9\s().-]{7,40}`} title="Podaj numer telefonu, minimum 7 cyfr." placeholder="+48 600 000 000" />
         </label>
       </div>
       <div className="field-row">
@@ -1956,7 +1947,7 @@ function LeadForm() {
       </label>
       <Consent checked={form.consent} onChange={(value) => updateField("consent", value)} />
       <TurnstileWidget resetKey={turnstileResetKey} onVerify={setTurnstileToken} />
-      <button className="submit-button" type="submit" disabled={status.type === "loading"}>
+      <button className="submit-button" type="submit" disabled={!canSubmit}>
         <Mail size={19} /> Wyślij zapytanie <ArrowRight size={19} />
       </button>
     </form>
@@ -1964,7 +1955,7 @@ function LeadForm() {
 }
 
 function PartnerForm() {
-  const { form, status, updateField, submit, setTurnstileToken, turnstileResetKey } = useSubmit("/api/partners", partnerDefaults);
+  const { canSubmit, form, status, updateField, submit, setTurnstileToken, turnstileResetKey } = useSubmit("/api/partners", partnerDefaults);
 
   return (
     <form className="lead-form" onSubmit={(event) => submit(event, "partner")}>
@@ -1977,7 +1968,7 @@ function PartnerForm() {
         </label>
         <label>
           <span>Telefon</span>
-          <input name="tel" value={form.phone} onChange={(event) => updateField("phone", event.target.value)} required type="tel" inputMode="tel" autoComplete="tel" maxLength="40" placeholder="+48 600 000 000" />
+          <input name="tel" value={form.phone} onChange={(event) => updateField("phone", event.target.value)} required type="tel" inputMode="tel" autoComplete="tel" maxLength="40" pattern={String.raw`[+0-9\s().-]{7,40}`} title="Podaj numer telefonu, minimum 7 cyfr." placeholder="+48 600 000 000" />
         </label>
       </div>
       <div className="field-row">
@@ -2039,7 +2030,7 @@ function PartnerForm() {
       </label>
       <Consent checked={form.consent} onChange={(value) => updateField("consent", value)} />
       <TurnstileWidget resetKey={turnstileResetKey} onVerify={setTurnstileToken} />
-      <button className="submit-button" type="submit" disabled={status.type === "loading"}>
+      <button className="submit-button" type="submit" disabled={!canSubmit}>
         <BadgeCheck size={19} /> Wyślij zgłoszenie <ArrowRight size={19} />
       </button>
     </form>
@@ -2104,4 +2095,8 @@ function Footer({ onNavigate }) {
   );
 }
 
-createRoot(document.getElementById("root")).render(<App />);
+createRoot(document.getElementById("root")).render(
+  <ErrorBoundary>
+    <App />
+  </ErrorBoundary>
+);

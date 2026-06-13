@@ -28,6 +28,13 @@ function getAdminToken(req) {
   return match ? match[1] : req.query.token;
 }
 
+function safeTokenEquals(candidate, expected) {
+  const candidateBuffer = Buffer.from(String(candidate || ""), "utf8");
+  const expectedBuffer = Buffer.from(String(expected || ""), "utf8");
+
+  return candidateBuffer.length === expectedBuffer.length && crypto.timingSafeEqual(candidateBuffer, expectedBuffer);
+}
+
 app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
@@ -69,6 +76,17 @@ function rateLimit(req, res, next) {
 
   current.push(now);
   recentRequests.set(ip, current);
+
+  for (const [key, timestamps] of recentRequests) {
+    const active = timestamps.filter((timestamp) => now - timestamp < windowMs);
+
+    if (active.length) {
+      recentRequests.set(key, active);
+    } else {
+      recentRequests.delete(key);
+    }
+  }
+
   next();
 }
 
@@ -215,7 +233,7 @@ app.post("/api/partners", rateLimit, async (req, res) => {
 });
 
 app.get("/api/submissions", async (req, res) => {
-  if (!adminToken || getAdminToken(req) !== adminToken) {
+  if (!adminToken || !safeTokenEquals(getAdminToken(req), adminToken)) {
     return res.status(401).json({ error: "Brak dostępu." });
   }
 
@@ -234,7 +252,7 @@ if (existsSync(distDir)) {
   });
 }
 
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   console.error(err);
   res.status(500).json({ error: "Wystąpił błąd serwera." });
 });

@@ -69,7 +69,7 @@ Repo zawiera też gotowe pliki Supabase:
 Po wdrożeniu funkcji w Supabase ustaw w GitHub Actions zmienną:
 
 ```text
-VITE_FORM_ENDPOINT=https://sraivpmzkqkiasfjftjq.supabase.co/functions/v1/submit-form
+VITE_FORM_ENDPOINT=https://TWOJ-PROJEKT.supabase.co/functions/v1/submit-form
 VITE_TURNSTILE_SITE_KEY=PUBLICZNY_SITE_KEY_CLOUDFLARE
 ```
 
@@ -80,9 +80,9 @@ Workflow GitHub Pages przekaże tę zmienną do buildu strony.
 - Podglądy linków: `public/assets/og/*.jpg`
 - Logo: `public/assets/solva-logo.svg`
 - Sekcje realizacji, materiałów Hydro, wideo i 3D są teraz przygotowane pod późniejszą podmianę na realne zdjęcia, filmy, certyfikaty i opisy usług.
-- Logo pod Pracuj.pl: `public/assets/job-boards/pracuj-logo-180.png` albo większe `public/assets/job-boards/pracuj-logo-512.png`.
-- Logo pod RocketJobs.pl: `public/assets/job-boards/rocketjobs-logo-512.png`; dodatkowo poziomy wariant `public/assets/job-boards/rocketjobs-logo-horizontal.png`.
-- Sekcja interaktywnego motywu instalacji jest przygotowana pod wycięty dom z panelami, mini-scenę 3D lub krótki materiał video po dosłaniu prawdziwych zdjęć.
+- Logo pod Pracuj.pl: `resources/job-boards/pracuj-logo-180.png` albo większe `resources/job-boards/pracuj-logo-512.png`.
+- Logo pod RocketJobs.pl: `resources/job-boards/rocketjobs-logo-512.png`; dodatkowo poziomy wariant `resources/job-boards/rocketjobs-logo-horizontal.png`.
+- Sekcja „Instalacja w centrum uwagi” jest przygotowana pod późniejszą podmianę na wycięty dom z panelami, mini-scenę 3D albo krótki materiał video po dosłaniu prawdziwych zdjęć.
 
 ## Notatki do finalizacji treści
 

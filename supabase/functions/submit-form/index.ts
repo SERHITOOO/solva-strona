@@ -3,7 +3,6 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
 const defaultOrigins = [
   "https://solvaoze.pl",
   "https://www.solvaoze.pl",
-  "https://serhitooo.github.io",
   "http://localhost:5173",
   "http://localhost:5174",
   "http://localhost:4173"
@@ -73,6 +72,7 @@ function getKind(payload: Record<string, unknown>) {
     return rawKind;
   }
 
+  // Backward compatibility for older mail/form payloads that used only the Polish label.
   return cleanText(payload.typ, 80).toLowerCase().includes("handlowca") ? "partner" : "lead";
 }
 

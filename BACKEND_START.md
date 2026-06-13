@@ -5,9 +5,9 @@ Aktualny cel: przez 1-2 miesiace zbierac kontakty ze strony bez stalego kosztu s
 ## Co juz dziala
 
 - Frontend: GitHub Pages pod domena `https://solvaoze.pl`.
-- Backend formularzy: Supabase project `SOLVA`, ref `sraivpmzkqkiasfjftjq`.
+- Backend formularzy: Supabase project `SOLVA`.
 - Edge Function: `submit-form`.
-- Endpoint produkcyjny: `https://sraivpmzkqkiasfjftjq.supabase.co/functions/v1/submit-form`.
+- Endpoint produkcyjny: ustawiany w GitHub Actions jako `VITE_FORM_ENDPOINT`.
 - GitHub Actions variable: `VITE_FORM_ENDPOINT` ustawione na endpoint Supabase.
 - Baza danych: tabela `public.submissions`.
 - Kopia robocza zgłoszeń: Google Sheets `SOLVA - Leady i handlowcy`.
@@ -18,7 +18,7 @@ Aktualny cel: przez 1-2 miesiace zbierac kontakty ze strony bez stalego kosztu s
 Supabase Dashboard:
 
 ```text
-https://supabase.com/dashboard/project/sraivpmzkqkiasfjftjq/editor
+Supabase Dashboard -> projekt SOLVA -> Table Editor
 ```
 
 Tabela:
@@ -43,7 +43,7 @@ Najwazniejsze pola:
 Google Sheets:
 
 ```text
-https://docs.google.com/spreadsheets/d/1a3Zaxd-yK4DGCgRrg6vUbPPhNUgYPi0fUf35tUSap6Y/edit
+Arkusz roboczy SOLVA - Leady i handlowcy, link trzymaj w prywatnej dokumentacji operacyjnej.
 ```
 
 Zakladki:

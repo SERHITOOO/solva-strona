@@ -1,4 +1,4 @@
-const DEFAULT_SHEET_ID = "1sOVOBYbLtPjCgEPpUCAcXu9iQOOCwWgCA2risSB-MyU";
+const DEFAULT_SHEET_ID = "";
 const LEADS_SHEET = "Leady - klienci";
 const PARTNERS_SHEET = "Handlowcy";
 const SHEET_ID_PROPERTY = "SOLVA_SHEET_ID";
@@ -71,7 +71,13 @@ function getCampaign(tracking) {
 }
 
 function getSheetId() {
-  return PropertiesService.getScriptProperties().getProperty(SHEET_ID_PROPERTY) || DEFAULT_SHEET_ID;
+  const sheetId = PropertiesService.getScriptProperties().getProperty(SHEET_ID_PROPERTY) || DEFAULT_SHEET_ID;
+
+  if (!sheetId) {
+    throw new Error("Brakuje SOLVA_SHEET_ID w Project Settings -> Script properties.");
+  }
+
+  return sheetId;
 }
 
 function getSpreadsheet() {
@@ -202,6 +208,19 @@ function verifyToken(event, body) {
   return token === expected;
 }
 
+function verifyAdminToken(event, body) {
+  const expected =
+    PropertiesService.getScriptProperties().getProperty("SOLVA_ADMIN_WEBHOOK_TOKEN") ||
+    PropertiesService.getScriptProperties().getProperty("SOLVA_WEBHOOK_TOKEN");
+
+  if (!expected) {
+    return true;
+  }
+
+  const token = clean(event && event.parameter ? event.parameter.token : "") || clean(body.token);
+  return token === expected;
+}
+
 function appendLead(spreadsheet, createdAt, payload, tracking) {
   const sheet = spreadsheet.getSheetByName(LEADS_SHEET);
   const row = [
@@ -292,7 +311,7 @@ function doPost(event) {
 }
 
 function doGet(event) {
-  if (!verifyToken(event, {})) {
+  if (!verifyAdminToken(event, {})) {
     return ContentService
       .createTextOutput(JSON.stringify({ ok: false, error: "Unauthorized" }))
       .setMimeType(ContentService.MimeType.JSON);

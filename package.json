@@ -3,12 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "concurrently \"npm:dev:api\" \"npm:dev:web\"",
     "dev:web": "vite --host 0.0.0.0",
     "dev:api": "node server/index.js",
     "build": "vite build && node scripts/generate-route-meta.mjs",
-    "check": "npm run build && npm audit --omit=dev",
+    "lint": "eslint .",
+    "check": "npm run lint && npm run build && npm audit --omit=dev",
     "preview": "vite preview --host 0.0.0.0",
     "start": "node server/index.js"
   },
@@ -21,5 +25,13 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "vite": "^8.0.16"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "eslint": "^9.39.4",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.6.0"
   }
 }
