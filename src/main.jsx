@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
+  AlertCircle,
   ArrowRight,
   BadgeCheck,
   BatteryCharging,
@@ -17,6 +18,7 @@ import {
   Handshake,
   HelpCircle,
   Layers3,
+  Loader2,
   Mail,
   MapPin,
   Menu,
@@ -489,18 +491,25 @@ class ErrorBoundary extends React.Component {
 function App() {
   const [path, setPath] = useState(getInitialPath);
 
-  function navigate(href) {
-    const { path: nextPath, hash } = parseRouteHref(href);
-    window.history.pushState({}, "", toPublicPath(nextPath, hash));
-    setPath(nextPath);
-
-    window.setTimeout(() => {
+  function scheduleScrollToTarget(hash = window.location.hash) {
+    return window.setTimeout(() => {
       if (hash) {
         document.querySelector(hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
       } else {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }, 60);
+  }
+
+  function navigate(href) {
+    const { path: nextPath, hash } = parseRouteHref(href);
+    window.history.pushState({}, "", toPublicPath(nextPath, hash));
+
+    if (nextPath === path) {
+      scheduleScrollToTarget(hash);
+    }
+
+    setPath(nextPath);
   }
 
   useEffect(() => {
@@ -517,13 +526,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    window.setTimeout(() => {
-      if (window.location.hash) {
-        document.querySelector(window.location.hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
-      } else {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-    }, 80);
+    const id = scheduleScrollToTarget();
+    return () => window.clearTimeout(id);
   }, [path]);
 
   useRevealMotion(path);
@@ -1441,6 +1445,7 @@ function FaqSection({ audience = "all" } = {}) {
     clients: "Najważniejsze pytania przed zostawieniem zgłoszenia.",
     partners: "Najważniejsze pytania przed zgłoszeniem współpracy."
   };
+
   return (
     <section className="section faq-section reveal-zone" id="faq">
       <div className="section-heading">
@@ -2043,7 +2048,7 @@ function Consent({ checked, onChange }) {
       <input type="checkbox" checked={checked} onChange={(event) => onChange(event.target.checked)} required />
       <span>
         Zgadzam się na kontakt w sprawie mojego zgłoszenia i rozumiem, że dane zostaną użyte do obsługi zapytania.
-        Szczegóły opisuje <a href={toPublicPath("/prywatnosc")}>informacja o prywatności</a>.
+        Szczegóły opisuje <a href={toPublicPath("/prywatnosc")} target="_blank" rel="noopener noreferrer">informacja o prywatności</a>.
       </span>
     </label>
   );
@@ -2054,9 +2059,15 @@ function FormStatus({ status }) {
     return null;
   }
 
+  const icons = {
+    success: <Check size={18} />,
+    error: <AlertCircle size={18} />,
+    loading: <Loader2 size={18} className="spin" />
+  };
+
   return (
     <div className={`form-status ${status.type}`} role="status" aria-live="polite">
-      {status.type === "success" ? <Check size={18} /> : <Sparkles size={18} />}
+      {icons[status.type] ?? <Sparkles size={18} />}
       <span>{status.message}</span>
     </div>
   );
@@ -2074,7 +2085,7 @@ function Footer({ onNavigate }) {
       <div className="footer-contact-card">
         <strong>Kontakt przez formularz</strong>
         <a href={`mailto:${contactEmail}`}><Mail size={18} /> {contactEmail}</a>
-        <span>Telefon nie jest jeszcze publikowany. Zgłoszenia klientów i handlowców obsługujemy przez formularze.</span>
+        <span>Zgłoszenia obsługujemy przez formularz. Na wiadomości odpowiadamy możliwie szybko w dni robocze.</span>
       </div>
 
       <div className="footer-nav">

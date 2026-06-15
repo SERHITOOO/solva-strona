@@ -14,7 +14,6 @@
   --leaf-dark: #00314f;
   --mint: #e5f2f7;
   --mist: #f8fbf7;
-  --coral: #f29400;
   --ice: #f3f7fa;
   --shadow: 0 22px 70px rgba(0, 49, 79, 0.14);
   --soft-shadow: 0 16px 40px rgba(0, 49, 79, 0.09);
@@ -487,6 +486,16 @@ h3 {
   padding: 18px 20px;
   border-radius: 8px;
   background: transparent;
+  transition: background 200ms ease;
+}
+
+.proof-item:hover {
+  background: rgba(0, 109, 143, 0.04);
+}
+
+.proof-item:hover .proof-icon {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(0, 109, 143, 0.18));
+  border-color: rgba(0, 109, 143, 0.3);
 }
 
 .proof-item > div {
@@ -515,8 +524,10 @@ h3 {
   border: 1px solid rgba(0, 109, 143, 0.14);
   border-radius: 8px;
   color: var(--leaf);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(231, 244, 248, 0.92));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(231, 244, 248, 0.92));
+  transition:
+    background 200ms ease,
+    border-color 200ms ease;
 }
 
 .proof-item strong {
@@ -968,7 +979,26 @@ textarea:focus {
   width: 100%;
   min-height: 52px;
   color: #fff;
-  background: var(--leaf-dark);
+  background: linear-gradient(135deg, #006d8f 0%, #00314f 100%);
+  box-shadow: 0 16px 35px rgba(0, 49, 79, 0.18);
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-button:not(:disabled)::after {
+  content: "";
+  position: absolute;
+  top: -34%;
+  bottom: -34%;
+  left: 0;
+  width: 34%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.18) 50%, transparent 100%);
+  filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(-180%, 0, 0) skewX(-18deg);
+  animation: buttonSheen 5.2s cubic-bezier(0.5, 0, 0.22, 1) 2.4s infinite;
 }
 
 .submit-button:disabled {
@@ -983,20 +1013,34 @@ textarea:focus {
   min-height: 44px;
   padding: 12px 14px;
   border-radius: 8px;
+  border-left: 3px solid transparent;
   color: var(--ink);
   font-weight: 750;
 }
 
 .form-status.success {
   background: #dff3ea;
+  border-left-color: #16a34a;
 }
 
 .form-status.error {
   background: #ffe4dd;
+  border-left-color: #dc2626;
+  color: #7f1d1d;
 }
 
 .form-status.loading {
   background: #fff0d8;
+  border-left-color: var(--solar-strong);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spin {
+  animation: spin 0.9s linear infinite;
+  flex-shrink: 0;
 }
 
 .media-section {
@@ -1261,6 +1305,16 @@ textarea:focus {
   width: min(880px, 100%);
   margin: 0 auto 34px;
   text-align: center;
+}
+
+.section-heading h2::after {
+  content: "";
+  display: block;
+  width: 44px;
+  height: 3px;
+  margin: 16px auto 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--solar) 0%, var(--leaf) 100%);
 }
 
 .media-grid {
@@ -2385,6 +2439,10 @@ textarea:focus {
 
   .section-heading .eyebrow {
     justify-content: flex-start;
+  }
+
+  .section-heading h2::after {
+    margin-left: 0;
   }
 
   .split-cta-card,
