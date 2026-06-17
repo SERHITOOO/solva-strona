@@ -50,8 +50,11 @@ const logoUrl = `${assetUrl("assets/solva-logo.svg")}?v=1`;
 const contactEmail = "kontakt@solvaoze.pl";
 const privacyEmail = contactEmail;
 const staticFormEndpoint = import.meta.env.VITE_FORM_ENDPOINT || "";
+const explicitAnalyticsEndpoint = import.meta.env.VITE_ANALYTICS_ENDPOINT || "";
 const apiBaseUrl = (import.meta.env.VITE_API_BASE || "").replace(/\/$/, "");
 const turnstileSiteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY || "";
+const analyticsEndpoint = explicitAnalyticsEndpoint || deriveAnalyticsEndpoint(staticFormEndpoint);
+const analyticsStorageKey = "solva.analytics.session";
 const legalEntityName = "JTJ FUND sp. z o.o.";
 const legalEntity = {
   fullName: "JTJ FUND SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
@@ -315,6 +318,103 @@ function getTrackingData() {
   };
 }
 
+function deriveAnalyticsEndpoint(endpoint) {
+  if (!endpoint) {
+    return "";
+  }
+
+  try {
+    const url = new URL(endpoint);
+    url.pathname = url.pathname.replace(/\/submit-form\/?$/, "/track-event");
+    return url.toString();
+  } catch {
+    return "";
+  }
+}
+
+function getAnalyticsSessionId() {
+  try {
+    const existing = window.sessionStorage.getItem(analyticsStorageKey);
+    if (existing) {
+      return existing;
+    }
+
+    const next = window.crypto?.randomUUID
+      ? window.crypto.randomUUID()
+      : `session-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+    window.sessionStorage.setItem(analyticsStorageKey, next);
+    return next;
+  } catch {
+    return "";
+  }
+}
+
+function shouldTrackAnalytics() {
+  if (!analyticsEndpoint || typeof window === "undefined") {
+    return false;
+  }
+
+  return !["1", "yes"].includes(String(navigator.doNotTrack || window.doNotTrack || "").toLowerCase());
+}
+
+function trackEvent(event, metadata = {}) {
+  if (!shouldTrackAnalytics()) {
+    return;
+  }
+
+  const body = JSON.stringify({
+    event,
+    sessionId: getAnalyticsSessionId(),
+    path: getInitialPath(),
+    tracking: getTrackingData(),
+    metadata: {
+      ...metadata,
+      hash: window.location.hash
+    }
+  });
+
+  fetch(analyticsEndpoint, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body,
+    keepalive: true
+  }).catch(() => {});
+}
+
+function useFormViewTracking(kind) {
+  const formRef = useRef(null);
+
+  useEffect(() => {
+    const element = formRef.current;
+    if (!element) {
+      return undefined;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      trackEvent("form_view", { kind });
+      return undefined;
+    }
+
+    let tracked = false;
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.some((entry) => entry.isIntersecting && entry.intersectionRatio >= 0.35);
+      if (!visible || tracked) {
+        return;
+      }
+
+      tracked = true;
+      trackEvent("form_view", { kind });
+      observer.disconnect();
+    }, { threshold: [0.35] });
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [kind]);
+
+  return formRef;
+}
+
 function setMetaAttribute(selector, attribute, value) {
   const element = document.querySelector(selector);
 
@@ -514,6 +614,7 @@ function App() {
 
   useEffect(() => {
     updateSeo(path);
+    trackEvent("page_view", { title: seoByPath[path]?.title || "", route: path });
   }, [path]);
 
   useEffect(() => {
@@ -592,7 +693,7 @@ function EnergyRoutesSection({ onNavigate }) {
     <section className="section energy-routes-section reveal-zone">
       <div className="section-heading">
         <p className="eyebrow dark"><Zap size={18} /> Dwa tematy do sprawdzenia</p>
-        <h2>Masz albo planujesz fotowoltaikę? Sprawdź, czy prąd może pracować rozsądniej.</h2>
+        <h2>Masz albo planujesz fotowoltaikę? Sprawdź, czy prąd i magazyn energii mogą pracować rozsądniej.</h2>
         <p>
           Nie zaczynamy od kalkulatora bez danych. Najpierw wystarczy rachunek, lokalizacja i informacja, czy instalacja już działa.
         </p>
@@ -862,7 +963,7 @@ function ClientsPage({ onNavigate }) {
         <div className="section-grid">
           <div className="section-copy">
             <p className="eyebrow dark"><Zap size={18} /> Kwalifikacja inwestycji OZE</p>
-            <h2>Rachunek za prąd zamień w uporządkowane zgłoszenie.</h2>
+            <h2>Fotowoltaika, magazyn energii albo pompa ciepła: zacznij od rachunku za prąd.</h2>
             <p>
               Formularz zbiera dane potrzebne do pierwszego kontaktu: lokalizację, rachunek, zakres i temat, który warto sprawdzić przed ofertą.
             </p>
@@ -936,7 +1037,7 @@ function PartnersPage({ onNavigate }) {
         <div className="section-grid reverse">
           <div className="recruitment-copy">
             <p className="eyebrow"><Handshake size={18} /> Współpraca handlowa</p>
-            <h2>Dołącz do zespołu SOLVA.</h2>
+            <h2>Dołącz do zespołu sprzedaży OZE SOLVA.</h2>
             <p>
               Szukamy osób, które potrafią pozyskiwać klientów, prowadzić rozmowy sprzedażowe i pracować na uporządkowanym procesie.
               Szczegóły prawne i rozliczeniowe potwierdzamy przed rozpoczęciem współpracy.
@@ -985,7 +1086,7 @@ function PartnersPage({ onNavigate }) {
         <div className="section-grid">
           <div className="section-copy">
             <p className="eyebrow dark"><BriefcaseBusiness size={18} /> Formularz rekrutacyjny</p>
-            <h2>Pokaż region, doświadczenie i źródła klientów.</h2>
+            <h2>Pokaż region, doświadczenie i źródła klientów OZE.</h2>
             <p>
               Dzięki temu szybciej ocenimy, czy rozmawiać o współpracy indywidualnej, roli lidera albo modelu dla zespołu sprzedażowego.
             </p>
@@ -1161,7 +1262,7 @@ function PartnerTracksSection() {
     <section className="section partner-tracks-section reveal-zone">
       <div className="section-heading">
         <p className="eyebrow dark"><Users size={18} /> Ścieżki współpracy</p>
-        <h2>Nie każdy handlowiec startuje z tego samego miejsca.</h2>
+        <h2>Nie każdy handlowiec OZE startuje z tego samego miejsca.</h2>
         <p>Inaczej rozmawiamy z osobą początkującą, inaczej z liderem zespołu i inaczej z partnerem, który ma własne źródła klientów.</p>
       </div>
       <div className="track-grid">
@@ -1392,7 +1493,7 @@ function PrivacyPage({ onNavigate }) {
             </div>
             <div>
               <strong>Cookies i analityka</strong>
-              <span>Strona może używać niezbędnych plików cookies potrzebnych do działania. Analitykę, piksele reklamowe lub remarketing należy uruchamiać dopiero z odpowiednią informacją i zgodą, jeśli będzie wymagana.</span>
+              <span>Strona używa lekkiej analityki technicznej bez cookies: zapisujemy typ zdarzenia, podstronę, źródło wejścia, parametry UTM i tymczasowy identyfikator sesji. Piksele reklamowe, remarketing lub narzędzia wymagające zgody należy uruchamiać dopiero z odpowiednią informacją i zgodą, jeśli będzie wymagana.</span>
             </div>
             <div>
               <strong>EMS i energia w obiegu</strong>
@@ -1830,6 +1931,7 @@ function useSubmit(endpoint, defaults) {
 
   async function submit(event, kind = "lead") {
     event.preventDefault();
+    trackEvent("form_submit_attempt", { kind });
     setStatus({ type: "loading", message: "Przygotowuję zgłoszenie..." });
 
     try {
@@ -1839,6 +1941,7 @@ function useSubmit(endpoint, defaults) {
 
       if (staticFormEndpoint) {
         await submitToStaticEndpoint(kind, form, turnstileToken);
+        trackEvent("form_submit_success", { kind, mode: "static" });
         setForm(defaults);
         setTurnstileToken("");
         setTurnstileResetKey((value) => value + 1);
@@ -1847,6 +1950,7 @@ function useSubmit(endpoint, defaults) {
       }
 
       if (!shouldUseApiEndpoint()) {
+        trackEvent("mailto_fallback", { kind, mode: "mailto" });
         window.location.href = buildMailtoHref(kind, form);
         setForm(defaults);
         setStatus({ type: "success", message: "Otworzyliśmy gotową wiadomość e-mail. Wyślij ją, aby zgłoszenie trafiło do SOLVA." });
@@ -1864,11 +1968,13 @@ function useSubmit(endpoint, defaults) {
         throw new Error(payload.error || "Nie udało się wysłać formularza.");
       }
 
+      trackEvent("form_submit_success", { kind, mode: "api" });
       setForm(defaults);
       setTurnstileToken("");
       setTurnstileResetKey((value) => value + 1);
       setStatus({ type: "success", message: kind === "lead" ? "Zgłoszenie zapisane. Do rozmowy przygotuj ostatni rachunek lub kwotę za prąd." : "Zgłoszenie zapisane. Po wstępnej weryfikacji wrócimy z kolejnymi krokami autoryzacji." });
     } catch (error) {
+      trackEvent("form_submit_error", { kind, error: error.message });
       setTurnstileToken("");
       setTurnstileResetKey((value) => value + 1);
       setStatus({ type: "error", message: error.message });
@@ -1880,9 +1986,10 @@ function useSubmit(endpoint, defaults) {
 
 function LeadForm() {
   const { canSubmit, form, status, updateField, submit, setTurnstileToken, turnstileResetKey } = useSubmit("/api/leads", leadDefaults);
+  const formViewRef = useFormViewTracking("lead");
 
   return (
-    <form className="lead-form" onSubmit={(event) => submit(event, "lead")}>
+    <form ref={formViewRef} className="lead-form" onSubmit={(event) => submit(event, "lead")}>
       <FormStatus status={status} />
       <input type="text" name="companyWebsite" className="hidden-field" tabIndex="-1" autoComplete="off" value={form.companyWebsite} onChange={(event) => updateField("companyWebsite", event.target.value)} />
       <div className="field-row">
@@ -1961,9 +2068,10 @@ function LeadForm() {
 
 function PartnerForm() {
   const { canSubmit, form, status, updateField, submit, setTurnstileToken, turnstileResetKey } = useSubmit("/api/partners", partnerDefaults);
+  const formViewRef = useFormViewTracking("partner");
 
   return (
-    <form className="lead-form" onSubmit={(event) => submit(event, "partner")}>
+    <form ref={formViewRef} className="lead-form" onSubmit={(event) => submit(event, "partner")}>
       <FormStatus status={status} />
       <input type="text" name="companyWebsite" className="hidden-field" tabIndex="-1" autoComplete="off" value={form.companyWebsite} onChange={(event) => updateField("companyWebsite", event.target.value)} />
       <div className="field-row">

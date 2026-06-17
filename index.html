@@ -42,23 +42,50 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "SOLVA",
-        "legalName": "JTJ FUND SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
-        "description": "Partnerski zespół sprzedażowy OZE współpracujący z Hydro NRG.",
-        "url": "https://solvaoze.pl/",
-        "areaServed": "PL",
-        "email": "kontakt@solvaoze.pl",
-        "vatID": "PL5272760087",
-        "taxID": "5272760087",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "ul. Komorska 55",
-          "postalCode": "04-149",
-          "addressLocality": "Warszawa",
-          "addressCountry": "PL"
-        },
-        "sameAs": ["https://www.hydro-energy.pl/"]
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://solvaoze.pl/#organization",
+            "name": "SOLVA",
+            "legalName": "JTJ FUND SPÓŁKA Z OGRANICZONĄ ODPOWIEDZIALNOŚCIĄ",
+            "description": "Partnerski zespół sprzedażowy OZE współpracujący z Hydro NRG.",
+            "url": "https://solvaoze.pl/",
+            "areaServed": "PL",
+            "email": "kontakt@solvaoze.pl",
+            "vatID": "PL5272760087",
+            "taxID": "5272760087",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "ul. Komorska 55",
+              "postalCode": "04-149",
+              "addressLocality": "Warszawa",
+              "addressCountry": "PL"
+            },
+            "sameAs": ["https://www.hydro-energy.pl/"]
+          },
+          {
+            "@type": "ProfessionalService",
+            "@id": "https://solvaoze.pl/#service",
+            "name": "SOLVA",
+            "url": "https://solvaoze.pl/",
+            "email": "kontakt@solvaoze.pl",
+            "description": "Wstępna kwalifikacja inwestycji OZE: fotowoltaika, magazyny energii, pompy ciepła, EMS i termomodernizacja.",
+            "provider": { "@id": "https://solvaoze.pl/#organization" },
+            "areaServed": {
+              "@type": "Country",
+              "name": "Polska"
+            },
+            "knowsAbout": ["fotowoltaika", "magazyny energii", "pompy ciepła", "EMS", "termomodernizacja", "OZE"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://solvaoze.pl/#website",
+            "name": "SOLVA",
+            "url": "https://solvaoze.pl/",
+            "publisher": { "@id": "https://solvaoze.pl/#organization" },
+            "inLanguage": "pl-PL"
+          }
+        ]
       }
     </script>
   </head>

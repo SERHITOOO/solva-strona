@@ -40,7 +40,9 @@ Docelowo warto podpiąć jeden z wariantów:
 - `POST /api/partners` - zapis formularza rekrutacyjnego handlowca.
 - `GET /api/submissions?token=...` - podgląd zgłoszeń po ustawieniu `ADMIN_TOKEN`.
 - Formularze zapisują też podstawowe dane trackingowe: `page`, `referrer` i parametry `utm_*`.
+- Produkcja zapisuje lekką analitykę w Supabase `analytics_events`: `page_view`, `form_view`, `form_submit_attempt`, `form_submit_success`, `form_submit_error`, bez cookies i bez danych osobowych w eventach.
 - Dla publicznego hostingu statycznego można ustawić `VITE_FORM_ENDPOINT` jako adres przyjmujący zgłoszenia.
+- `VITE_ANALYTICS_ENDPOINT` może wskazywać na `track-event`; jeśli nie jest ustawiony, frontend spróbuje wyliczyć go z `VITE_FORM_ENDPOINT`.
 - Po wdrożeniu osobnego backendu można ustawić `VITE_API_BASE`, np. `https://api.solvaoze.pl`.
 
 ## Tani start bez CRM
@@ -64,12 +66,16 @@ Szczegółowy plan uruchomienia darmowego backendu znajduje się w `BACKEND_STAR
 Repo zawiera też gotowe pliki Supabase:
 
 - `supabase/migrations/202606030001_create_submissions.sql` - tabela zgłoszeń.
+- `supabase/migrations/202606170001_create_analytics_events.sql` - tabela lekkiej analityki strony.
 - `supabase/functions/submit-form/index.ts` - endpoint przyjmujący formularze; po dodaniu `RESEND_API_KEY` wyśle też powiadomienie przez Resend.
+- `supabase/functions/track-event/index.ts` - endpoint zapisujący pageview i eventy formularzy.
+- `supabase/analytics-queries.sql` - gotowe zapytania do szybkiego sprawdzania ruchu, źródeł i konwersji.
 
 Po wdrożeniu funkcji w Supabase ustaw w GitHub Actions zmienną:
 
 ```text
 VITE_FORM_ENDPOINT=https://TWOJ-PROJEKT.supabase.co/functions/v1/submit-form
+VITE_ANALYTICS_ENDPOINT=https://TWOJ-PROJEKT.supabase.co/functions/v1/track-event
 VITE_TURNSTILE_SITE_KEY=PUBLICZNY_SITE_KEY_CLOUDFLARE
 ```
 
