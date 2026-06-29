@@ -2,7 +2,7 @@ export const faqItems = [
   {
     audience: ["all", "clients", "partners"],
     question: "Czy SOLVA jest osobną marką?",
-    answer: "Tak. SOLVA to marka handlowa używana przez JTJ FUND sp. z o.o., która komunikuje partnerski zespół sprzedażowy współpracujący z Hydro NRG."
+    answer: "Tak. SOLVA to marka handlowa używana przez JTJ FUND sp. z o.o., która komunikuje partnerski zespół sprzedażowy współpracujący z Hydro Energy."
   },
   {
     audience: ["all", "clients"],

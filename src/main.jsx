@@ -47,6 +47,8 @@ const heroImages = {
   privacy: { "--hero-image": `url("${assetUrl("assets/realizations/home-roof.webp")}")` }
 };
 const logoUrl = `${assetUrl("assets/solva-logo.svg")}?v=1`;
+const hydroLogoColorUrl = assetUrl("assets/partners/hydro-energy-full-color.png");
+const hydroLogoWhiteUrl = assetUrl("assets/partners/hydro-energy-white.png");
 const contactEmail = "kontakt@solvaoze.pl";
 const privacyEmail = contactEmail;
 const staticFormEndpoint = import.meta.env.VITE_FORM_ENDPOINT || "";
@@ -179,9 +181,9 @@ const recruitment = [
 ];
 
 const proof = [
-  { icon: SunMedium, value: "Zakres OZE", label: "PV, magazyny, pompy i termomodernizacja" },
-  { icon: SearchCheck, value: "0 zł", label: "za wstępne sprawdzenie kierunku inwestycji" },
-  { icon: BadgeCheck, value: "Bez presji", label: "najpierw dane i rozmowa, dopiero potem decyzja" }
+  { icon: Users, value: "7 tys.+", label: "klientów obsłużonych przez Hydro Energy" },
+  { icon: Zap, value: "18 MW", label: "mocy instalacji w rok po stronie Hydro Energy" },
+  { icon: BadgeCheck, value: "~10 lat", label: "niemal dekada działalności Hydro Energy w OZE" }
 ];
 
 const clientSegments = [
@@ -290,7 +292,7 @@ const partnerFormPrep = [
 ];
 
 const materialSlots = [
-  { icon: Camera, title: "Realne przykłady inwestycji", text: "Zdjęcia domów, firm, instalacji gruntowych i pomp ciepła pomagają łatwiej wyobrazić sobie, jaki zakres może pasować do Twojej sytuacji." },
+  { icon: Camera, title: "Realizacje i opinie Hydro Energy", text: "Publiczne przykłady realizacji i opinii pomagają zobaczyć skalę wykonawstwa, zanim przejdziemy do Twojego rachunku i zakresu inwestycji.", href: "https://hydro-energy.pl/pl/realizacje-i-opinie" },
   { icon: FileText, title: "Jasny zakres rozmowy", text: "Od początku ustalamy, czy chodzi o PV, magazyn energii, pompę ciepła, EMS czy temat nadwyżek energii." },
   { icon: ClipboardCheck, title: "Prosta ścieżka kontaktu", text: "Krótki formularz zbiera najważniejsze dane, a dalsza rozmowa opiera się na konkretach zamiast ogólnych obietnic." }
 ];
@@ -660,11 +662,15 @@ function HomePage({ onNavigate }) {
         <div className="hero-media" aria-hidden="true" />
         <div className="hero-overlay" />
         <div className="hero-content">
-          <p className="eyebrow"><SunMedium size={18} /> Partner Hydro NRG</p>
+          <p className="eyebrow"><SunMedium size={18} /> Partner Hydro Energy</p>
+          <div className="hydro-hero-badge" aria-label="Partner Hydro Energy">
+            <img src={hydroLogoWhiteUrl} alt="Hydro Energy" />
+            <span>partner sprzedażowy</span>
+          </div>
           <h1>SOLVA</h1>
           <div className="partner-pill"><ShieldCheck size={18} /> <span>Fotowoltaika, pompy ciepła, magazyny energii</span></div>
           <p className="hero-copy">
-            Kwalifikujemy inwestycje OZE dla klientów i rozwijamy partnerski zespół handlowy w modelu współpracy z Hydro NRG.
+            Kwalifikujemy inwestycje OZE dla klientów i rozwijamy partnerski zespół handlowy w modelu współpracy z Hydro Energy.
           </p>
           <div className="hero-actions" aria-label="Główne akcje">
             <SiteLink className="button primary" href="/klienci#formularz" onNavigate={onNavigate}>
@@ -679,6 +685,7 @@ function HomePage({ onNavigate }) {
 
       <ProofStrip />
       <CompanySection />
+      <HydroPartnerSection />
       <EnergyRoutesSection onNavigate={onNavigate} />
       <MediaSection />
       <MaterialsSection />
@@ -1204,6 +1211,45 @@ function CompanySection() {
   );
 }
 
+function HydroPartnerSection() {
+  return (
+    <section className="section hydro-partner-section reveal-zone" aria-label="Partnerstwo Hydro Energy">
+      <div className="hydro-partner-card">
+        <div className="hydro-logo-panel">
+          <span>Zaplecze Hydro Energy</span>
+          <img src={hydroLogoColorUrl} alt="Hydro Energy" loading="lazy" />
+        </div>
+        <div className="hydro-partner-copy">
+          <p className="eyebrow dark"><ShieldCheck size={18} /> Skala Hydro Energy</p>
+          <h2>Za rozmową SOLVA stoi doświadczenie partnera z rynku OZE.</h2>
+          <p>
+            SOLVA odpowiada za uporządkowaną kwalifikację klientów i współpracę handlową.
+            Hydro Energy wnosi zaplecze realizacyjne, referencje oraz doświadczenie w fotowoltaice, pompach ciepła, magazynach energii i elektromobilności.
+          </p>
+          <div className="hydro-stat-grid">
+            <div>
+              <strong>7 tys.+</strong>
+              <span>klientów</span>
+            </div>
+            <div>
+              <strong>18 MW</strong>
+              <span>mocy instalacji w rok</span>
+            </div>
+            <div>
+              <strong>~10 lat</strong>
+              <span>działalności w OZE</span>
+            </div>
+          </div>
+          <small className="hydro-source-note">Liczby na podstawie materiałów przekazanych przez Hydro Energy.</small>
+          <a className="text-link external-link" href="https://hydro-energy.pl/pl/realizacje-i-opinie" target="_blank" rel="noopener noreferrer">
+            Zobacz realizacje i opinie Hydro Energy <ArrowRight size={17} />
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ClientOfferSection() {
   return (
     <section className="section offer-section reveal-zone">
@@ -1346,6 +1392,11 @@ function MaterialsSection() {
               <Icon size={26} />
               <h3>{item.title}</h3>
               <p>{item.text}</p>
+              {item.href ? (
+                <a className="text-link external-link" href={item.href} target="_blank" rel="noopener noreferrer">
+                  Zobacz publiczne materiały <ArrowRight size={17} />
+                </a>
+              ) : null}
             </article>
           );
         })}
@@ -1481,7 +1532,7 @@ function PrivacyPage({ onNavigate }) {
             </div>
             <div>
               <strong>Odbiorcy danych</strong>
-              <span>Dane mogą trafić do dostawców hostingu, poczty, formularzy, narzędzi obsługi zgłoszeń, obsługi IT oraz partnerów potrzebnych do obsługi zapytania, w tym Hydro NRG, jeśli wymaga tego przygotowanie odpowiedzi lub oferty.</span>
+              <span>Dane mogą trafić do dostawców hostingu, poczty, formularzy, narzędzi obsługi zgłoszeń, obsługi IT oraz partnerów potrzebnych do obsługi zapytania, w tym Hydro Energy, jeśli wymaga tego przygotowanie odpowiedzi lub oferty.</span>
             </div>
             <div>
               <strong>Czas przechowywania</strong>
@@ -2186,7 +2237,7 @@ function Footer({ onNavigate }) {
     <footer className="site-footer">
       <div className="footer-brand-panel">
         <img src={logoUrl} alt="SOLVA" />
-        <p>SOLVA - marka handlowa {legalEntityName}, partnerski zespół sprzedażowy współpracujący z Hydro NRG.</p>
+        <p>SOLVA - marka handlowa {legalEntityName}, partnerski zespół sprzedażowy współpracujący z Hydro Energy.</p>
         <span>KRS {legalEntity.krs} · NIP {legalEntity.nip} · REGON {legalEntity.regon}</span>
       </div>
 

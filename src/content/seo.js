@@ -3,9 +3,9 @@ export const imageVersion = "20260608";
 export const routeSeo = [
   {
     route: "/",
-    title: "SOLVA | Partner Hydro NRG",
+    title: "SOLVA | Partner Hydro Energy",
     description:
-      "SOLVA pomaga klientom sprawdzić kierunek inwestycji OZE i rozwija partnerski zespół handlowy: fotowoltaika, magazyny energii, pompy ciepła i termomodernizacja.",
+      "SOLVA pomaga klientom sprawdzić kierunek inwestycji OZE i rozwija partnerski zespół handlowy przy zapleczu Hydro Energy: fotowoltaika, magazyny energii, pompy ciepła i termomodernizacja.",
     image: "/assets/og/home.jpg",
     imageAlt: "Dom z panelami fotowoltaicznymi i branding SOLVA.",
     changefreq: "weekly",
@@ -15,7 +15,7 @@ export const routeSeo = [
     route: "/klienci",
     title: "SOLVA | Bezpłatna analiza OZE dla klientów",
     description:
-      "Zgłoś rachunek za prąd i sprawdź kierunek inwestycji OZE: fotowoltaika, magazyn energii, pompa ciepła lub szersza modernizacja.",
+      "Zgłoś rachunek za prąd i sprawdź kierunek inwestycji OZE z partnerem Hydro Energy: fotowoltaika, magazyn energii, pompa ciepła lub szersza modernizacja.",
     image: "/assets/og/klienci.jpg",
     imageAlt: "Dach domu z instalacją fotowoltaiczną i zaproszenie do analizy OZE.",
     changefreq: "weekly",
@@ -25,7 +25,7 @@ export const routeSeo = [
     route: "/handlowcy",
     title: "SOLVA | Współpraca dla handlowców OZE",
     description:
-      "Dołącz do zespołu sprzedażowego SOLVA jako handlowiec OZE, lider regionu albo partner z własną bazą kontaktów.",
+      "Dołącz do zespołu sprzedażowego SOLVA współpracującego z Hydro Energy jako handlowiec OZE, lider regionu albo partner z własną bazą kontaktów.",
     image: "/assets/og/handlowcy.jpg",
     imageAlt: "Realizacja fotowoltaiczna i zaproszenie do zespołu handlowego SOLVA.",
     changefreq: "weekly",
