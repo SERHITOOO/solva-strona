@@ -32,6 +32,7 @@ html {
 
 #start,
 #realizacje,
+#referencje-hydro,
 #formularz,
 #faq {
   scroll-margin-top: 92px;
@@ -117,13 +118,40 @@ a {
 .brand {
   display: inline-flex;
   align-items: center;
+  min-width: 0;
 }
 
-.brand img,
-.site-footer img {
+.brand-lockup {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.brand-lockup img {
   display: block;
-  width: 224px;
   height: auto;
+}
+
+.brand-solva {
+  width: 184px;
+}
+
+.brand-partner-mark {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-width: 0;
+  padding: 4px 10px 4px 8px;
+  border: 1px solid rgba(0, 109, 143, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 6px 18px rgba(0, 49, 79, 0.055);
+}
+
+.brand-partner-mark img {
+  width: 112px;
+  max-height: 24px;
+  object-fit: contain;
 }
 
 nav {
@@ -416,35 +444,35 @@ h3 {
   line-height: 1.58;
 }
 
-.hydro-hero-badge {
-  display: inline-grid;
-  grid-template-columns: minmax(110px, 150px) auto;
+.hero-partner-line {
+  display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   width: fit-content;
-  max-width: min(100%, 360px);
-  margin: 6px 0 18px;
-  padding: 10px 13px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
-  background: rgba(0, 49, 79, 0.4);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(14px);
+  max-width: min(100%, 310px);
+  margin: 0 0 16px;
+  padding: 7px 10px 7px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(0, 49, 79, 0.32);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
 }
 
-.hydro-hero-badge img {
+.hero-partner-line img {
   display: block;
-  width: 100%;
+  width: 112px;
   height: auto;
   min-width: 0;
 }
 
-.hydro-hero-badge span {
-  color: rgba(255, 255, 255, 0.84);
-  font-size: 0.78rem;
+.hero-partner-line span {
+  color: #ffd08a;
+  font-size: 0.74rem;
   font-weight: 900;
-  line-height: 1.2;
+  line-height: 1;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .hero-actions {
@@ -718,6 +746,151 @@ h3 {
   font-size: 0.82rem;
   font-weight: 750;
   line-height: 1.45;
+}
+
+.hydro-proof-section {
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f2f8fb 100%);
+}
+
+.hydro-proof-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.72fr) minmax(0, 1.28fr);
+  gap: clamp(24px, 5vw, 56px);
+  align-items: start;
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.hydro-proof-copy {
+  position: sticky;
+  top: 112px;
+  min-width: 0;
+}
+
+.hydro-proof-copy h2 {
+  font-size: clamp(2.15rem, 4vw, 3.4rem);
+}
+
+.hydro-proof-copy > p:not(.eyebrow) {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.hydro-opinion-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.hydro-opinion-card {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(215, 228, 235, 0.95);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 26px rgba(0, 49, 79, 0.055);
+}
+
+.hydro-opinion-card img {
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.hydro-opinion-card strong,
+.hydro-opinion-card span {
+  display: block;
+}
+
+.hydro-opinion-card strong {
+  color: var(--leaf-dark);
+  font-size: 0.98rem;
+}
+
+.hydro-opinion-card span {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.91rem;
+  font-weight: 720;
+  line-height: 1.45;
+}
+
+.hydro-reference-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  min-width: 0;
+}
+
+.hydro-reference-card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(0, 109, 143, 0.14);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 18px 42px rgba(0, 49, 79, 0.09);
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.hydro-reference-card:hover {
+  border-color: rgba(242, 148, 0, 0.44);
+  box-shadow: 0 22px 54px rgba(0, 49, 79, 0.14);
+  transform: translateY(-3px);
+}
+
+.hydro-reference-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.5 / 1;
+  object-fit: cover;
+  background: #eaf3f7;
+}
+
+.hydro-reference-card div {
+  padding: 16px;
+}
+
+.hydro-reference-card span {
+  display: inline-flex;
+  margin-bottom: 8px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  color: #00314f;
+  background: rgba(242, 148, 0, 0.12);
+  font-size: 0.72rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.hydro-reference-card h3 {
+  margin-bottom: 8px;
+  color: var(--leaf-dark);
+}
+
+.hydro-reference-card p {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 0.94rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.hydro-proof-link {
+  width: fit-content;
+  margin: 28px auto 0;
+  color: var(--leaf-dark);
+  border: 1px solid rgba(0, 109, 143, 0.18);
+  background: rgba(255, 255, 255, 0.82);
 }
 
 .external-link {
@@ -2251,6 +2424,8 @@ textarea:focus {
   .lead-strip,
   .energy-route-grid,
   .media-grid,
+  .hydro-proof-layout,
+  .hydro-reference-grid,
   .process-line,
   .asset-stage,
   .hydro-partner-card,
@@ -2289,6 +2464,10 @@ textarea:focus {
     grid-template-columns: 1fr;
   }
 
+  .hydro-proof-copy {
+    position: static;
+  }
+
   h1 {
     font-size: 4.2rem;
   }
@@ -2316,9 +2495,9 @@ textarea:focus {
   }
 
   .site-header {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    justify-content: space-between;
     padding: 8px 12px;
     gap: 8px;
   }
@@ -2328,8 +2507,17 @@ textarea:focus {
     flex: 0 1 auto;
   }
 
-  .brand img {
-    width: clamp(142px, 42vw, 176px);
+  .brand-solva {
+    width: clamp(128px, 34vw, 158px);
+  }
+
+  .brand-partner-mark {
+    padding: 2px 7px;
+  }
+
+  .brand-partner-mark img {
+    width: 78px;
+    max-height: 18px;
   }
 
   .header-cta {
@@ -2337,7 +2525,9 @@ textarea:focus {
   }
 
   .mobile-menu-toggle {
+    display: inline-flex !important;
     flex: 0 0 auto;
+    justify-self: end;
     width: auto;
     min-width: 46px;
     min-height: 42px;
@@ -2427,11 +2617,18 @@ textarea:focus {
     overflow-wrap: anywhere;
   }
 
-  .hydro-hero-badge {
-    grid-template-columns: minmax(0, 138px);
-    gap: 7px;
-    justify-items: start;
-    padding: 9px 11px;
+  .hero-partner-line {
+    gap: 8px;
+    max-width: 100%;
+    padding: 7px 9px;
+  }
+
+  .hero-partner-line img {
+    width: 96px;
+  }
+
+  .hero-partner-line span {
+    font-size: 0.67rem;
   }
 
   .partner-pill {
@@ -2507,6 +2704,8 @@ textarea:focus {
   }
 
   .media-card:nth-of-type(n+3),
+  .hydro-reference-card:nth-of-type(n+4),
+  .hydro-opinion-card:nth-of-type(n+3),
   .insight-card:nth-of-type(n+3),
   .offer-grid:not(.four) .offer-card:nth-of-type(n+4),
   .track-card:nth-of-type(n+3),
@@ -2614,8 +2813,8 @@ textarea:focus {
     padding: 16px;
   }
 
-  .footer-brand-panel img {
-    width: 190px;
+  .footer-brand-panel .brand-solva {
+    width: 176px;
   }
 
   .footer-contact-card a,

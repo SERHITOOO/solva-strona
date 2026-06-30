@@ -46,7 +46,7 @@ const heroImages = {
   cooperative: { "--hero-image": `url("${assetUrl("assets/realizations/ground-mount.webp")}")` },
   privacy: { "--hero-image": `url("${assetUrl("assets/realizations/home-roof.webp")}")` }
 };
-const logoUrl = `${assetUrl("assets/solva-logo.svg")}?v=1`;
+const logoUrl = `${assetUrl("assets/solva-logo.svg")}?v=2`;
 const hydroLogoColorUrl = assetUrl("assets/partners/hydro-energy-full-color.png");
 const hydroLogoWhiteUrl = assetUrl("assets/partners/hydro-energy-white.png");
 const contactEmail = "kontakt@solvaoze.pl";
@@ -181,9 +181,9 @@ const recruitment = [
 ];
 
 const proof = [
-  { icon: Users, value: "7 tys.+", label: "klientów obsłużonych przez Hydro Energy" },
-  { icon: Zap, value: "18 MW", label: "mocy instalacji w rok po stronie Hydro Energy" },
-  { icon: BadgeCheck, value: "~10 lat", label: "niemal dekada działalności Hydro Energy w OZE" }
+  { icon: Users, value: "7 tys.+", label: "klientów w portfolio Hydro Energy" },
+  { icon: Zap, value: "18 MW", label: "mocy instalacji PV w rok" },
+  { icon: BadgeCheck, value: "~10 lat", label: "działalności Hydro Energy w OZE" }
 ];
 
 const clientSegments = [
@@ -295,6 +295,65 @@ const materialSlots = [
   { icon: Camera, title: "Realizacje i opinie Hydro Energy", text: "Publiczne przykłady realizacji i opinii pomagają zobaczyć skalę wykonawstwa, zanim przejdziemy do Twojego rachunku i zakresu inwestycji.", href: "https://hydro-energy.pl/pl/realizacje-i-opinie" },
   { icon: FileText, title: "Jasny zakres rozmowy", text: "Od początku ustalamy, czy chodzi o PV, magazyn energii, pompę ciepła, EMS czy temat nadwyżek energii." },
   { icon: ClipboardCheck, title: "Prosta ścieżka kontaktu", text: "Krótki formularz zbiera najważniejsze dane, a dalsza rozmowa opiera się na konkretach zamiast ogólnych obietnic." }
+];
+
+const hydroSourceUrl = "https://hydro-energy.pl/pl/realizacje-i-opinie";
+
+const hydroBusinessReferences = [
+  {
+    title: "Hosteria na Mazurach",
+    tag: "Referencja B2B",
+    text: "Przykład większej realizacji i referencji klienta biznesowego udostępnionej przez Hydro Energy.",
+    image: assetUrl("assets/hydro/ref-hosteria.jpg")
+  },
+  {
+    title: "Hotel i restauracja Drob",
+    tag: "Referencja B2B",
+    text: "Materiał pokazuje, że zaplecze wykonawcze Hydro Energy obejmuje nie tylko domy, ale też obiekty usługowe.",
+    image: assetUrl("assets/hydro/ref-drob.jpg")
+  },
+  {
+    title: "ERIS Partner",
+    tag: "Obiekt firmowy",
+    text: "Realizacja dla biznesu z widoczną instalacją PV na większej powierzchni dachu.",
+    image: assetUrl("assets/hydro/ref-eris.jpg")
+  },
+  {
+    title: "MOYA / Anwim",
+    tag: "Duży dach",
+    text: "Przykład instalacji na obiekcie komercyjnym, dobry do rozmowy o skali i profilu zużycia energii.",
+    image: assetUrl("assets/hydro/ref-moya.jpg")
+  },
+  {
+    title: "Qubus Hotel",
+    tag: "Obiekt hotelowy",
+    text: "Referencja biznesowa z segmentu hotelowego, przydatna przy rozmowach z firmami i obiektami usługowymi.",
+    image: assetUrl("assets/hydro/ref-qubus.jpg")
+  },
+  {
+    title: "Instalacja dachowa",
+    tag: "PV dla firmy",
+    text: "Kadr z realizacji Hydro Energy pokazujący uporządkowany montaż paneli na dachu skośnym.",
+    image: assetUrl("assets/hydro/ref-atom.jpg")
+  }
+];
+
+const hydroCustomerOpinions = [
+  {
+    name: "Katarzyna i Dawid",
+    text: "W opinii podkreślają sprawny montaż fotowoltaiki i odczuwalną zmianę w domowym budżecie.",
+    image: assetUrl("assets/hydro/home-pv.jpg")
+  },
+  {
+    name: "Aleksandra i Rafał",
+    text: "Wskazują połączenie fotowoltaiki z pompą ciepła oraz wsparcie przy formalnościach i dofinansowaniu.",
+    image: assetUrl("assets/hydro/heat-pump.jpg")
+  },
+  {
+    name: "Monika i Paweł",
+    text: "Zwracają uwagę na szybki start prac, kontakt z ekipą i pomoc konsultantów Hydro Energy.",
+    image: assetUrl("assets/hydro/home-roof-pv.jpg")
+  }
 ];
 
 function getTrackingData() {
@@ -662,10 +721,9 @@ function HomePage({ onNavigate }) {
         <div className="hero-media" aria-hidden="true" />
         <div className="hero-overlay" />
         <div className="hero-content">
-          <p className="eyebrow"><SunMedium size={18} /> Partner Hydro Energy</p>
-          <div className="hydro-hero-badge" aria-label="Partner Hydro Energy">
+          <div className="hero-partner-line" aria-label="Partner sprzedażowy Hydro Energy">
+            <span>Partner sprzedażowy</span>
             <img src={hydroLogoWhiteUrl} alt="Hydro Energy" />
-            <span>partner sprzedażowy</span>
           </div>
           <h1>SOLVA</h1>
           <div className="partner-pill"><ShieldCheck size={18} /> <span>Fotowoltaika, pompy ciepła, magazyny energii</span></div>
@@ -686,6 +744,7 @@ function HomePage({ onNavigate }) {
       <ProofStrip />
       <CompanySection />
       <HydroPartnerSection />
+      <HydroProofSection />
       <EnergyRoutesSection onNavigate={onNavigate} />
       <MediaSection />
       <MaterialsSection />
@@ -1216,7 +1275,7 @@ function HydroPartnerSection() {
     <section className="section hydro-partner-section reveal-zone" aria-label="Partnerstwo Hydro Energy">
       <div className="hydro-partner-card">
         <div className="hydro-logo-panel">
-          <span>Zaplecze Hydro Energy</span>
+          <span>Partner wykonawczy i technologiczny</span>
           <img src={hydroLogoColorUrl} alt="Hydro Energy" loading="lazy" />
         </div>
         <div className="hydro-partner-copy">
@@ -1224,16 +1283,17 @@ function HydroPartnerSection() {
           <h2>Za rozmową SOLVA stoi doświadczenie partnera z rynku OZE.</h2>
           <p>
             SOLVA odpowiada za uporządkowaną kwalifikację klientów i współpracę handlową.
-            Hydro Energy wnosi zaplecze realizacyjne, referencje oraz doświadczenie w fotowoltaice, pompach ciepła, magazynach energii i elektromobilności.
+            Hydro Energy wnosi zaplecze realizacyjne, referencje oraz doświadczenie w fotowoltaice,
+            pompach ciepła, magazynach energii i rozwiązaniach zarządzania energią.
           </p>
           <div className="hydro-stat-grid">
             <div>
               <strong>7 tys.+</strong>
-              <span>klientów</span>
+              <span>klientów w portfolio</span>
             </div>
             <div>
               <strong>18 MW</strong>
-              <span>mocy instalacji w rok</span>
+              <span>mocy instalacji PV w rok</span>
             </div>
             <div>
               <strong>~10 lat</strong>
@@ -1241,11 +1301,54 @@ function HydroPartnerSection() {
             </div>
           </div>
           <small className="hydro-source-note">Liczby na podstawie materiałów przekazanych przez Hydro Energy.</small>
-          <a className="text-link external-link" href="https://hydro-energy.pl/pl/realizacje-i-opinie" target="_blank" rel="noopener noreferrer">
+          <a className="text-link external-link" href={hydroSourceUrl} target="_blank" rel="noopener noreferrer">
             Zobacz realizacje i opinie Hydro Energy <ArrowRight size={17} />
           </a>
         </div>
       </div>
+    </section>
+  );
+}
+
+function HydroProofSection() {
+  return (
+    <section className="section hydro-proof-section reveal-zone" id="referencje-hydro" aria-label="Realizacje i opinie Hydro Energy">
+      <div className="hydro-proof-layout">
+        <div className="hydro-proof-copy">
+          <p className="eyebrow dark"><Camera size={18} /> Realizacje i referencje</p>
+          <h2>Dowód wykonania ma być widoczny, nie opisany jednym zdaniem.</h2>
+          <p>
+            Wykorzystujemy publiczne materiały Hydro Energy: zdjęcia instalacji, opinie klientów indywidualnych
+            oraz referencje klientów biznesowych. Dzięki temu klient widzi realne przykłady, zanim przejdzie do formularza.
+          </p>
+          <div className="hydro-opinion-list">
+            {hydroCustomerOpinions.map((item) => (
+              <article className="hydro-opinion-card" key={item.name}>
+                <img src={item.image} alt={`Realizacja Hydro Energy - ${item.name}`} loading="lazy" />
+                <div>
+                  <strong>{item.name}</strong>
+                  <span>{item.text}</span>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+        <div className="hydro-reference-grid">
+          {hydroBusinessReferences.map((item, index) => (
+            <article className="hydro-reference-card" key={item.title}>
+              <img src={item.image} alt={`Referencja Hydro Energy - ${item.title}`} loading={index < 2 ? "eager" : "lazy"} />
+              <div>
+                <span>{item.tag}</span>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+      <a className="button secondary hydro-proof-link" href={hydroSourceUrl} target="_blank" rel="noopener noreferrer">
+        Zobacz pełną stronę realizacji Hydro Energy <ArrowRight size={18} />
+      </a>
     </section>
   );
 }
@@ -1753,6 +1856,17 @@ function useScrollProgress(dependency) {
   }, [dependency]);
 }
 
+function BrandLockup() {
+  return (
+    <span className="brand-lockup">
+      <img className="brand-solva" src={logoUrl} alt="SOLVA" />
+      <span className="brand-partner-mark" aria-label="Partner Hydro Energy">
+        <img src={hydroLogoColorUrl} alt="Hydro Energy" />
+      </span>
+    </span>
+  );
+}
+
 function Header({ currentPath, onNavigate }) {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobileMenuClosing, setMobileMenuClosing] = useState(false);
@@ -1833,7 +1947,7 @@ function Header({ currentPath, onNavigate }) {
   return (
     <header className="site-header">
       <SiteLink className="brand" href="/" onNavigate={handleNavigate} aria-label="SOLVA">
-        <img src={logoUrl} alt="SOLVA" />
+        <BrandLockup />
       </SiteLink>
       <nav aria-label="Nawigacja główna">
         {navItems.filter((item) => !item.mobileOnly).map((item) => (
@@ -2236,7 +2350,7 @@ function Footer({ onNavigate }) {
   return (
     <footer className="site-footer">
       <div className="footer-brand-panel">
-        <img src={logoUrl} alt="SOLVA" />
+        <BrandLockup />
         <p>SOLVA - marka handlowa {legalEntityName}, partnerski zespół sprzedażowy współpracujący z Hydro Energy.</p>
         <span>KRS {legalEntity.krs} · NIP {legalEntity.nip} · REGON {legalEntity.regon}</span>
       </div>
