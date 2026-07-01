@@ -303,37 +303,37 @@ const hydroBusinessReferences = [
   {
     title: "Hosteria na Mazurach",
     tag: "Referencja B2B",
-    text: "Przykład większej realizacji i referencji klienta biznesowego udostępnionej przez Hydro Energy.",
+    text: "Realizacja pokazująca, że instalację można dopasować także do większego obiektu i jego codziennego zużycia energii.",
     image: assetUrl("assets/hydro/ref-hosteria.jpg")
   },
   {
     title: "Hotel i restauracja Drob",
     tag: "Referencja B2B",
-    text: "Materiał pokazuje, że zaplecze wykonawcze Hydro Energy obejmuje nie tylko domy, ale też obiekty usługowe.",
+    text: "Przykład inwestycji dla obiektu usługowego, gdzie liczy się skala, organizacja prac i przewidywalność działania instalacji.",
     image: assetUrl("assets/hydro/ref-drob.jpg")
   },
   {
     title: "ERIS Partner",
     tag: "Obiekt firmowy",
-    text: "Realizacja dla biznesu z widoczną instalacją PV na większej powierzchni dachu.",
+    text: "Większa powierzchnia dachu pozwala rozmawiać o realnym ograniczaniu kosztów energii w firmie.",
     image: assetUrl("assets/hydro/ref-eris.jpg")
   },
   {
     title: "MOYA / Anwim",
     tag: "Duży dach",
-    text: "Przykład instalacji na obiekcie komercyjnym, dobry do rozmowy o skali i profilu zużycia energii.",
+    text: "Dach komercyjny i wyższe zużycie energii wymagają dokładnej analizy profilu pracy obiektu przed ofertą.",
     image: assetUrl("assets/hydro/ref-moya.jpg")
   },
   {
     title: "Qubus Hotel",
     tag: "Obiekt hotelowy",
-    text: "Referencja biznesowa z segmentu hotelowego, przydatna przy rozmowach z firmami i obiektami usługowymi.",
+    text: "Przykład obiektu hotelowego, w którym energia jest stałym kosztem i warto sprawdzić sens inwestycji OZE.",
     image: assetUrl("assets/hydro/ref-qubus.jpg")
   },
   {
     title: "Instalacja dachowa",
     tag: "PV dla firmy",
-    text: "Kadr z realizacji Hydro Energy pokazujący uporządkowany montaż paneli na dachu skośnym.",
+    text: "Uporządkowany montaż na dachu skośnym pokazuje, że poza doborem mocy liczy się estetyka i jakość wykonania.",
     image: assetUrl("assets/hydro/ref-atom.jpg")
   }
 ];
@@ -341,17 +341,17 @@ const hydroBusinessReferences = [
 const hydroCustomerOpinions = [
   {
     name: "Katarzyna i Dawid",
-    text: "W opinii podkreślają sprawny montaż fotowoltaiki i odczuwalną zmianę w domowym budżecie.",
+    text: "Docenili sprawny montaż fotowoltaiki i odczuwalną zmianę w domowym budżecie.",
     image: assetUrl("assets/hydro/home-pv.jpg")
   },
   {
     name: "Aleksandra i Rafał",
-    text: "Wskazują połączenie fotowoltaiki z pompą ciepła oraz wsparcie przy formalnościach i dofinansowaniu.",
+    text: "Wybrali połączenie fotowoltaiki z pompą ciepła i wsparcie przy formalnościach.",
     image: assetUrl("assets/hydro/heat-pump.jpg")
   },
   {
     name: "Monika i Paweł",
-    text: "Zwracają uwagę na szybki start prac, kontakt z ekipą i pomoc konsultantów Hydro Energy.",
+    text: "Zwrócili uwagę na szybki start prac, kontakt z ekipą i pomoc przy kolejnych krokach.",
     image: assetUrl("assets/hydro/home-roof-pv.jpg")
   }
 ];
@@ -1315,11 +1315,11 @@ function HydroProofSection() {
     <section className="section hydro-proof-section reveal-zone" id="referencje-hydro" aria-label="Realizacje i opinie Hydro Energy">
       <div className="hydro-proof-layout">
         <div className="hydro-proof-copy">
-          <p className="eyebrow dark"><Camera size={18} /> Realizacje i referencje</p>
-          <h2>Dowód wykonania ma być widoczny, nie opisany jednym zdaniem.</h2>
+          <p className="eyebrow dark"><Camera size={18} /> Sprawdzone realizacje Hydro Energy</p>
+          <h2>Zobacz, z jakim zapleczem rozmawiasz o swojej inwestycji OZE.</h2>
           <p>
-            Wykorzystujemy publiczne materiały Hydro Energy: zdjęcia instalacji, opinie klientów indywidualnych
-            oraz referencje klientów biznesowych. Dzięki temu klient widzi realne przykłady, zanim przejdzie do formularza.
+            Przed decyzją warto zobaczyć realne montaże i opinie osób, które przeszły przez podobny proces.
+            Poniżej pokazujemy wybrane realizacje Hydro Energy dla domów, firm i obiektów usługowych.
           </p>
           <div className="hydro-opinion-list">
             {hydroCustomerOpinions.map((item) => (
@@ -1347,7 +1347,7 @@ function HydroProofSection() {
         </div>
       </div>
       <a className="button secondary hydro-proof-link" href={hydroSourceUrl} target="_blank" rel="noopener noreferrer">
-        Zobacz pełną stronę realizacji Hydro Energy <ArrowRight size={18} />
+        Zobacz więcej realizacji i opinii Hydro Energy <ArrowRight size={18} />
       </a>
     </section>
   );
