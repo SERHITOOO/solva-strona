@@ -550,6 +550,7 @@ function buildSubmissionPayload(kind, form) {
     lead: "Zgłoszenie klienta",
     partner: "Zgłoszenie handlowca"
   };
+  const { companyWebsite: _browserAutofillTrap, ...publicForm } = form;
 
   const payload = {
     typ: labels[kind],
@@ -557,7 +558,7 @@ function buildSubmissionPayload(kind, form) {
     zrodlo: "strona SOLVA",
     marka: "SOLVA",
     podmiot: legalEntityName,
-    ...form,
+    ...publicForm,
     consent: form.consent ? "tak" : "nie",
     tracking: getTrackingData()
   };
@@ -2125,7 +2126,7 @@ function useSubmit(endpoint, defaults) {
       const response = await fetch(getApiUrl(endpoint), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, turnstileToken, tracking: getTrackingData() })
+        body: JSON.stringify({ ...form, companyWebsite: "", turnstileToken, tracking: getTrackingData() })
       });
       const payload = await response.json().catch(() => ({}));
 
