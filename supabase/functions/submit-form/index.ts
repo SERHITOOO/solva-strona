@@ -91,7 +91,8 @@ function normalizeTracking(raw: unknown) {
 }
 
 function validate(payload: Record<string, unknown>, kind: "lead" | "partner") {
-  if (cleanText(payload.companyWebsite, 120)) {
+  const botTrap = cleanText(payload.confirmWebsite, 120) || cleanText(payload.websiteUrl, 120);
+  if (botTrap) {
     return "Nie udało się zapisać zgłoszenia.";
   }
 

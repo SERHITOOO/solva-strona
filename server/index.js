@@ -151,7 +151,8 @@ function normalizeSubmission(raw, type) {
 }
 
 function validateSubmission(raw, type) {
-  if (cleanText(raw.companyWebsite, 120)) {
+  const botTrap = cleanText(raw.confirmWebsite, 120) || cleanText(raw.websiteUrl, 120);
+  if (botTrap) {
     return "Nie udało się zapisać zgłoszenia.";
   }
 
