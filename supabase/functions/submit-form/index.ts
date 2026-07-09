@@ -237,7 +237,7 @@ async function sendNotification(payload: Record<string, unknown>, kind: "lead" |
 
 async function mirrorToGoogleSheets(row: Record<string, unknown>) {
   if (!googleSheetsWebhookUrl) {
-    return;
+    return { ok: false, skipped: true, error: "GOOGLE_SHEETS_WEBHOOK_URL is not set" };
   }
 
   const targetUrl = new URL(googleSheetsWebhookUrl);
@@ -252,11 +252,19 @@ async function mirrorToGoogleSheets(row: Record<string, unknown>) {
     },
     body: JSON.stringify(row)
   });
+  const responseText = await response.text().catch(() => "");
+  const result = responseText
+    ? await Promise.resolve()
+      .then(() => JSON.parse(responseText) as Record<string, unknown>)
+      .catch(() => null)
+    : null;
 
-  if (!response.ok) {
-    const details = await response.text().catch(() => "");
-    throw new Error(`Google Sheets webhook failed: ${response.status} ${details.slice(0, 240)}`);
+  if (!response.ok || result?.ok === false) {
+    const details = cleanText(result?.error || responseText, 240);
+    throw new Error(`Google Sheets webhook failed: ${response.status} ${details}`);
   }
+
+  return { ok: true, skipped: false, status: response.status };
 }
 
 Deno.serve(async (request) => {
@@ -329,15 +337,33 @@ Deno.serve(async (request) => {
     tracking
   };
   const supabase = createClient(supabaseUrl, serviceRoleKey);
-  const { error } = await supabase.from("submissions").insert(row);
+  const { data: insertedRow, error } = await supabase.from("submissions").insert(row).select().single();
 
   if (error) {
     console.error(error);
     return new Response(JSON.stringify({ error: "Nie udało się zapisać zgłoszenia." }), { status: 500, headers });
   }
 
-  await sendNotification(payload, kind).catch((error) => console.error(error));
-  await mirrorToGoogleSheets(row).catch((error) => console.error(error));
+  const storedRow = (insertedRow || row) as Record<string, unknown>;
+  let sheetsMirror = { ok: false, skipped: true, error: "Nie wykonano synchronizacji z Google Sheets." };
 
-  return new Response(JSON.stringify({ ok: true }), { status: 201, headers });
+  await sendNotification(payload, kind).catch((error) => console.error(error));
+  await mirrorToGoogleSheets(storedRow)
+    .then((result) => {
+      sheetsMirror = {
+        ok: Boolean(result.ok),
+        skipped: Boolean(result.skipped),
+        error: cleanText(result.error, 240)
+      };
+    })
+    .catch((error) => {
+      console.error(error);
+      sheetsMirror = {
+        ok: false,
+        skipped: false,
+        error: cleanText(error.message, 240)
+      };
+    });
+
+  return new Response(JSON.stringify({ ok: true, sheetsMirror }), { status: 201, headers });
 });
